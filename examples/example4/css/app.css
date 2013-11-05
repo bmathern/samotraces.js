@@ -1,0 +1,73 @@
+#instances-panel {
+	max-width: 70%;
+	width: auto;
+	border: 1px solid black;
+}
+#instances-panel:before {
+	content: 'Instances';
+	margin: 5px;
+	font: 14pt bold;
+}
+#instances-panel div.edit {
+	height: 30px;
+	border: 1px solid black;
+	margin: 5px;
+	padding: 5px;
+}
+
+
+#app {
+	max-width: 70%;
+	border: 1px solid black;
+}
+
+.instanciated {
+	background-color: lightgreen;
+}
+
+#app:before {
+	content: 'Application';
+	margin: 5px;
+	font: 14pt bold;
+}
+
+
+form.edit {
+	display: inline;
+}
+form.edit input {
+	display: inline;
+}
+
+
+
+#app div.edit {
+	height: 90px;
+	border: 1px solid black;
+	margin: 5px;
+	padding: 5px;
+}
+
+
+
+#widgets-panel {
+	float: right;
+	width: 20%;
+	border: 1px solid black;
+}
+
+#widgets-panel:before {
+	content: 'Widget list';
+	margin: 5px;
+	font: 14pt bold;
+}
+
+#widgets-panel div {
+	float: left;
+	width: 90px;
+	height: 90px;
+	border: 1px solid black;
+	margin: 5px;
+	padding: 5px;
+	hyphens: auto;
+}

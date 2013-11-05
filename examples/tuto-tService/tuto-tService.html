@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<script type="text/javascript" src="javascript/d3.v3.min.js"></script>
+		<script type="text/javascript" src="javascript/tService.js"></script>
+		<script type="text/javascript" src="javascript/jquery-1.10.2.min.js"></script>
+	<!--	<script type="text/javascript" src="javascript/Samotraces.js"></script> -->
+		<script type="text/javascript" src="../../src/javascript_all.php"></script>
+		<link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
+	</head>
+	<body>
+		<div id="my-widget"></div>
+		<div id="my-widget2"></div>
+		<script type="text/javascript">
+function init() {
+/*
+	var t_manager = new tService.TraceManager({base_uri: 'http://127.0.0.1/ktbs/base-analyste-test/'});
+	var t_trace = t_manager.init_trace({name: 't01'});
+// */
+	var t_manager = new tService.TraceManager({base_uri: 'http://213.223.171.36/ktbs/ozalid_exp/'});
+	var t_trace = t_manager.init_trace({name: 'trc_u1'});
+// */
+	trace = {traceSet: []};
+	Samotraces.Objects.Observable.call(trace);
+	t_trace.get_obsels(
+		{
+			success: function(obsels) {
+console.log('success');
+				trace.traceSet = obsels; //.map(function(o) { o.id = o['@id']; return o;} );
+				trace.notify('updateTrace',trace.traceSet);
+			}
+		});
+// */
+	// Logical objects
+	var obsel_selector	= new Samotraces.Objects.ObselSelector();
+	var timer 			= new Samotraces.Objects.Timer(43.84*365*24*60*60*1000);
+	var tw				= new Samotraces.Objects.TimeWindowCenteredOnTime(timer,30*24*60*60*1000);
+	// Widgets
+	var visu_options = {
+		x: function(o) {
+	//	console.log(o);
+			if(o.begin !== undefined) {
+				return this.calculate_x(o.begin) - 8; 
+	//		return this.calculate_x(o.attributes.hasBegin) - 8; 
+			} else {
+				return 0;
+			}
+		},
+	};
+	new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,visu_options);
+	new Samotraces.Widgets.d3Basic.WindowScale('my-widget2',tw);
+
+}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		</script>
+	</body>
+</html>

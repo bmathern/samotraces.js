@@ -1,0 +1,42 @@
+#iframe {
+	margin: auto;
+	width: 100%;
+	height: 750px;
+}
+
+
+.ReadableTimeForm p {
+	margin: 0px;
+	font-size: 9pt;
+}
+.ReadableTimeForm input {
+	margin: 0px;
+	font-size: 9pt;
+}
+
+
+#obselinspector.WidgetObselInspector {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 110px;
+	font-size: 9pt;
+	background-color: #fff;
+	overflow: scroll;
+}
+
+#trace.WidgetTraceDisplayIcons {
+	margin-top: -15px;
+	margin-bottom: -15px;
+}
+
+#scale.WidgetWindowScale {
+	margin-bottom: -5px;
+	font-size: 8pt;
+}
+
+#tracage {
+	border: 1px solid black;
+}
+
+
