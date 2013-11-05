@@ -1,15 +1,15 @@
 
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
-Samotraces.Objects.Timer = function(time) {
+Samotraces.Lib.Timer = function(time) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this); /** @todo kept for compatibility -> remove */
-	Samotraces.Objects.EventBuilder.call(this);
+	Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
+	Samotraces.Lib.EventBuilder.call(this);
 	this.time = time || 0;
 };
 
-Samotraces.Objects.Timer.prototype = {
+Samotraces.Lib.Timer.prototype = {
 	set: function(time) {
 		new_time = Number(time);
 		if(this.time != new_time) {
@@ -20,5 +20,3 @@ Samotraces.Objects.Timer.prototype = {
 	}
 };
 
-// Timer is Observable
-//Samotraces.Objects.Observable.call(Samotraces.Objects.Timer.prototype);

@@ -1,15 +1,15 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
-Samotraces.Objects.ObselSelector = function(time) {
+Samotraces.Lib.ObselSelector = function(time) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this);
+	Samotraces.Lib.Observable.call(this);
 	this.obsel = undefined;
 };
 
-Samotraces.Objects.ObselSelector.prototype = {
+Samotraces.Lib.ObselSelector.prototype = {
 	select: function(obsel) {
 		this.obsel = obsel;
 		this.notify('obselSelected',obsel);

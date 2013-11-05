@@ -28,7 +28,7 @@ Samotraces.Widgets.Basic.WindowSlider = function(html_id,wide_window,slider_wind
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('WidgetBasicWindowSlider');
-	Samotraces.Objects.WindowState.addEventListener('resize',this.draw.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.wide_window = wide_window;
 	this.wide_window.addEventListener('updateTimeWindow',this.draw.bind(this));

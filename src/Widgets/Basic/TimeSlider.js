@@ -27,7 +27,7 @@ Samotraces.Widgets.Basic.TimeSlider = function(html_id,time_window,timer) {
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('WidgetBasicTimeSlider');
-	Samotraces.Objects.WindowState.addEventListener('resize',this.draw.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.draw.bind(this));

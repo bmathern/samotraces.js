@@ -3,7 +3,7 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 /**
  * @class Observable class
@@ -22,7 +22,7 @@ Samotraces.Objects = Samotraces.Objects || {};
  * @property {Array} observerList
  *     Array of objects that subscribed as observers.
  */
-Samotraces.Objects.Observable = (function() {
+Samotraces.Lib.Observable = (function() {
 	/**
 	 * Notify all the observer elements with a message and
 	 * an associated object.

@@ -86,7 +86,7 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_select
 	Samotraces.Widgets.Widget.call(this,divId);
 
 	this.add_class('WidgetTraceDisplayIcons');
-	Samotraces.Objects.WindowState.addEventListener('resize',this.refresh_x.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
 	trace.addObserver(this);
@@ -250,6 +250,13 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		this.draw();	
 	},
 
+	addObsel: function(obs) {
+//console.log('addObsel '+obs.id);
+//console.log(obs);
+		this.data.push(obs);
+		this.drawObsel(obs);
+		this.updateEventListener();
+	},
 	d3Obsels: function() {
 		return this.svg_gp
 					.selectAll('circle,image,rect')

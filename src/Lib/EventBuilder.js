@@ -3,7 +3,7 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 /**
  * @class EventBuilder class
@@ -23,7 +23,7 @@ Samotraces.Objects = Samotraces.Objects || {};
  * @property {Object} callbacks
  *     Hash matching callbacks to event_types.
  */
-Samotraces.Objects.EventBuilder = (function() {
+Samotraces.Lib.EventBuilder = (function() {
 	/**
 	 * Triggers all the registred callbacks.
 	 * an associated object.

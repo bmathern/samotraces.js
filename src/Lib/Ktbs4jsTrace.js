@@ -3,7 +3,7 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 /**
  * @class Javascript Trace Object that is bound to a KTBS trace. 
@@ -20,14 +20,17 @@ Samotraces.Objects = Samotraces.Objects || {};
  *
  * @param {String}	url	Url of the KTBS trace to load.
  */
-Samotraces.Objects.Ktbs4jsTrace = function(url) {
+Samotraces.Lib.Ktbs4jsTrace = function(url) {
+	// Addint the Observable trait
+	Samotraces.Lib.Observable.call(this);
+
 	this.trace = tracemanager.init_trace('trace1',{url: url, syncmode: 'sync', format: 'turtle'});
 	this.traceSet = this.trace.obsels;
 	$(this.trace).on('updated',this.onUpdate.bind(this));
 	this.trace.force_state_refresh();
 };
 
-Samotraces.Objects.Ktbs4jsTrace.prototype = {
+Samotraces.Lib.Ktbs4jsTrace.prototype = {
 	onUpdate: function() {
 		this.traceSet = this.trace.obsels;
 		this.notify('updateTrace',this.obsels);
@@ -37,8 +40,5 @@ Samotraces.Objects.Ktbs4jsTrace.prototype = {
 	},
 
 };
-
-// Trace is Observable
-Samotraces.Objects.Observable.call(Samotraces.Objects.Ktbs4jsTrace.prototype);
 
 

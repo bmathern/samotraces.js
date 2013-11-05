@@ -3,13 +3,13 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 
 /* Classe Trace */
-Samotraces.Objects.KtbsBogueTrace = function(url) {
+Samotraces.Lib.KtbsBogueTrace = function(url) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this);
+	Samotraces.Lib.Observable.call(this);
 	this.url = url;
 	var current_trace = this;
 
@@ -19,7 +19,7 @@ Samotraces.Objects.KtbsBogueTrace = function(url) {
 	this.refreshObsels();
 };
 
-Samotraces.Objects.KtbsBogueTrace.prototype = {
+Samotraces.Lib.KtbsBogueTrace.prototype = {
 
 	newObsel: function(type,timeStamp,attributes) {
 		var newObselOnSuccess = function(data,textStatus,jqXHR) {
@@ -133,13 +133,9 @@ Samotraces.Objects.KtbsBogueTrace.prototype = {
 						break;
 				}
 			}
-			obs = new Samotraces.Objects.Obsel(id,timestamp,type,attributes);
+			obs = new Samotraces.Lib.Obsel(id,timestamp,type,attributes);
 		}
 		return obs;
 	},
 };
-
-// Trace is Observable
-//Samotraces.Objects.Observable.call(Samotraces.Objects.KtbsBogueTrace.prototype);
-
 

@@ -2,13 +2,13 @@
 // REQUIRES JQUERY
 
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 
 /* Classe Trace */
-Samotraces.Objects.DemoTrace = function() {
+Samotraces.Lib.DemoTrace = function() {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this);
+	Samotraces.Lib.Observable.call(this);
 	var current_trace = this;
 
 	/* Nombre d'obsels dans la trace */
@@ -18,7 +18,7 @@ Samotraces.Objects.DemoTrace = function() {
 
 };
 
-Samotraces.Objects.DemoTrace.prototype = {
+Samotraces.Lib.DemoTrace.prototype = {
 
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
@@ -48,8 +48,5 @@ Samotraces.Objects.DemoTrace.prototype = {
 	},
 
 };
-
-// Trace is Observable
-//Samotraces.Objects.Observable.call(Samotraces.Objects.DemoTrace.prototype);
 
 

@@ -4,8 +4,8 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 Samotraces.Lib.TimeWindow = function(opt) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this); /** @todo kept for compatibility -> remove */
-	Samotraces.Objects.EventBuilder.call(this);
+	Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
+	Samotraces.Lib.EventBuilder.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
 		this.start = opt.start;
 		this.end = opt.end;

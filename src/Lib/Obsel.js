@@ -1,9 +1,9 @@
 
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 /* classe Obsel */
-Samotraces.Objects.Obsel = function(id,timestamp,type,attributes) {
+Samotraces.Lib.Obsel = function(id,timestamp,type,attributes) {
 	this.id = id;
 	this.timestamp = timestamp;
 	this.type = type;

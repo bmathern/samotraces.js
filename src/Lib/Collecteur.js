@@ -8,19 +8,19 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Collecte = Samotraces.Collecte || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
-Samotraces.Collecte.Collecteur = function() {
+Samotraces.Lib.Collecteur = function() {
 		this.espions = [];
 };
 
-Samotraces.Collecte.Collecteur.prototype = {
+Samotraces.Lib.Collecteur.prototype = {
 	addEspion: function(eventTypes,targetTypes,eventCallback,trace) {
-		espion = new Samotraces.Collecte.Espion(eventTypes,targetTypes,eventCallback,trace);
+		espion = new Samotraces.Lib.Espion(eventTypes,targetTypes,eventCallback,trace);
 		this.espions.push(espion);
 	},
 	addIFrameEspion: function(eventTypes,targetTypes,eventCallback,trace,iframeId) {
-		espion = new Samotraces.Collecte.IFrameEspion(eventTypes,targetTypes,eventCallback,trace,iframeId);
+		espion = new Samotraces.Lib.IFrameEspion(eventTypes,targetTypes,eventCallback,trace,iframeId);
 		this.espions.push(espion);
 	},
 	start: function() {
@@ -37,14 +37,14 @@ Samotraces.Collecte.Collecteur.prototype = {
 */
 };
 
-Samotraces.Collecte.Espion = function(eventTypes,targetTypes,eventCallback,trace) {
+Samotraces.Lib.Espion = function(eventTypes,targetTypes,eventCallback,trace) {
 	this.eventTypes = eventTypes.split(',');
 	this.targetTypes = targetTypes.split(',');
 	this.eventCallback = eventCallback;
 	this.trace = trace;
 };
 
-Samotraces.Collecte.Espion.prototype = {
+Samotraces.Lib.Espion.prototype = {
 	start: function() {
 		var elements;
 		this.eventTypes.forEach(function(eventType) {
@@ -60,7 +60,7 @@ Samotraces.Collecte.Espion.prototype = {
 };
 
 
-Samotraces.Collecte.IFrameEspion = function(eventTypes,targetTypes,eventCallback,trace,iframeId) {
+Samotraces.Lib.IFrameEspion = function(eventTypes,targetTypes,eventCallback,trace,iframeId) {
 	this.iframeId = iframeId;
 	this.eventTypes = eventTypes.split(',');
 	this.targetTypes = targetTypes.split(',');
@@ -68,7 +68,7 @@ Samotraces.Collecte.IFrameEspion = function(eventTypes,targetTypes,eventCallback
 	this.trace = trace;
 };
 
-Samotraces.Collecte.IFrameEspion.prototype = {
+Samotraces.Lib.IFrameEspion.prototype = {
 	start: function() {
 		var elements;
 		var iframe_element = document.getElementById(this.iframeId);

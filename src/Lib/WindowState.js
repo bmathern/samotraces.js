@@ -1,14 +1,14 @@
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
 
-Samotraces.Objects.WindowState = (function() {
+Samotraces.Lib.WindowState = (function() {
 	var WS = function() {
 		// Addint the Observable trait
-		Samotraces.Objects.Observable.call(this); /** @todo kept for compatibility -> remove */
-		Samotraces.Objects.EventBuilder.call(this);
+		Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
+		Samotraces.Lib.EventBuilder.call(this);
 		window.onresize = this.resize.bind(this);
 	};
 	

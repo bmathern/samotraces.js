@@ -26,7 +26,7 @@ Samotraces.Widgets.d3Basic.WindowScale = function(html_id,time_window) {
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('WidgetWindowScale');
-	Samotraces.Objects.WindowState.addEventListener('resize',this.draw.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.window = time_window;
 //	time_window.addObserver(this);
