@@ -28,12 +28,12 @@ Samotraces.Widgets.Basic.WindowSlider = function(html_id,wide_window,slider_wind
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('WidgetBasicWindowSlider');
-	Samotraces.Objects.WindowState.addObserver(this);
+	Samotraces.Objects.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.wide_window = wide_window;
-	wide_window.addObserver(this);
+	this.wide_window.addEventListener('updateTimeWindow',this.draw.bind(this));
 	this.slider_window = slider_window;
-	slider_window.addObserver(this);
+	this.slider_window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
 	this.slider_offset = 0;
 	this.width = 0;
@@ -51,30 +51,20 @@ Samotraces.Widgets.Basic.WindowSlider.prototype = {
 		this.element.appendChild(this.slider_element);
 
 		// hand made drag&drop
-		this.slider_element.addEventListener('mousedown',this.build_callback('mousedown'));
+		// event listeners
+		var widget = this;
+		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = delta_x*widget.wide_window.get_width()/widget.element.clientWidth;
+					widget.slider_window.translate(time_delta);	
+				},
+				onMoveCallback: function(offset) {
+					widget.slider_element.style.left = widget.slider_offset+offset+'px';
+				},
+			});
+		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateWindowStartTime':
-				start = object;
-				this.draw();	
-				break;
-			case 'updateWindowEndTime':
-				end = object;
-				this.draw();	
-				break;
-			case 'updateTime':
-				time = object;
-				this.draw();	
-				break;
-			case 'resize':
-				this.draw();
-				break;
-			default:
-				break;
-		}
-	},
 	draw: function() {
 //		if(this.time_window.start < this.timer.time && this.timer.time < this.time_window.end) {
 //toto = this.element;
@@ -93,52 +83,7 @@ Samotraces.Widgets.Basic.WindowSlider.prototype = {
 //		}
 	},
 
-	build_callback: function(event) {
-		// build the callbacks functions once and for all
-		if(this.callbacks === undefined) {
-			// create a closure for the callbacks
-			var mousedown,mouseup,mousemove;
-			var init_client_x;
-			var widget = this;
-			(function() {
-				mousedown = function(e) {
-				//	console.log('mousedown');
-					e.preventDefault();
-					init_client_x = e.clientX;
-					widget.element.addEventListener('mousemove',mousemove);
-					widget.element.addEventListener('mouseup',mouseup);
-					widget.element.addEventListener('mouseleave',mouseup);
-					return false;
-				};
-				mouseup = function(e) {
-				//	console.log('mouseup');
-					if(init_client_x !== undefined) {
-						var new_time = widget.slider_window.timer.time + (e.clientX - init_client_x)*widget.wide_window.get_width()/widget.element.clientWidth;
-						widget.slider_window.timer.set(new_time);
-						widget.element.removeEventListener('mousemove',mousemove);
-						widget.element.removeEventListener('mouseup',mouseup);
-						widget.element.removeEventListener('mouseleave',mouseup);
-					}
-					return false;
-				};
-				mousemove = function(e) {
-				//	console.log('mousemove');
-					var offset = widget.slider_offset + e.clientX - init_client_x;
-		//			this.slider_element.setAttribute('style','display: block; width: '+this.width+'px; left: '+offset+'px;');
-					widget.slider_element.style.left = offset+'px';
-					return false;
-				};
 
-			})();
-			// save the functions in the this.callbacks attribute
-			this.callbacks = {
-				mousedown: mousedown,
-				mouseup: mouseup,
-				mousemove: mousemove,
-			};
-		}
-		return this.callbacks[event];
-	}
 };
 
 

@@ -26,10 +26,11 @@ Samotraces.Widgets.d3Basic.WindowScale = function(html_id,time_window) {
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('WidgetWindowScale');
-	Samotraces.Objects.WindowState.addObserver(this);
+	Samotraces.Objects.WindowState.addEventListener('resize',this.draw.bind(this));
 
-	this.time_window = time_window;
-	time_window.addObserver(this);
+	this.window = time_window;
+//	time_window.addObserver(this);
+	this.window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
 	this.init_DOM();
 	// update slider's position
@@ -43,36 +44,26 @@ Samotraces.Widgets.d3Basic.WindowScale.prototype = {
 		this.svg = d3.select("#"+this.id).append("svg");
 		this.x = d3.time.scale(); //.range([0,this.element.getSize().x]);
 		this.xAxis = d3.svg.axis().scale(this.x); //.orient("bottom");
-		this.x.domain([this.time_window.start,this.time_window.end]);
+		this.x.domain([this.window.start,this.window.end]);
 		this.svgAxis = this.svg
 			.append("g");
+
+/*		var widget = this;
+		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = -delta_x*widget.time_window.get_width()/widget.element.clientWidth;
+					widget.time_window.translate(time_delta);					
+				},
+				onMoveCallback: function(offset) {
+				},
+			});*/
+		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateWindowStartTime':
-				start = object;
-				this.draw();	
-				break;
-			case 'updateWindowEndTime':
-				end = object;
-				this.draw();	
-				break;
-			case 'updateTime':
-				time = object;
-				this.draw();	
-				break;
-			case 'resize':
-				this.draw();
-				break;
-			default:
-				break;
-		}
-	},
 	draw: function() {
 //console.log("redraw");
 		this.x.range([0,this.element.clientWidth]);// = d3.time.scale().range([0,this.element.getSize().x]);
-		this.x.domain([this.time_window.start,this.time_window.end]);
+		this.x.domain([this.window.start,this.window.end]);
 		this.svgAxis.call(this.xAxis);
 	},
 };

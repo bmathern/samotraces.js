@@ -30,13 +30,8 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
 Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
 
 /**
- * Set of the Objects of Samotraces
+ * Library of the Objects of Samotraces
  * @namespace
  */
-Samotraces.Objects = Samotraces.Objects || {};
+Samotraces.Lib = Samotraces.Lib || {};
 
-/**
- * Set of the trace collection tools of Samotraces
- * @namespace
- */
-Samotraces.Collecte = Samotraces.Collecte || {};

@@ -86,16 +86,16 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_select
 	Samotraces.Widgets.Widget.call(this,divId);
 
 	this.add_class('WidgetTraceDisplayIcons');
-	Samotraces.Objects.WindowState.addObserver(this);
+	Samotraces.Objects.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
 	trace.addObserver(this);
 
 	this.window = time_window;
-	time_window.addObserver(this);
+	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
 
 	this.obsel_selector = obsel_selector;
-	obsel_selector.addObserver(this);
+//	this.window.addEventListener('',this..bind(this));
 
 	this.init_DOM();
 	this.data = this.trace.traceSet;
@@ -151,8 +151,24 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 			.style('display','none');
 
 		// event listeners
-		this.element.addEventListener('wheel',this.build_callback('wheel'));
-		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
+		var widget = this;
+		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
+					widget.window.translate(time_delta);	
+				//	var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
+					// replace element.getSize() by element.clientWidth?
+					widget.svg_gp.attr('transform','translate(0,0)');
+				//	widget.timer.set(new_time);
+					
+				},
+				onMoveCallback: function(offset) {
+					widget.svg_gp.attr('transform','translate('+offset+',0)');
+				},
+			});
+		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
+//		this.element.addEventListener('wheel',this.build_callback('wheel'));
+//		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
 
 	update: function(message,object) {
@@ -161,18 +177,12 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 				this.data = this.trace.traceSet;
 				this.draw();	
 				break;
-			case 'updateTime':
-				time = object;
-				break;
-			case 'updateWindowStartTime':
+/*			case 'updateTimeWindow':
 				this.refresh_x();
-				break;
-			case 'updateWindowEndTime':
-//				this.refresh_x();
-				break;
-			case 'resize':
+				break;*/
+/*			case 'resize':
 				this.refresh_x(); // TODO: REFRESH_Y as well?
-				break;
+				break;*/
 			case 'newObsel':
 				obs = object;
 				this.addObsel(obs);	
@@ -206,7 +216,9 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 	 * @param {Number} time Time for which to seek the corresponding x parameter
 	 */
 	calculate_x: function(time) {
+//console.log(time);
 		var x = (time - this.window.start)*this.element.clientWidth/this.window.get_width();
+//console.log(x);
 		return x;
 	},
 
@@ -215,7 +227,13 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 			.attr('x',this.options.x)
 			.attr('y',this.options.y);
 	},
-
+/*	translate_x: function() {
+		this.time
+		var delta_x = this.timer.time - 
+var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
+		this.current_offset = this.current_offset + offset;
+		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
+	},*/
 
 	draw: function() {
 		this.d3Obsels()
@@ -231,18 +249,6 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 	drawObsel: function(obs) {
 		this.draw();	
 	},
-/*
-	selectObsel: function(obs) {
-		var offset = this.options.x(obs);
-		this.svg_selected_obsel
-			.attr('transform','translate('+offset+',0)')
-			.style('display','block');
-	},
-	unselectObsel: function(obs) {
-		this.svg_selected_obsel
-			.style('display','none');
-	},
-*/
 
 	d3Obsels: function() {
 		return this.svg_gp
@@ -254,68 +260,10 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
 	// TODO: is it relevant to keep this function? Or merged into build_callback?
 	updateEventListener: function() {
 		this.d3Obsels()
-			.on('click',this.build_callback('clickOnObsel'));
+			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
 	},
 
 
-	build_callback: function(event) {
-		// build the callbacks functions once and for all
-		if(this.callbacks === undefined) {
-			// create a closure for the callbacks
-			var mousedown,mouseup,mousemove,wheel;
-			var init_client_x;
-			var widget = this;
-			(function() {
-				mousedown = function(e) {
-				//	console.log('mousedown');
-					init_client_x = e.clientX;
-					widget.element.addEventListener('mousemove',mousemove);
-					widget.element.addEventListener('mouseup',mouseup);
-					widget.element.addEventListener('mouseleave',mouseup);
-					return false;
-				};
-				mouseup = function(e) {
-				//	console.log('mouseup');
-					if(init_client_x !== undefined) {
-						var new_time = widget.window.timer.time - (e.clientX - init_client_x)*widget.window.get_width()/widget.element.clientWidth;
-						// replace element.getSize() by element.clientWidth?
-						widget.window.timer.set(new_time);
-						widget.svg_gp.attr('transform','translate(0,0)');
-						widget.element.removeEventListener('mousemove',mousemove);
-						widget.element.removeEventListener('mouseup',mouseup);
-						widget.element.removeEventListener('mouseleave',mouseup);
-					}
-					return false;
-				};
-				mousemove = function(e) {
-			//		console.log('mousemove');
-					var offset = (e.clientX - init_client_x);
-			//		console.log(offset);
-					widget.svg_gp.attr('transform','translate('+offset+',0)');
-					return false;
-				};
-				wheel = function(e) {
-			//		console.log(d3.event.deltaY);
-					widget.window.set_width(widget.window.width*Math.pow(0.8,-e.deltaY/3));
-					e.preventDefault();
-					return false;
-				};
-				clickOnObsel = function(obs) {
-					widget.obsel_selector.select(obs);
-					return false;
-				};
-			})();
-			// save the functions in the this.callbacks attribute
-			this.callbacks = {
-				mousedown: mousedown,
-				mouseup: mouseup,
-				mousemove: mousemove,
-				wheel: wheel,
-				clickOnObsel: clickOnObsel,
-			};
-		}
-		return this.callbacks[event];
-	}
 };
 
 
