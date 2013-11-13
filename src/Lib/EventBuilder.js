@@ -6,7 +6,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
- * @class EventBuilder class
+ * @class EventBuilder mix-in
  * @description
  * The EventBuilder Object is not a class. However, it is 
  * designed for other classes to inherit of a predefined
@@ -17,22 +17,23 @@ Samotraces.Lib = Samotraces.Lib || {};
  * "EventBuilder class", one must run the following code in 
  * the constructor:
  * <code>
- * Samotraces.Objects.EventBuilder.call(this);
+ * Samotraces.Lib.EventBuilder.call(this);
  * </code>
  *
  * @property {Object} callbacks
  *     Hash matching callbacks to event_types.
+ *
+ * @todo rename to EventHandler?
  */
 Samotraces.Lib.EventBuilder = (function() {
 	/**
 	 * Triggers all the registred callbacks.
-	 * an associated object.
-	 * @memberof Samotraces.Objects.EventBuilder.prototype
+	 * @memberof Samotraces.Lib.EventBuilder.prototype
 	 * @param {String} event_type
 	 *     The type of the triggered event.
 	 * @param {Object} object
-	 *     Object sent with the message to the Observers (see 
-	 *     {@link Samotraces.Objects.EventBuilder#addEventListener}).
+	 *     Object sent with the message to the listeners (see 
+	 *     {@link Samotraces.Lib.EventBuilder#addEventListener}).
 	 */
 	function trigger(event_type,object) {
 		var e = { type: event_type, data: object };
@@ -46,8 +47,8 @@ Samotraces.Lib.EventBuilder = (function() {
 		*/
 	}
 	/**
-	 * Add a callback for the specified event
-	 * @memberof Samotraces.Objects.EventBuilder.prototype
+	 * Adds a callback for the specified event
+	 * @memberof Samotraces.Lib.EventBuilder.prototype
 	 * @param {String} event_type
 	 *     The type of the event to listen to.
 	 * @param {Function} callback

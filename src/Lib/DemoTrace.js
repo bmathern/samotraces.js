@@ -1,11 +1,21 @@
 
-// REQUIRES JQUERY
-
+// Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
-
-/* Classe Trace */
+/**
+ * @class Javascript Trace Object.
+ * @author Benoît Mathern
+ * @constructor
+ * @augments Samotraces.Lib.Observable
+ * @description
+ * Samotraces.Lib.DemoTrace is a Javascript Trace object.
+ * Methods are available to get 
+ * the Obsels from the trace, create new Obsels, etc.
+ *
+ * The trace is initialised empty. Obsels have to be created
+ * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
+ */
 Samotraces.Lib.DemoTrace = function() {
 	// Addint the Observable trait
 	Samotraces.Lib.Observable.call(this);
@@ -19,11 +29,21 @@ Samotraces.Lib.DemoTrace = function() {
 };
 
 Samotraces.Lib.DemoTrace.prototype = {
-
+	/**
+	 * Creates a new obsel in the trace.
+	 * @param {String} type Type of the new obsel
+	 * @param {Number} timeStamp Timestamp of the new obsel
+	 * @param {Object} attributes Additional attributes of the
+	 *     new obsel.
+	 * @todo update documentation by creating (fake) Trace
+	 * object from which each trace object must inherit.
+	 * This way, all traces have the same documentation.
+	 * @todo use KTBS abstract API.
+	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
-		this.traceSet.push(new Samotraces.Objects.Obsel(id,timeStamp,type,attributes));
+		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
 		//this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
 		this.notify('updateTrace',this.traceSet);
 	},

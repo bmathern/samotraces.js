@@ -7,6 +7,8 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 /**
  * @class Observable class
+ * @deprecated This class will be removed and progressively 
+ * replaced with Samotraces.Lib.EventBuilder mix-in.
  * @description
  * The Observable Object is not a class. However, it is 
  * designed for other classes to inherit of a predefined

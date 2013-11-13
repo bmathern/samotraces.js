@@ -11,7 +11,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Objects.Observable
+ * @augments Samotraces.Lib.Observable
  * @description
  * Samotraces.Lib.Ktbs is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
@@ -30,7 +30,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs = function(url) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this);
+	Samotraces.Lib.Observable.call(this);
 	this.url = url;
 	this.bases = [];
 	this.refresh();
@@ -41,9 +41,9 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Objects.Observable
+	 * @augments Samotraces.Lib.Observable
 	 * @description
-	 * Samotraces.Objects.KtbsBase is a Javascript KTBS base
+	 * Samotraces.Lib.KtbsBase is a Javascript KTBS base
 	 * object that is bound to a KTBS. This Object can be seen
 	 * as an API to the KTBS. Methods are available to get the 
 	 * list of traces available in the KTBS base. Access a 
@@ -61,7 +61,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsBase = function(url) {
 		// Addint the Observable trait
-		Samotraces.Objects.Observable.call(this);
+		Samotraces.Lib.Observable.call(this);
 		this.url = url;
 		this.traces = [];
 		this.refresh();
@@ -109,11 +109,11 @@ Samotraces.Lib.Ktbs = function(url) {
 		 * Create a Samotraces.Objects.KtbsBogueTrace Object
 		 * corresponding to the given id.
 		 * @param {String} id Id of the KtbsTrace to seek.
-		 * @returns {Samotraces.Objects.KtbsBogueTrace}
+		 * @returns {Samotraces.Lib.KtbsBogueTrace}
 		 *     KtbsTrace object.
 		 */
 		getKtbsTrace: function(id) {
-			return new Samotraces.Objects.KtbsBogueTrace(this.url+id);
+			return new Samotraces.Lib.KtbsBogueTrace(this.url+id);
 		},
 
 	};
@@ -123,9 +123,9 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Objects.Observable
+	 * @augments Samotraces.Lib.Observable
 	 * @description
-	 * Samotraces.Objects.KtbsTrace is a Javascript Trace object
+	 * Samotraces.Lib.KtbsTrace is a Javascript Trace object
 	 * that is bound to a KTBS trace. This Object can be seen as
 	 * an API to the KTBS trace. Methods are available to get 
 	 * the Obsels from the KTBS trace, create new Obsels, etc.
@@ -146,7 +146,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsTrace = function(url) {
 		// Addint the Observable trait
-		Samotraces.Objects.Observable.call(this);
+		Samotraces.Lib.Observable.call(this);
 		this.url = url;
 		var current_trace = this;
 
@@ -216,7 +216,7 @@ Samotraces.Lib.Ktbs = function(url) {
 					type = el['@type'];
 					timestamp = el['begin'];
 					attributes = el;
-					obsels.push(new Samotraces.Objects.Obsel(id,timestamp,type,attributes));
+					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
 				});
 			this.traceSet = obsels;
 			this.notify('updateTrace',this.traceSet);
@@ -264,10 +264,10 @@ Samotraces.Lib.Ktbs.prototype = {
 		return this.bases;
 	},
 	/**
-	 * Create a Samotraces.Objects.KtbsBase Object
+	 * Create a Samotraces.Lib.KtbsBase Object
 	 * corresponding to the given id.
 	 * @param {String} id Id of the KtbsBase to seek.
-	 * @returns {Samotraces.Objects.KtbsBase}
+	 * @returns {Samotraces.Lib.KtbsBase}
 	 *     KtbsBase object.
 	 */
 	getKtbsBase: function(id) {
