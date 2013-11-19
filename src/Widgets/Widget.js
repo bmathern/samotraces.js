@@ -78,7 +78,7 @@ Samotraces.Widgets.Widget = (function() {
 	 *    {@link Samotraces.Lib.TimeWindow} object that will
 	 *    be edited when the zoom action is produced.
 	 */
-	function addBehaviour(behaviourName,eventTargetElement,opt) {
+	function add_behaviour(behaviourName,eventTargetElement,opt) {
 
 		switch(behaviourName) {
 			case 'changeTimeOnDrag':
@@ -130,7 +130,7 @@ Samotraces.Widgets.Widget = (function() {
 		this.id = id;
 		this.element = document.getElementById(this.id);
 		this.add_class = add_class;
-		this.add_behaviour = addBehaviour;
+		this.add_behaviour = add_behaviour;
 
 		// call method
 		this.add_class('Widget');

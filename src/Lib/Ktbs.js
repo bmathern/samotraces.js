@@ -11,7 +11,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Lib.Observable
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * Samotraces.Lib.Ktbs is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
@@ -30,7 +30,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.url = url;
 	this.bases = [];
 	this.refresh();
@@ -41,7 +41,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Lib.Observable
+	 * @augments Samotraces.Lib.EventHandler
 	 * @description
 	 * Samotraces.Lib.KtbsBase is a Javascript KTBS base
 	 * object that is bound to a KTBS. This Object can be seen
@@ -61,7 +61,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsBase = function(url) {
 		// Addint the Observable trait
-		Samotraces.Lib.Observable.call(this);
+		Samotraces.Lib.EventHandler.call(this);
 		this.url = url;
 		this.traces = [];
 		this.refresh();
@@ -91,7 +91,7 @@ Samotraces.Lib.Ktbs = function(url) {
 			// parse data to get list of bases and check if it has changed...
 			if(this.traces !== traces) {
 				this.traces = traces;
-				this.notify('TracesListChanged',this.traces);
+				this.trigger('TracesListChanged',this.traces);
 			}
 		},
 		/** @todo implement this method */
@@ -123,7 +123,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Lib.Observable
+	 * @mixes Samotraces.Lib.EventHandler
 	 * @description
 	 * Samotraces.Lib.KtbsTrace is a Javascript Trace object
 	 * that is bound to a KTBS trace. This Object can be seen as
@@ -146,7 +146,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsTrace = function(url) {
 		// Addint the Observable trait
-		Samotraces.Lib.Observable.call(this);
+		Samotraces.Lib.EventHandler.call(this);
 		this.url = url;
 		var current_trace = this;
 
@@ -219,7 +219,7 @@ Samotraces.Lib.Ktbs = function(url) {
 					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
 				});
 			this.traceSet = obsels;
-			this.notify('updateTrace',this.traceSet);
+			this.trigger('updateTrace',this.traceSet);
 		},
 
 	};
@@ -249,7 +249,7 @@ Samotraces.Lib.Ktbs.prototype = {
 		// parse data to get list of bases and check if it has changed...
 		if(this.bases !== bases) {
 			this.bases = bases;
-			this.notify('BasesListChanged',this.bases);
+			this.trigger('BasesListChanged',this.bases);
 		}
 	},
 	/** @todo implement this method */

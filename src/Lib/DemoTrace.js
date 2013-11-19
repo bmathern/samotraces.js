@@ -7,8 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Javascript Trace Object.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.Observable
- * @mixes Samotraces.Lib.EventBuilder
+ * @mixes Samotraces.Lib.EventHandler
  * @augments Samotraces.Lib.Trace
  * @description
  * Samotraces.Lib.DemoTrace is a Javascript Trace object.
@@ -20,7 +19,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.DemoTrace = function() {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	var current_trace = this;
 
 	/* Nombre d'obsels dans la trace */
@@ -40,16 +39,16 @@ Samotraces.Lib.DemoTrace.prototype = {
 	 * @todo update documentation by creating (fake) Trace
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
+	 * @fires Samotraces.Lib.Trace#updateTrace
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
 		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
-		//this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
-		this.notify('updateTrace',this.traceSet);
+		this.trigger('updateTrace',this.traceSet);
 	},
-// */	
+
 	updateObsel: function(old_obs,new_obs) {
 		console.log('Method KtbsTrace:updateObsel() not implemented yet...');
 //		this.traceSet.erase(old_obs);

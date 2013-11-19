@@ -8,24 +8,24 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.Basic.TimeForm
+ * @see Samotraces.Widgets.TimeForm
  * @description
- * Samotraces.Widgets.Basic.ReadableTimeForm is a generic
+ * Samotraces.Widgets.ReadableTimeForm is a generic
  * Widget to visualise the current time.
  *
  * The time (in ms from the 01/01/1970) is converted in a
  * human readable format (as opposed to
- * {@link Samotraces.Widgets.Basic.TimeForm} widget
+ * {@link Samotraces.Widgets.TimeForm} widget
  * which display raw time).
  * 
- * This widget observes a Samotraces.Objects.Timer object.
+ * This widget observes a Samotraces.Lib.Timer object.
  * When the timer changes the new time is displayed.
  * This widget also allow to change the time of the timer.
  * 
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.Timer} timer
+ * @param {Samotraces.Lib.Timer} timer
  *     Timer object to observe.
  */
 Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
@@ -35,10 +35,10 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	this.add_class('ReadableTimeForm');
 
 	this.timer = timer;
-	timer.addObserver(this);
+	this.timer.addEventListener('updateTime',this.refresh.bind(this));
 
 	this.init_DOM();
-	this.refresh(this.timer.time);
+	this.refresh({data: this.timer.time});
 };
 
 Samotraces.Widgets.ReadableTimeForm.prototype = {
@@ -117,18 +117,8 @@ Samotraces.Widgets.ReadableTimeForm.prototype = {
 		this.element.appendChild(this.form_element);
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateTime':
-				time = object;
-				this.refresh(time);	
-				break;
-			default:
-				break;
-		}
-	},
-
-	refresh: function(time) {
+	refresh: function(e) {
+		time = e.data
 		var date = new Date();
 		date.setTime(time);
 		this.year_element.value   = date.getFullYear();

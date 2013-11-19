@@ -65,21 +65,11 @@ Samotraces.Widgets.WindowSlider.prototype = {
 	},
 
 	draw: function() {
-//		if(this.time_window.start < this.timer.time && this.timer.time < this.time_window.end) {
-//toto = this.element;
-//console.log(this.element);
-			this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
-		//	this.slider_element.setAttribute();
-			this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
-		//	this.slider_element.setAttribute('style','display: block; width: '+this.width+'px; left: '+this.slider_offset+'px;');
-			this.slider_element.style.display = 'block';
-			this.slider_element.style.width = this.width+'px';
-			this.slider_element.style.left = this.slider_offset+'px';
-
-	//		this.slider_element.setAttribute('display','block');
-//		} else {
-//			this.slider_element.setStyle('display','none');
-//		}
+		this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
+		this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
+		this.slider_element.style.display = 'block';
+		this.slider_element.style.width = this.width+'px';
+		this.slider_element.style.left = this.slider_offset+'px';
 	},
 
 

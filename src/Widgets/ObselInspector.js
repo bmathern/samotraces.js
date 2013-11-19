@@ -32,7 +32,8 @@ Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	this.add_class('WidgetObselInspector');
 
 	this.obsel = obsel_selector;
-	obsel_selector.addObserver(this);
+	this.obsel.addEventListener('obselSelected',this.inspect.bind(this));
+	this.obsel.addEventListener('obselUnselected',this.close.bind(this));
 
 	this.init_DOM();
 };
@@ -53,20 +54,8 @@ Samotraces.Widgets.ObselInspector.prototype = {
 
 		this.close_element.addEventListener('click',this.onCloseAction.bind(this));
 	},
-	update: function(message,object) {
-		switch(message) {
-			case 'obselSelected':
-				obs = object;
-				this.inspect(obs);
-				break;
-			case 'obselUnselected':
-				this.close();
-				break;
-			default:
-				break;
-		}
-	},
-	inspect: function(obs) {
+	inspect: function(event) {
+		var obs = event.data;
 		// clear
 		this.datalist_element.innerHTML = '';
 

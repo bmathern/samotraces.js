@@ -93,7 +93,8 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
-	trace.addObserver(this);
+	this.trace.addEventListener('updateTrace',this.draw.bind(this));
+	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
 	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
@@ -175,43 +176,7 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 //		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateTrace':
-				this.data = this.trace.traceSet;
-				this.draw();	
-				break;
-/*			case 'updateTimeWindow':
-				this.refresh_x();
-				break;*/
-/*			case 'resize':
-				this.refresh_x(); // TODO: REFRESH_Y as well?
-				break;*/
-			case 'newObsel':
-				obs = object;
-				this.addObsel(obs);	
-				break;
-			case 'updateObsel':
-				old_obs = object.old_obs;
-				new_obs = object.new_obs;
-				this.updateObsel(old_obs,new_obs);
-				break;
-			case 'obselSelected':
-				obs = object;
-//				this.selectObsel(obs);
-				break;
-			case 'obselUnselected':
-				obs = object;
-//				this.unselectObsel(obs);
-				break;
-			case 'removeObsel':
-				obs = object;
-				this.removeObsel(obs);	
-				break;
-			default:
-				break;
-		}
-	},
+
 	// TODO: needs to be named following a convention 
 	// to be decided on
 	/**
@@ -239,7 +204,10 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
 	},*/
 
-	draw: function() {
+	draw: function(e) {
+		if(e) {
+			this.data = this.trace.traceSet;
+		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
@@ -256,7 +224,8 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		this.draw();	
 	},
 
-	addObsel: function(obs) {
+	addObsel: function(e) {
+		var obs = e.data;
 //console.log('addObsel '+obs.id);
 //console.log(obs);
 		this.data.push(obs);

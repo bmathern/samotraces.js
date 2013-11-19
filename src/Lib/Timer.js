@@ -18,17 +18,26 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 Samotraces.Lib.Timer = function(time) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.time = time || 0;
 };
-/** @todo this.notify kept for compatibility -> remove */
+
 Samotraces.Lib.Timer.prototype = {
+	/**
+	 * Sets the Timer to the given time.
+	 * @fires Samotraces.Lib.Timer#updateTime
+	 * @param {Number} time New time
+	 */
 	set: function(time) {
 		new_time = Number(time);
 		if(this.time != new_time) {
-			this.time = new_time;
-			this.notify('updateTime',this.time); 
+			this.time = new_time; 
+			/**
+			 * Time change event.
+			 * @event Samotraces.Lib.Timer#updateTime
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "updateTime").
+			 */
 			this.trigger('updateTime',this.time);
 		}
 	}

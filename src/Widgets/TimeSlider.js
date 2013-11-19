@@ -32,7 +32,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	this.timer.addEventListener('updateTime',this.draw.bind(this));
 
 	this.time_window = time_window;
-	time_window.addObserver(this);
+	this.time_window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
 	// update slider style
 	this.slider_offset = 0;
@@ -50,7 +50,6 @@ Samotraces.Widgets.TimeSlider.prototype = {
 		this.element.appendChild(this.slider_element);
 
 		// hand made drag&drop
-//		this.slider_element.addEventListener('mousedown',this.build_callback('mousedown'));
 		var widget = this;
 		this.add_behaviour('changeTimeOnDrag',this.slider_element,{
 				onUpCallback: function(delta_x) {

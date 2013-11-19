@@ -11,9 +11,25 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @see Samotraces.Widgets.Basic.ImportTrace
  * @todo ATTENTION code qui vient d'ailleurs !
  * @description
- * The {Samotraces.Widgets.Basic.ImportTrace} widget is a generic
+ * The {@link Samotraces.Widgets.Basic.ImportTrace} widget is a generic
  * Widget to import a trace from a CSV file.
  * 
+ * This widget currently accept the following format:
+ *
+ * 1. The CSV file can use either ',' or ';' as a value separator
+ * 2. Each line represents an obsel
+ * 3. The first column represents the time when the obsel occurs
+ * 4. The second column represents the type of the obsel
+ * 5. The following columns represent pairs of "attribute" / "value" columns
+ *
+ * The number of columns may vary from line to line.
+ * For example, a CSV file might look like this:
+ * <pre>
+ * 0,click,target,button2
+ * 2,click,target,button1,value,toto
+ * 3,focus,target,submit
+ * 5,click,target,submit
+ * </pre>
  * @todo DESCRIBE THE FORMAT OF THE CSV FILE.
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be

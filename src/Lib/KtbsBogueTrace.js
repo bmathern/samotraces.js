@@ -6,10 +6,12 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 
-/* Classe Trace */
+/**
+ * @augments Samotraces.Lib.Trace
+ */
 Samotraces.Lib.KtbsBogueTrace = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.url = url;
 	var current_trace = this;
 
@@ -20,7 +22,6 @@ Samotraces.Lib.KtbsBogueTrace = function(url) {
 };
 
 Samotraces.Lib.KtbsBogueTrace.prototype = {
-
 	newObsel: function(type,timeStamp,attributes) {
 		var newObselOnSuccess = function(data,textStatus,jqXHR) {
 			var url = jqXHR.getResponseHeader('Location');
@@ -66,6 +67,9 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 				success: this.getNewObselSuccess.bind(this),
 			});
 	},
+	/**
+	 * @fires Samotraces.Lib.Trace#newObsel
+	 */
 	getNewObselSuccess: function(data,textStatus,jqXHR) {
 		// workaround to get the id eventhough the ktbs doesn't return it.
 		var url = jqXHR.getResponseHeader('Content-Location');
@@ -83,7 +87,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 		if(obs !== undefined) {
 			obs.id = obsel_id; 
 			this.traceSet.push(obs);
-			this.notify('newObsel',obs);
+			this.trigger('newObsel',obs);
 		}
 	},
 
@@ -95,6 +99,9 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 				success: this.refreshObselsSuccess.bind(this)
 			});
 	},
+	/**
+	 * @fires Samotraces.Lib.Trace#updateTrace
+	 */
 	refreshObselsSuccess: function(data) {
 			var raw_json = Samotraces.Tools.xmlToJson(data);
 			var obsels = [];
@@ -106,7 +113,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 					}
 				},this);
 			this.traceSet = obsels;
-			this.notify('updateTrace',this.traceSet);
+			this.trigger('updateTrace',this.traceSet);
 	},
 
 	rdf2obs: function(el) {

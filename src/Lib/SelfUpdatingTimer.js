@@ -4,7 +4,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 Samotraces.Lib.SelfUpdatingTimer = function(init_time,period,update_function) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.time = init_time || 0;
 	period = period || 2000;
 	update_function = update_function || function() {return Date.now();};
@@ -21,7 +21,7 @@ Samotraces.Lib.SelfUpdatingTimer.prototype = {
 		new_time = Number(time);
 		if(this.time != new_time) {
 			this.time = new_time;
-			this.notify('updateTime',this.time);
+			this.trigger('updateTime',this.time);
 		}
 	}
 };

@@ -11,9 +11,9 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @requires ktbs4js (see <a href="https://github.com/oaubert/ktbs4js">on github</a>)
  * @constructor
- * @augments Samotraces.Objects.Observable
+ * @augments Samotraces.Lib.EventHandler
  * @description
- * Samotraces.Objects.Ktbs4jsTrace is a Javascript Trace object
+ * Samotraces.Lib.Ktbs4jsTrace is a Javascript Trace object
  * that is bound to a KTBS trace. This Object wraps the 
  * ktbs4js API to the KTBS to make it compatible with the
  * Samotraces framework.
@@ -22,7 +22,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs4jsTrace = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 
 	this.trace = tracemanager.init_trace('trace1',{url: url, syncmode: 'sync', format: 'turtle'});
 	this.traceSet = this.trace.obsels;
@@ -33,7 +33,7 @@ Samotraces.Lib.Ktbs4jsTrace = function(url) {
 Samotraces.Lib.Ktbs4jsTrace.prototype = {
 	onUpdate: function() {
 		this.traceSet = this.trace.obsels;
-		this.notify('updateTrace',this.obsels);
+		this.trigger('updateTrace',this.obsels);
 	},
 	newObsel: function(type,timeStamp,attributes) {
 		this.trace.trace(type,attributes,timeStamp);

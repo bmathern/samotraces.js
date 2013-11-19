@@ -7,7 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Object that stores the current time window
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * The {@link Samotraces.Lib.TimeWindow} object is a Javascript Object
  * that stores the current time window.
@@ -16,6 +16,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * {@link Samotraces.Lib.TimeWindow#event:updateTimeWindow|updateTimeWindow}
  * event.
  * A {@link Samotraces.Lib.TimeWindow|TimeWindow} can be defined in two ways:
+ *
  * 1.  by defining a lower and upper bound
  * 2.  by defining a timer and a width.
  *
@@ -30,12 +31,10 @@ Samotraces.Lib = Samotraces.Lib || {};
  *     is used to define the middle of the current time window.
  * @param {Number} opt.width Width of the time window.
  *
- * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.TimeWindow = function(opt) {
 	// Adding the Observable trait
-	Samotraces.Lib.Observable.call(this); 
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
 		this.start = opt.start;
 		this.end = opt.end;
@@ -60,7 +59,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 	/** 
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_start: function(time) {
 		if(this.start != time) {
@@ -72,20 +70,17 @@ Samotraces.Lib.TimeWindow.prototype = {
 			 * @type {object}
 			 * @property {String} type - The type of the event (= "updateTimeWindow").
 			 */
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_end: function(time) {
 		if(this.start != time) {
 			this.end = time;
 			this.__calculate_width();
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
@@ -95,7 +90,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_width: function(width,center) {
 		if( center === undefined) {
@@ -104,12 +98,10 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.start = center - width/2;
 		this.end = center + width/2;
 		this.width = width;
-		this.notify('updateTimeWindow');
 		this.trigger('updateTimeWindow');
 	},
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	translate: function(delta) {
 		if(this.timer) {
@@ -117,7 +109,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 		} else {
 			this.start = this.start + delta;
 			this.end = this.end + delta;
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},

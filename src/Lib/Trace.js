@@ -8,7 +8,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @author Benoît Mathern
  * @constructor
  * @abstract
- * @augments Samotraces.Lib.Observable
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * Samotraces.Lib.DemoTrace is a Javascript Trace object.
  * Methods are available to get 
@@ -19,7 +19,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Trace = function() {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	var current_trace = this;
 
 	/* Nombre d'obsels dans la trace */
@@ -39,10 +39,26 @@ Samotraces.Lib.Trace.prototype = {
 	 * @todo update documentation by creating (fake) Trace
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
+	 * @fires Samotraces.Lib.Trace#newObsel
+	 * @fires Samotraces.Lib.Trace#updateTrace
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		console.log('Method Trace:newObsel() is abstract...');
+		/**
+		 * New obsel event.
+		 * @event Samotraces.Lib.Trace#newObsel
+		 * @type {object}
+		 * @property {String} type - The type of the event (= "newObsel").
+		 * @property {Samotraces.Lib.Obsel} data - The new obsel.
+		 */
+		/**
+		 * Trace change event.
+		 * @event Samotraces.Lib.Trace#updateTrace
+		 * @type {object}
+		 * @property {String} type - The type of the event (= "updateTrace").
+		 * @property {Array} data - Updated array of obsels of the trace.
+		 */
 	},
 	
 	getObsel: function(id) {

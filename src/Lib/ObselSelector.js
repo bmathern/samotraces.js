@@ -7,7 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Object that stores the currently selected obsel
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * The {@link Samotraces.Lib.ObselSelector|ObselSelector} object
  * is a Javascript object that stores the currently selected obsel.
@@ -36,12 +36,10 @@ Samotraces.Lib = Samotraces.Lib || {};
  * and no 
  * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
  * event.
- * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.ObselSelector = function() {
 	// Adding the Observable trait
-	Samotraces.Lib.Observable.call(this);
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.obsel = undefined;
 };
 
@@ -58,7 +56,6 @@ Samotraces.Lib.ObselSelector.prototype = {
      *     {@link Samotraces.Lib.Obsel|Obsel} object that is 
 	 *     selected.
 	 * @fires Samotraces.Lib.ObselSelector#obselSelected
-	 * @todo this.notify kept for compatibility -> remove
      */
 	select: function(obsel) {
 		this.obsel = obsel;
@@ -69,7 +66,6 @@ Samotraces.Lib.ObselSelector.prototype = {
 		 * @property {String} type - The type of the event (= "obselSelected").
 		 * @property {Samotraces.Lib.Obsel} data - The selected obsel.
 		 */
-		this.notify('obselSelected',obsel);
 		this.trigger('obselSelected',obsel);
 	},
 	/**
@@ -77,7 +73,6 @@ Samotraces.Lib.ObselSelector.prototype = {
      * This method is typically called from widgets that can
      * visualise an obsel.
 	 * @fires Samotraces.Lib.ObselSelector#obselUnselected
-	 * @todo this.notify kept for compatibility -> remove
      */
 	unselect: function() {
 		this.obsel = undefined;
@@ -87,8 +82,7 @@ Samotraces.Lib.ObselSelector.prototype = {
 		 * @type {object}
 		 * @property {String} type - The type of the event (= "obselUnselected").
 		 */
-		this.notify('obselUnselected');
-		this.trigger('obselUnselected',obsel);
+		this.trigger('obselUnselected');
 	}
 };
 

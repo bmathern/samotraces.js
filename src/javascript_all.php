@@ -12,8 +12,7 @@ do {
 } 
 
 
-echo(file_get_contents('Lib/ObserverObservable.js'));
-echo(file_get_contents('Lib/EventBuilder.js'));
+echo(file_get_contents('Lib/EventHandler.js'));
 echo(file_get_contents('Lib/Collecteur.js'));
 echo(file_get_contents('Lib/addBehaviour.js'));
 echo(file_get_contents('Lib/Obsel.js'));

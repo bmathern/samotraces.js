@@ -8,24 +8,22 @@ Samotraces.Lib = Samotraces.Lib || {};
 /**
  * @mixin
  * @description
- * The EventBuilder Object is not a class. However, it is 
+ * The EventHandler Object is not a class. However, it is 
  * designed for other classes to inherit of a predefined
  * Observable behaviour. For this reason, this function is
  * documented as a Class. 
  * 
  * In order to use create a class that "inherits" from the 
- * "EventBuilder class", one must run the following code in 
+ * "EventHandler class", one must run the following code in 
  * the constructor:
  * <code>
- * Samotraces.Lib.EventBuilder.call(this);
+ * Samotraces.Lib.EventHandler.call(this);
  * </code>
  *
  * @property {Object} callbacks
  *     Hash matching callbacks to event_types.
- *
- * @todo rename to EventHandler?
  */
-Samotraces.Lib.EventBuilder = (function() {
+Samotraces.Lib.EventHandler = (function() {
 	/**
 	 * Triggers all the registred callbacks.
 	 * @memberof Samotraces.Lib.EventBuilder.prototype
@@ -61,6 +59,10 @@ Samotraces.Lib.EventBuilder = (function() {
 	 *     event.data: optional data that is transmitted with the event
 	 */
 	function addEventListener(event_type,callback) {
+		if({}.toString.call(callback) !== '[object Function]') {
+			console.log(callback);
+			throw "Callback for event "+event_type+" is not a function";
+		}
 		this.callbacks[event_type] = this.callbacks[event_type] || [];
 		this.callbacks[event_type].push(callback);
 	}

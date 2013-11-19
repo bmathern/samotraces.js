@@ -47,16 +47,17 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 //	time_window.addObserver(this);
 	this.window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
-	this.init_DOM();
-	// update slider's position
-	this.draw();
-
 	// trying to guess if time_window is related to a Date() object
 	if(this.window.start > 1000000000) { // 1o^9 > 11 Jan 1970 if a Date object
 		this.is_javascript_date = is_javascript_date || true;
 	} else {
 		this.is_javascript_date = is_javascript_date || false;
 	}
+
+	this.init_DOM();
+	// update slider's position
+	this.draw();
+
 };
 
 Samotraces.Widgets.WindowScale.prototype = {
