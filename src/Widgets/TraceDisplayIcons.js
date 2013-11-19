@@ -2,33 +2,37 @@
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
 
 /**
  * @class Generic Widget for visualising traces with images.
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
- * Samotraces.Widgets.d3Basic.TraceDisplayIcons is a generic
+ * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+ * is a generic
  * Widget to visualise traces with images. This widget uses 
  * d3.js to display traces as images in a SVG image.
  * The default settings are set up to visualise 16x16 pixels
  * icons. If no url is defined (see options), a questionmark 
  * icon will be displayed by default for each obsel.
  *
+ * Note that clicking on an obsel will result in this obsel
+ * being selected in the 
+ * {@link Samotraces.Lib.ObselSelector|ObselSelector}.
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Trace}	trace
+ * @param {Samotraces.Lib.Trace}	trace
  *     Trace object to display
- * @param {Samotraces.Objects.ObselSelector} obsel_selector
+ * @param {Samotraces.Lib.ObselSelector} obsel_selector
  *     ObselSelector object that will be updated when
  *     clicking on one Obsel
- * @param time_window
- *     TimeWindowCenteredOnTime object
-
+ * @param {Samotraces.Lib.TimeWindow} time_window
+ *     TimeWindow object that defines the time frame
+ *     being currently displayed.
+ *
  * @param {Object} options
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
@@ -43,7 +47,7 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
  *     the x position or y position of an icon. This 
  *     makes it easy to define various types of behaviours.
  *     Relevant methods to use are:
- *     link Samotraces.Widgets.d3Basic.TraceDisplayIcons.calculate_x}
+ *     link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
  * @param {Number|Function}	options.x		
  *     X coordinates of the top-left corner of the 
  *     image (default: <code>function(o) {
@@ -80,7 +84,7 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
  * };
  * </code>
  */
-Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
+Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
@@ -123,7 +127,7 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_select
 	this.draw();
 };
 
-Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
+Samotraces.Widgets.TraceDisplayIcons.prototype = {
 	init_DOM: function() {
 		var div_elmt = d3.select('#'+this.id);
 		this.svg = div_elmt.append('svg');
@@ -243,8 +247,10 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
-			.attr('xlink:href',this.options.url);
-		this.updateEventListener();
+			.attr('xlink:href',this.options.url)
+			// why not direcly here !?
+			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+//		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
 		this.draw();	

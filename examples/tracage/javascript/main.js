@@ -14,18 +14,18 @@ function init() {
 	// Create a Trace Object (gets the URL of the KTBS trace
 	// from the form.
 	var url_trace 	= 'http://127.0.0.1/ktbs/base-analyste-test/t01/';
-	var trace 			= new Σ.Objects.KtbsBogueTrace(url_trace);
+	var trace 			= new Σ.Lib.KtbsBogueTrace(url_trace);
 
 	// currently selected obsel
-	var current_obsel	= new Σ.Objects.ObselSelector();
+	var current_obsel	= new Σ.Lib.ObselSelector();
 	
 	// timer observable (describes current visualisation time)
-	var timer 			= new Σ.Objects.Timer(Date.now());
-//	var timer 			= new Σ.Objects.SelfUpdatingTimer();
+	var timer 			= new Σ.Lib.Timer(Date.now());
+//	var timer 			= new Σ.Lib.SelfUpdatingTimer();
 
 	var hour = 3600*1000;
 	// time window of the second set of widgets (small time window)
-	var tw_hour		= new Σ.Objects.TimeWindowCenteredOnTime(timer,hour);
+	var tw_hour		= new Σ.Lib.TimeWindow({timer:timer,width:hour});
 
 
 	/*
@@ -65,16 +65,16 @@ function init() {
 
 	// Widgets linked to the wide time window
 	// Trace visualisation Widget
-	new Σ.Widgets.d3Basic.TraceDisplayIcons('trace',trace,current_obsel,tw_hour,visu_options);
+	new Σ.Widgets.TraceDisplayIcons('trace',trace,current_obsel,tw_hour,visu_options);
 	// Scale
-	new Σ.Widgets.d3Basic.WindowScale('scale',tw_hour);
+	new Σ.Widgets.WindowScale('scale',tw_hour);
 
 
 	// Misc. widgets
 	// Widget that displays a time form
-	new Σ.Widgets.Basic.ReadableTimeForm('time_form',timer);
+	new Σ.Widgets.ReadableTimeForm('time_form',timer);
 	// Obsel inspector
-	new Σ.Widgets.Basic.ObselInspector('obselinspector',current_obsel);
+	new Σ.Widgets.ObselInspector('obselinspector',current_obsel);
 
 
 	/*
@@ -117,7 +117,7 @@ function init() {
 
 	// function that init the event listeners in the iframe
 	var init_iframe = function() {
-		var collecteur = new Samotraces.Collecte.Collecteur();
+		var collecteur = new Samotraces.Lib.Collecteur();
 		collecteur.addIFrameEspion('click,change','input,a,div,img,select',event_tracer,trace,'iframe');
 		collecteur.start();
 	};

@@ -10,16 +10,18 @@
 		<div id="my-widget"></div>
 		<script type="text/javascript">
 		function init() {
-			// Logical objects
+			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			// Widgets
-			new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 
+			// Add obsels to the trace
 			trace.newObsel('click',1);
 			trace.newObsel('click',5);
 			trace.newObsel('click',12);
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 		}
 
 // calling the init function when the DOM has been loaded

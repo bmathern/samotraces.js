@@ -9,32 +9,86 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @constructor
  * @augments Samotraces.Lib.EventBuilder
  * @description
- * Samotraces.Lib.ObselSelector is a Javascript object that
- * stores the currently selected obsel.
+ * The {@link Samotraces.Lib.ObselSelector|ObselSelector} object
+ * is a Javascript object that stores the currently selected obsel.
  * This Object stores an obsel that is selected and informs 
- * widgets or other objects when the selected object changes
- * or if the obsel has been unselected.
+ * widgets or other objects (via the 
+ * {@link Samotraces.Lib.ObselSelector#event:obselSelected|obselSelected}
+ * and the 
+ * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
+ * events) when the selected object changes
+ * or if the obsel has been unselected. When first instanciated,
+ * no obsel is selected.
+ *
+ * In order to select an obsel, the 
+ * {@link Samotraces.Lib.ObselSelector#select|ObselSelector#select()} 
+ * method has to be called.
+ * Similarly, in order to unselect an obsel, the 
+ * {@link Samotraces.Lib.ObselSelector#unselect|ObselSelector#unselect()} 
+ * method has to be called.
+ * 
+ * Note: selecting a new obsel is equivalent to unselecting 
+ * the current obsel and selecting the new obsel, except
+ * that the widget listening to the 
+ * {@link Samotraces.Lib.ObselSelector} events will only 
+ * receive a
+ * {@link Samotraces.Lib.ObselSelector#event:obselSelected|obselSelected}, 
+ * and no 
+ * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
+ * event.
+ * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.ObselSelector = function() {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventBuilder.call(this);
 	this.obsel = undefined;
 };
 
 Samotraces.Lib.ObselSelector.prototype = {
+	/**
+     * Method to call to select an obsel.
+     * This method is typically called from widgets that can
+     * visualise a trace. For instance, clicking on an obsel
+     * displayed with the 
+     * {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
+     * widget, will call this method to select the obsel that
+     * had been the target of the click.
+     * @param {Samotraces.Lib.Obsel} obsel
+     *     {@link Samotraces.Lib.Obsel|Obsel} object that is 
+	 *     selected.
+	 * @fires Samotraces.Lib.ObselSelector#obselSelected
+	 * @todo this.notify kept for compatibility -> remove
+     */
 	select: function(obsel) {
 		this.obsel = obsel;
+		/**
+		 * Obsel selected event.
+		 * @event Samotraces.Lib.ObselSelector#obselSelected
+		 * @type {object}
+		 * @property {String} type - The type of the event (= "obselSelected").
+		 * @property {Samotraces.Lib.Obsel} data - The selected obsel.
+		 */
 		this.notify('obselSelected',obsel);
+		this.trigger('obselSelected',obsel);
 	},
+	/**
+     * Method to call to unselect an obsel.
+     * This method is typically called from widgets that can
+     * visualise an obsel.
+	 * @fires Samotraces.Lib.ObselSelector#obselUnselected
+	 * @todo this.notify kept for compatibility -> remove
+     */
 	unselect: function() {
 		this.obsel = undefined;
 		/**
 		 * Obsel unselected event.
-		 * @event Samotraces.Objects.CurrentObsel#obselUnselected
+		 * @event Samotraces.Lib.ObselSelector#obselUnselected
 		 * @type {object}
-		 * @property {String} type - Type of the event.
+		 * @property {String} type - The type of the event (= "obselUnselected").
 		 */
 		this.notify('obselUnselected');
+		this.trigger('obselUnselected',obsel);
 	}
 };
 

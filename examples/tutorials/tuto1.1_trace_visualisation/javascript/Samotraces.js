@@ -69,7 +69,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
- * @class EventBuilder mix-in
+ * @mixin
  * @description
  * The EventBuilder Object is not a class. However, it is 
  * designed for other classes to inherit of a predefined
@@ -326,7 +326,7 @@ Samotraces.Lib.ObselSelector.prototype = {
 		this.obsel = undefined;
 		/**
 		 * Obsel unselected event.
-		 * @event Samotraces.Objects.CurrentObsel#obselUnselected
+		 * @event Samotraces.Lib.ObselSelector#obselUnselected
 		 * @type {object}
 		 * @property {String} type - Type of the event.
 		 */
@@ -339,8 +339,21 @@ Samotraces.Lib.ObselSelector.prototype = {
 var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
-
-/* Classe Trace */
+/**
+ * @class Javascript Trace Object.
+ * @author Benoît Mathern
+ * @constructor
+ * @augments Samotraces.Lib.Observable
+ * @mixes Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.Trace
+ * @description
+ * Samotraces.Lib.DemoTrace is a Javascript Trace object.
+ * Methods are available to get 
+ * the Obsels from the trace, create new Obsels, etc.
+ *
+ * The trace is initialised empty. Obsels have to be created
+ * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
+ */
 Samotraces.Lib.DemoTrace = function() {
 	// Addint the Observable trait
 	Samotraces.Lib.Observable.call(this);
@@ -354,7 +367,17 @@ Samotraces.Lib.DemoTrace = function() {
 };
 
 Samotraces.Lib.DemoTrace.prototype = {
-
+	/**
+	 * Creates a new obsel in the trace.
+	 * @param {String} type Type of the new obsel
+	 * @param {Number} timeStamp Timestamp of the new obsel
+	 * @param {Object} attributes Additional attributes of the
+	 *     new obsel.
+	 * @todo update documentation by creating (fake) Trace
+	 * object from which each trace object must inherit.
+	 * This way, all traces have the same documentation.
+	 * @todo use KTBS abstract API.
+	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
@@ -583,7 +606,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Objects.Observable
+ * @augments Samotraces.Lib.Observable
  * @description
  * Samotraces.Lib.Ktbs is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
@@ -602,7 +625,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs = function(url) {
 	// Addint the Observable trait
-	Samotraces.Objects.Observable.call(this);
+	Samotraces.Lib.Observable.call(this);
 	this.url = url;
 	this.bases = [];
 	this.refresh();
@@ -613,9 +636,9 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Objects.Observable
+	 * @augments Samotraces.Lib.Observable
 	 * @description
-	 * Samotraces.Objects.KtbsBase is a Javascript KTBS base
+	 * Samotraces.Lib.KtbsBase is a Javascript KTBS base
 	 * object that is bound to a KTBS. This Object can be seen
 	 * as an API to the KTBS. Methods are available to get the 
 	 * list of traces available in the KTBS base. Access a 
@@ -633,7 +656,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsBase = function(url) {
 		// Addint the Observable trait
-		Samotraces.Objects.Observable.call(this);
+		Samotraces.Lib.Observable.call(this);
 		this.url = url;
 		this.traces = [];
 		this.refresh();
@@ -681,11 +704,11 @@ Samotraces.Lib.Ktbs = function(url) {
 		 * Create a Samotraces.Objects.KtbsBogueTrace Object
 		 * corresponding to the given id.
 		 * @param {String} id Id of the KtbsTrace to seek.
-		 * @returns {Samotraces.Objects.KtbsBogueTrace}
+		 * @returns {Samotraces.Lib.KtbsBogueTrace}
 		 *     KtbsTrace object.
 		 */
 		getKtbsTrace: function(id) {
-			return new Samotraces.Objects.KtbsBogueTrace(this.url+id);
+			return new Samotraces.Lib.KtbsBogueTrace(this.url+id);
 		},
 
 	};
@@ -695,9 +718,9 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Objects.Observable
+	 * @augments Samotraces.Lib.Observable
 	 * @description
-	 * Samotraces.Objects.KtbsTrace is a Javascript Trace object
+	 * Samotraces.Lib.KtbsTrace is a Javascript Trace object
 	 * that is bound to a KTBS trace. This Object can be seen as
 	 * an API to the KTBS trace. Methods are available to get 
 	 * the Obsels from the KTBS trace, create new Obsels, etc.
@@ -718,7 +741,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsTrace = function(url) {
 		// Addint the Observable trait
-		Samotraces.Objects.Observable.call(this);
+		Samotraces.Lib.Observable.call(this);
 		this.url = url;
 		var current_trace = this;
 
@@ -788,7 +811,7 @@ Samotraces.Lib.Ktbs = function(url) {
 					type = el['@type'];
 					timestamp = el['begin'];
 					attributes = el;
-					obsels.push(new Samotraces.Objects.Obsel(id,timestamp,type,attributes));
+					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
 				});
 			this.traceSet = obsels;
 			this.notify('updateTrace',this.traceSet);
@@ -836,10 +859,10 @@ Samotraces.Lib.Ktbs.prototype = {
 		return this.bases;
 	},
 	/**
-	 * Create a Samotraces.Objects.KtbsBase Object
+	 * Create a Samotraces.Lib.KtbsBase Object
 	 * corresponding to the given id.
 	 * @param {String} id Id of the KtbsBase to seek.
-	 * @returns {Samotraces.Objects.KtbsBase}
+	 * @returns {Samotraces.Lib.KtbsBase}
 	 *     KtbsBase object.
 	 */
 	getKtbsBase: function(id) {
@@ -961,7 +984,7 @@ Samotraces.Lib.TimeWindow = function(opt) {
 		this.timer = opt.timer;
 		this.timer.addEventListener('updateTime',this.updateTime.bind(this));
 	} else {
-		throw('Samotraces.Objects.TimeWindow error. Arguments could not be parsed.');
+		throw('Samotraces.Lib.TimeWindow error. Arguments could not be parsed.');
 	}
 };
 
@@ -1109,60 +1132,231 @@ Samotraces.Tools.xmlToJson = function(xml) {
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
-
 /**
- * @class Widget class
+ * @class Generic Widget for importing a trace from a CSV file.
+ * @author Benoît Mathern
+ * @constructor
+ * @augments Samotraces.Widgets.Widget
+ * @see Samotraces.Widgets.Basic.ImportTrace
+ * @todo ATTENTION code qui vient d'ailleurs !
  * @description
- * All widgets should inherit from this Samotraces.Widgets.Widget.
+ * Samotraces.Widgets.Basic.ImportTrace is a generic
+ * Widget to import a trace from a CSV file.
  * 
- * In order to use create a widget that inherits from the 
- * Widget class, one mush include the following code in 
- * the constructor of their widget.
- * <code>
- * </code>
- *
- * @property {String} id Id of the HTML element the
- * Widget is attached to.
- * @property {HTMLElement} element HTML element the
- * Widget is attached to.
+ * @param {String}	html_id
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Lib.Trace} trace
+ *     Trace object in which the obsels will be imported.
  */
-Samotraces.Widgets.Widget = (function() {
-	/**
-	 * Adds the given class to the HTML element to which
-	 * this Widget is attached to.
-	 * @memberof Samotraces.Widgets.Widget.prototype
-	 * @public
-	 * @method
-	 * @param {String} class_name Name of the class to add
-	 */
-	function add_class(class_name) {
-		this.element.className += ' '+class_name;
-	}
-	return function(id) {
-		// DOCUMENTED ABOVE
-		this.id = id;
-		this.element = document.getElementById(this.id);
-		this.add_class = add_class;
+Samotraces.Widgets.ImportTrace = function(html_id,trace) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,html_id);
 
-		// call method
-		this.add_class('Widget');
-		return this;
-	};
-})();
+	this.trace = trace;
+
+	this.init_DOM();
+};
+
+Samotraces.Widgets.ImportTrace.prototype = {
+	init_DOM: function() {
+
+		var p_element = document.createElement('p');
+
+		var text_node = document.createTextNode('Import a trace: ');
+		p_element.appendChild(text_node);
+
+		this.input_element = document.createElement('input');
+		this.input_element.setAttribute('type','file');
+		this.input_element.setAttribute('name','csv-file[]');
+		this.input_element.setAttribute('multiple','true');
+//		this.input_element.setAttribute('size',15);
+//		this.input_element.setAttribute('value',this.timer.time);
+		p_element.appendChild(this.input_element);
+
+//		var submit_element = document.createElement('input');
+//		submit_element.setAttribute('type','submit');
+//		submit_element.setAttribute('value','Import');
+//		p_element.appendChild(submit_element);
+
+		this.form_element = document.createElement('form');
+		this.input_element.addEventListener('change', this.on_change.bind(this));
+
+		this.form_element.appendChild(p_element);
+		this.element.appendChild(this.form_element);
+
+		var button_el = document.createElement('p');
+		button_el.innerHTML = "toggle console";
+		button_el.addEventListener('click',this.on_toggle.bind(this));
+		this.element.appendChild(button_el);
+
+		this.display_element = document.createElement('div');
+		this.display_element.style.display = 'none';
+		this.element.appendChild(this.display_element);
+
+	},
+
+	on_change: function(e) {
+		files = e.target.files;
+		var title_el,content_el;
+		for( var i=0, file; file = files[i]; i++) {
+			title_el = document.createElement('h2');
+			title_el.appendChild(document.createTextNode(file.name));
+			this.display_element.appendChild(title_el);
+			content_el = document.createElement('pre');
+			var reader = new FileReader();
+			reader.onload = (function(el,parser,trace) {
+				return function(e) {
+					parser(e.target.result,trace);
+					el.appendChild(document.createTextNode(e.target.result));
+				};
+			})(content_el,this.parse_csv,this.trace);
+/*			reader.onprogress = function(e) {
+				console.log(e);
+			};*/
+			reader.readAsText(file);
+			this.display_element.appendChild(content_el);		
+		}
+	},
+
+	on_toggle: function(e) {
+		if(this.display_element.style.display == 'none') {
+			this.display_element.style.display = 'block';
+		} else {
+			this.display_element.style.display = 'none';
+		}
+		return false;
+	},
+	parse_csv: function(text,trace) {
+		
+//function CSVToArray() from 
+// http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+
+		// This will parse a delimited string into an array of
+		// arrays. The default delimiter is the comma, but this
+		// can be overriden in the second argument.
+		function CSVToArray( strData, strDelimiter ){
+			// Check to see if the delimiter is defined. If not,
+			// then default to comma.
+			strDelimiter = (strDelimiter || ",");
+
+			// Create a regular expression to parse the CSV values.
+			var objPattern = new RegExp(
+				(
+					// Delimiters.
+					"(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+					// Quoted fields.
+					"(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+					// Standard fields.
+					"([^\"\\" + strDelimiter + "\\r\\n]*))"
+				),
+				"gi"
+				);
+
+
+			// Create an array to hold our data. Give the array
+			// a default empty first row.
+			var arrData = [[]];
+
+			// Create an array to hold our individual pattern
+			// matching groups.
+			var arrMatches = null;
+
+
+			// Keep looping over the regular expression matches
+			// until we can no longer find a match.
+			while (arrMatches = objPattern.exec( strData )){
+
+				// Get the delimiter that was found.
+				var strMatchedDelimiter = arrMatches[ 1 ];
+
+				// Check to see if the given delimiter has a length
+				// (is not the start of string) and if it matches
+				// field delimiter. If id does not, then we know
+				// that this delimiter is a row delimiter.
+				if (
+					strMatchedDelimiter.length &&
+					(strMatchedDelimiter != strDelimiter)
+					){
+
+					// Since we have reached a new row of data,
+					// add an empty row to our data array.
+					arrData.push( [] );
+
+				}
+
+
+				// Now that we have our delimiter out of the way,
+				// let's check to see which kind of value we
+				// captured (quoted or unquoted).
+				if (arrMatches[ 2 ]){
+
+					// We found a quoted value. When we capture
+					// this value, unescape any double quotes.
+					var strMatchedValue = arrMatches[ 2 ].replace(
+						new RegExp( "\"\"", "g" ),
+						"\""
+						);
+
+				} else {
+
+					// We found a non-quoted value.
+					var strMatchedValue = arrMatches[ 3 ];
+
+				}
+
+
+				// Now that we have our value string, let's add
+				// it to the data array.
+				arrData[ arrData.length - 1 ].push( strMatchedValue );
+			}
+
+			// Return the parsed data.
+			return( arrData );
+		}
+		
+	//	console.log('fichier chargé');
+		// guessing the separator
+		var sep = text[text.search('[,;\t]')];
+		var csv = CSVToArray(text,sep);
+	//	console.log('fichier parsé');
+		csv.map(function(line) {
+			var time = line.shift();
+			var type = line.shift();
+			var attributes = {};
+			for( var i=0; i < (line.length-1)/2 ; i++) {
+				if(line[2*i] != "") {
+					attributes[line[2*i]] = line[2*i+1];
+				}
+			}
+		//	console.log('new obsel');
+			trace.newObsel(type,time,attributes);
+		});		
+/*
+		var output = "";
+		csv.forEach(function(line) {
+			output += line.join(";")+" ";
+		});
+		return output;
+*/
+	}
+
+};
 
 
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising an Obsel.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
- * Samotraces.Widgets.Basic.ObselInspector is a generic
+ * Samotraces.Widgets.ObselInspector is a generic
  * Widget to visualise Obsels.
  * 
  * This widget observes a Samotraces.Objects.ObselSelector
@@ -1174,10 +1368,10 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.ObselSelector} obsel_selector
+ * @param {Samotraces.Lib.ObselSelector} obsel_selector
  *     ObselSelector object to observe.
  */
-Samotraces.Widgets.Basic.ObselInspector = function(html_id,obsel_selector) {
+Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 	this.add_class('WidgetObselInspector');
@@ -1188,7 +1382,7 @@ Samotraces.Widgets.Basic.ObselInspector = function(html_id,obsel_selector) {
 	this.init_DOM();
 };
 
-Samotraces.Widgets.Basic.ObselInspector.prototype = {
+Samotraces.Widgets.ObselInspector.prototype = {
 	init_DOM: function() {
 
 		this.close_element = document.createElement('span');
@@ -1257,13 +1451,12 @@ Samotraces.Widgets.Basic.ObselInspector.prototype = {
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising the current time.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @see Samotraces.Widgets.Basic.TimeForm
  * @description
  * Samotraces.Widgets.Basic.ReadableTimeForm is a generic
@@ -1284,7 +1477,7 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param {Samotraces.Objects.Timer} timer
  *     Timer object to observe.
  */
-Samotraces.Widgets.Basic.ReadableTimeForm = function(html_id,timer) {
+Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -1297,7 +1490,7 @@ Samotraces.Widgets.Basic.ReadableTimeForm = function(html_id,timer) {
 	this.refresh(this.timer.time);
 };
 
-Samotraces.Widgets.Basic.ReadableTimeForm.prototype = {
+Samotraces.Widgets.ReadableTimeForm.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');
@@ -1428,13 +1621,12 @@ Samotraces.Widgets.Basic.ReadableTimeForm.prototype = {
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising the current time.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @see Samotraces.Widgets.Basic.ReadableTimeForm
  * @description
  * Samotraces.Widgets.Basic.TimeForm is a generic
@@ -1455,7 +1647,7 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param {Samotraces.Objects.Timer} timer
  *     Timer object to observe.
  */
-Samotraces.Widgets.Basic.TimeForm = function(html_id,timer) {
+Samotraces.Widgets.TimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -1466,7 +1658,7 @@ Samotraces.Widgets.Basic.TimeForm = function(html_id,timer) {
 	this.refresh(this.timer.time);
 };
 
-Samotraces.Widgets.Basic.TimeForm.prototype = {
+Samotraces.Widgets.TimeForm.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');
@@ -1531,13 +1723,12 @@ Samotraces.Widgets.Basic.TimeForm.prototype = {
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising the current time.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
  * Samotraces.Widgets.d3Basic.TimeSlider is a generic
  * Widget to visualise the current time in a temporal window
@@ -1551,7 +1742,7 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param timer
  *     Timeer object -> containing the current time
  */
-Samotraces.Widgets.Basic.TimeSlider = function(html_id,time_window,timer) {
+Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -1573,7 +1764,7 @@ Samotraces.Widgets.Basic.TimeSlider = function(html_id,time_window,timer) {
 
 };
 
-Samotraces.Widgets.Basic.TimeSlider.prototype = {
+Samotraces.Widgets.TimeSlider.prototype = {
 	init_DOM: function() {
 		// create the slider
 		this.slider_element = document.createElement('div');
@@ -1606,103 +1797,13 @@ Samotraces.Widgets.Basic.TimeSlider.prototype = {
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
-
-/**
- * @class Generic Widget for visualising a temporal slider.
- * @author Benoît Mathern
- * @constructor
- * @augments Samotraces.Widgets.Widget
- * @description
- * Samotraces.Widgets.d3Basic.WindowSlider is a generic
- * Widget to visualise a temporal window
- *
- * @param {String}	divId
- *     Id of the DIV element where the widget will be
- *     instantiated
- * @param wide_window
- *     TimeWindow object -> representing the wide window
- *     (e.g., the whole trace)
- * @param slider_window
- *     TimeWindow object -> representing the small window
- *     (e.g., the current time window being visualised with another widget)
- */
-Samotraces.Widgets.Basic.WindowSlider = function(html_id,wide_window,slider_window) {
-	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
-
-	this.add_class('WidgetBasicWindowSlider');
-	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
-
-	this.wide_window = wide_window;
-	this.wide_window.addEventListener('updateTimeWindow',this.draw.bind(this));
-	this.slider_window = slider_window;
-	this.slider_window.addEventListener('updateTimeWindow',this.draw.bind(this));
-
-	this.slider_offset = 0;
-	this.width = 0;
-
-	this.init_DOM();
-	// update slider's position
-	this.draw();
-};
-
-Samotraces.Widgets.Basic.WindowSlider.prototype = {
-	init_DOM: function() {
-
-		// create the slider
-		this.slider_element = document.createElement('div');
-		this.element.appendChild(this.slider_element);
-
-		// hand made drag&drop
-		// event listeners
-		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
-				onUpCallback: function(delta_x) {
-					var time_delta = delta_x*widget.wide_window.get_width()/widget.element.clientWidth;
-					widget.slider_window.translate(time_delta);	
-				},
-				onMoveCallback: function(offset) {
-					widget.slider_element.style.left = widget.slider_offset+offset+'px';
-				},
-			});
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
-	},
-
-	draw: function() {
-//		if(this.time_window.start < this.timer.time && this.timer.time < this.time_window.end) {
-//toto = this.element;
-//console.log(this.element);
-			this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
-		//	this.slider_element.setAttribute();
-			this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
-		//	this.slider_element.setAttribute('style','display: block; width: '+this.width+'px; left: '+this.slider_offset+'px;');
-			this.slider_element.style.display = 'block';
-			this.slider_element.style.width = this.width+'px';
-			this.slider_element.style.left = this.slider_offset+'px';
-
-	//		this.slider_element.setAttribute('display','block');
-//		} else {
-//			this.slider_element.setStyle('display','none');
-//		}
-	},
-
-
-};
-
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
 
 /**
  * @class Generic Widget for visualising traces with images.
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
  * Samotraces.Widgets.d3Basic.TraceDisplayIcons is a generic
  * Widget to visualise traces with images. This widget uses 
@@ -1716,7 +1817,7 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
  *     instantiated
  * @param {Trace}	trace
  *     Trace object to display
- * @param {Samotraces.Objects.ObselSelector} obsel_selector
+ * @param {Samotraces.Lib.ObselSelector} obsel_selector
  *     ObselSelector object that will be updated when
  *     clicking on one Obsel
  * @param time_window
@@ -1773,7 +1874,7 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
  * };
  * </code>
  */
-Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
+Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
@@ -1816,7 +1917,7 @@ Samotraces.Widgets.d3Basic.TraceDisplayIcons = function(divId,trace,obsel_select
 	this.draw();
 };
 
-Samotraces.Widgets.d3Basic.TraceDisplayIcons.prototype = {
+Samotraces.Widgets.TraceDisplayIcons.prototype = {
 	init_DOM: function() {
 		var div_elmt = d3.select('#'+this.id);
 		this.svg = div_elmt.append('svg');
@@ -1936,8 +2037,10 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
-			.attr('xlink:href',this.options.url);
-		this.updateEventListener();
+			.attr('xlink:href',this.options.url)
+			// why not direcly here !?
+			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+//		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
 		this.draw();	
@@ -1975,14 +2078,59 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
+
+
+/**
+ * @mixin
+ * @description
+ * All widgets should inherit from this Samotraces.Widgets.Widget.
+ * 
+ * In order to use create a widget that inherits from the 
+ * Widget class, one mush include the following code in 
+ * the constructor of their widget.
+ * <code>
+ * </code>
+ *
+ * @property {String} id Id of the HTML element the
+ * Widget is attached to.
+ * @property {HTMLElement} element HTML element the
+ * Widget is attached to.
+ */
+Samotraces.Widgets.Widget = (function() {
+	/**
+	 * Adds the given class to the HTML element to which
+	 * this Widget is attached to.
+	 * @memberof Samotraces.Widgets.Widget.prototype
+	 * @public
+	 * @method
+	 * @param {String} class_name Name of the class to add
+	 */
+	function add_class(class_name) {
+		this.element.className += ' '+class_name;
+	}
+	return function(id) {
+		// DOCUMENTED ABOVE
+		this.id = id;
+		this.element = document.getElementById(this.id);
+		this.add_class = add_class;
+
+		// call method
+		this.add_class('Widget');
+		return this;
+	};
+})();
+
+
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @class Generic Widget for visualising a temporal scale.
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
  * Samotraces.Widgets.d3Basic.WindowScale is a generic
  * Widget to visualise the temporal scale of a trace. This
@@ -1991,10 +2139,20 @@ Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param time_window
+ * @param {} time_window
  *     TimeWindowCenteredOnTime object
+ * @param {Boolean} is_javascript_date
+ *     (Optional) Boolean that describes if the scale represents a JavaScript Date object.
+ *     If set to true, the widget will display years, months, days, hours, minutes...
+ *     as if the time given was the number of milliseconds ellapsed since 1 January 1970 UTC.
+ *     If set to false, the widget will display the numbers without attempting
+ *     any conversion.
+ *     This argument is optional. If not set, the widget will try to guess:
+ *     If the number of the start of the given TimeWindow is above a billion, then
+ *     it is assumed that the JavaScript Date object has been used to represent time.
+ *     Otherwise, the numerical value of time will be displayed.
  */
-Samotraces.Widgets.d3Basic.WindowScale = function(html_id,time_window) {
+Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -2009,13 +2167,23 @@ Samotraces.Widgets.d3Basic.WindowScale = function(html_id,time_window) {
 	// update slider's position
 	this.draw();
 
+	// trying to guess if time_window is related to a Date() object
+	if(this.window.start > 1000000000) { // 1o^9 > 11 Jan 1970 if a Date object
+		this.is_javascript_date = is_javascript_date || true;
+	} else {
+		this.is_javascript_date = is_javascript_date || false;
+	}
 };
 
-Samotraces.Widgets.d3Basic.WindowScale.prototype = {
+Samotraces.Widgets.WindowScale.prototype = {
 	init_DOM: function() {
 		// create the slider
 		this.svg = d3.select("#"+this.id).append("svg");
-		this.x = d3.time.scale(); //.range([0,this.element.getSize().x]);
+		if(this.is_javascript_date) {
+			this.x = d3.time.scale(); //.range([0,this.element.getSize().x]);
+		} else {
+			this.x = d3.scale.linear();
+		}
 		this.xAxis = d3.svg.axis().scale(this.x); //.orient("bottom");
 		this.x.domain([this.window.start,this.window.end]);
 		this.svgAxis = this.svg
@@ -2039,6 +2207,94 @@ Samotraces.Widgets.d3Basic.WindowScale.prototype = {
 		this.x.domain([this.window.start,this.window.end]);
 		this.svgAxis.call(this.xAxis);
 	},
+};
+
+
+
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
+
+/**
+ * @class Generic Widget for visualising a temporal slider.
+ * @author Benoît Mathern
+ * @constructor
+ * @mixes Samotraces.Widgets.Widget
+ * @description
+ * Samotraces.Widgets.d3Basic.WindowSlider is a generic
+ * Widget to visualise a temporal window
+ *
+ * @param {String}	divId
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param wide_window
+ *     TimeWindow object -> representing the wide window
+ *     (e.g., the whole trace)
+ * @param slider_window
+ *     TimeWindow object -> representing the small window
+ *     (e.g., the current time window being visualised with another widget)
+ */
+Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,html_id);
+
+	this.add_class('WidgetBasicWindowSlider');
+	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
+
+	this.wide_window = wide_window;
+	this.wide_window.addEventListener('updateTimeWindow',this.draw.bind(this));
+	this.slider_window = slider_window;
+	this.slider_window.addEventListener('updateTimeWindow',this.draw.bind(this));
+
+	this.slider_offset = 0;
+	this.width = 0;
+
+	this.init_DOM();
+	// update slider's position
+	this.draw();
+};
+
+Samotraces.Widgets.WindowSlider.prototype = {
+	init_DOM: function() {
+
+		// create the slider
+		this.slider_element = document.createElement('div');
+		this.element.appendChild(this.slider_element);
+
+		// hand made drag&drop
+		// event listeners
+		var widget = this;
+		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = delta_x*widget.wide_window.get_width()/widget.element.clientWidth;
+					widget.slider_window.translate(time_delta);	
+				},
+				onMoveCallback: function(offset) {
+					widget.slider_element.style.left = widget.slider_offset+offset+'px';
+				},
+			});
+		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
+	},
+
+	draw: function() {
+//		if(this.time_window.start < this.timer.time && this.timer.time < this.time_window.end) {
+//toto = this.element;
+//console.log(this.element);
+			this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
+		//	this.slider_element.setAttribute();
+			this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
+		//	this.slider_element.setAttribute('style','display: block; width: '+this.width+'px; left: '+this.slider_offset+'px;');
+			this.slider_element.style.display = 'block';
+			this.slider_element.style.width = this.width+'px';
+			this.slider_element.style.left = this.slider_offset+'px';
+
+	//		this.slider_element.setAttribute('display','block');
+//		} else {
+//			this.slider_element.setStyle('display','none');
+//		}
+	},
+
+
 };
 
 

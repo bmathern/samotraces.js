@@ -7,9 +7,8 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Javascript Trace Object.
  * @author Benoît Mathern
  * @constructor
+ * @abstract
  * @augments Samotraces.Lib.Observable
- * @mixes Samotraces.Lib.EventBuilder
- * @augments Samotraces.Lib.Trace
  * @description
  * Samotraces.Lib.DemoTrace is a Javascript Trace object.
  * Methods are available to get 
@@ -18,7 +17,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * The trace is initialised empty. Obsels have to be created
  * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
  */
-Samotraces.Lib.DemoTrace = function() {
+Samotraces.Lib.Trace = function() {
 	// Addint the Observable trait
 	Samotraces.Lib.Observable.call(this);
 	var current_trace = this;
@@ -30,7 +29,7 @@ Samotraces.Lib.DemoTrace = function() {
 
 };
 
-Samotraces.Lib.DemoTrace.prototype = {
+Samotraces.Lib.Trace.prototype = {
 	/**
 	 * Creates a new obsel in the trace.
 	 * @param {String} type Type of the new obsel
@@ -43,30 +42,11 @@ Samotraces.Lib.DemoTrace.prototype = {
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
-		var id = this.count;
-		this.count++;
-		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
-		//this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
-		this.notify('updateTrace',this.traceSet);
-	},
-// */	
-	updateObsel: function(old_obs,new_obs) {
-		console.log('Method KtbsTrace:updateObsel() not implemented yet...');
-//		this.traceSet.erase(old_obs);
-//		new_obs.id = old_obs.id; // check that id stay consistent
-//		this.traceSet.push(new_obs);
-//		this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
-//		return new_obs;
-	},
-	
-	removeObsel: function(obs) {
-		console.log('Method KtbsTrace:removeObsel() not implemented yet...');
-//		this.traceSet.erase(old_obs);
-//		this.notify('removeObsel',obs);
+		console.log('Method Trace:newObsel() is abstract...');
 	},
 	
 	getObsel: function(id) {
-		console.log('Method KtbsTrace:getObsel() not implemented yet...');
+		console.log('Method Trace:getObsel() is abstract...');
 	},
 
 };

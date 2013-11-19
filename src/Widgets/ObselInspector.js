@@ -2,30 +2,31 @@
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising an Obsel.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
- * Samotraces.Widgets.Basic.ObselInspector is a generic
+ * Samotraces.Widgets.ObselInspector is a generic
  * Widget to visualise Obsels.
  * 
- * This widget observes a Samotraces.Objects.ObselSelector
- * object. When an obsel is selected, the informations about
- * this obsel are displayed in the widget. When an obsel is
+ * This widget observes a {@link Samotraces.Lib.ObselSelector|ObselSelector}
+ * object. When an obsel is selected, the information about
+ * this obsel is displayed in the widget. When an obsel is
  * unselected, the widget closes. Clicking on the red cross
  * will close the widget (and automatically unselect the obsel).
+ * When no obsel are selected, the widget is not visible,
+ * selecting an obsel will make it appear.
  *
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.ObselSelector} obsel_selector
+ * @param {Samotraces.Lib.ObselSelector} obsel_selector
  *     ObselSelector object to observe.
  */
-Samotraces.Widgets.Basic.ObselInspector = function(html_id,obsel_selector) {
+Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 	this.add_class('WidgetObselInspector');
@@ -36,7 +37,7 @@ Samotraces.Widgets.Basic.ObselInspector = function(html_id,obsel_selector) {
 	this.init_DOM();
 };
 
-Samotraces.Widgets.Basic.ObselInspector.prototype = {
+Samotraces.Widgets.ObselInspector.prototype = {
 	init_DOM: function() {
 
 		this.close_element = document.createElement('span');

@@ -11,23 +11,6 @@ var Samotraces = Samotraces || {};
  * @namespace
  */
 Samotraces.Widgets = Samotraces.Widgets || {};
-/**
- * Set of the Widgets of Samotraces that do not require any
- * external library or framework.
- * @namespace
- */
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
-/**
- * Set of the Widgets of Samotraces that uses d3.js library.
- * @namespace
- * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
- */
-Samotraces.Widgets.d3Basic = Samotraces.Widgets.d3Basic || {};
-/**
- * Set of the Widgets of Samotraces that specifically refers to the KTBS.
- * @namespace
- */
-Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
 
 /**
  * Library of the Objects of Samotraces

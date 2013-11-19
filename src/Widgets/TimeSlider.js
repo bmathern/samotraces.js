@@ -2,13 +2,12 @@
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising the current time.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @description
  * Samotraces.Widgets.d3Basic.TimeSlider is a generic
  * Widget to visualise the current time in a temporal window
@@ -22,7 +21,7 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param timer
  *     Timeer object -> containing the current time
  */
-Samotraces.Widgets.Basic.TimeSlider = function(html_id,time_window,timer) {
+Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -44,7 +43,7 @@ Samotraces.Widgets.Basic.TimeSlider = function(html_id,time_window,timer) {
 
 };
 
-Samotraces.Widgets.Basic.TimeSlider.prototype = {
+Samotraces.Widgets.TimeSlider.prototype = {
 	init_DOM: function() {
 		// create the slider
 		this.slider_element = document.createElement('div');

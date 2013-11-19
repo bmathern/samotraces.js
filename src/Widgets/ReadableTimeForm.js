@@ -2,13 +2,12 @@
 // Check if relevant namespaces exist - or create them.
 var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
 
 /**
  * @class Generic Widget for visualising the current time.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
+ * @mixes Samotraces.Widgets.Widget
  * @see Samotraces.Widgets.Basic.TimeForm
  * @description
  * Samotraces.Widgets.Basic.ReadableTimeForm is a generic
@@ -29,7 +28,7 @@ Samotraces.Widgets.Basic = Samotraces.Widgets.Basic || {};
  * @param {Samotraces.Objects.Timer} timer
  *     Timer object to observe.
  */
-Samotraces.Widgets.Basic.ReadableTimeForm = function(html_id,timer) {
+Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
@@ -42,7 +41,7 @@ Samotraces.Widgets.Basic.ReadableTimeForm = function(html_id,timer) {
 	this.refresh(this.timer.time);
 };
 
-Samotraces.Widgets.Basic.ReadableTimeForm.prototype = {
+Samotraces.Widgets.ReadableTimeForm.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');

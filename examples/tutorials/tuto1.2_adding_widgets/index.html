@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script type="text/javascript" src="javascript/d3.js"></script>
+		<script type="text/javascript" src="javascript/Samotraces.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
+	</head>
+	<body>
+		<div id="my-widget"></div>
+		<div id="scale"></div>
+		<div id="importer"></div>
+		<div id="obsel-inspector"></div>
+		<script type="text/javascript">
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		</script>
+	</body>
+</html>

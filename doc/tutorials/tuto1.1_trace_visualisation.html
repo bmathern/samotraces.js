@@ -1,10 +1,9 @@
-<h1>Creating a trace visualisation in 20 minutes (?)</h1>
-
 <h2>Introduction</h2>
 
 <p>
-This tutorial aims at learning how to visualise a trace
-with Samotraces.js.
+In this part of the tutorial, you will use Samotraces.js to create a 
+trace containing three obsels and use a widget to display 
+this trace.
 For this purpose, the first step consists in learning some
 of the key concepts that are used in Samotraces.js and put 
 these concepts into practice.
@@ -24,7 +23,7 @@ that the Widgets will need to access to.
 <p>
 Widgets are simple programs with a graphical user interface.
 In this tutorial, for instance, we will use a widget for 
-visualising a trace ({@link Samotraces.Widgets.d3Basic.TraceDisplayIcons} widget).
+visualising a trace ({@link Samotraces.Widgets.TraceDisplayIcons} widget).
 </p>
 
 <p>
@@ -33,7 +32,7 @@ to know what trace to visualise, and how to visualise it.
 For instance, it needs to know what is the time frame that
 you want to display, what is the current time, etc. For this
 reason, the widget needs to be initialised with extra 
-parameters: the trace the visualise, the relevant time frame,
+parameters: the trace to visualise, the relevant time frame,
 the current time, etc.
 </p>
 
@@ -49,7 +48,7 @@ why we call them logical objects.
 <p>
 Logical objects need to be initialised and will then be used
 by different plugins. While it might not seem clear at this
-point in the tutorial why there is a need for logical objets,
+point in the tutorial why there is a need for logical objects,
 this will be clarified in further tutorials, when we will 
 handle the development of more complex applications.
 </p>
@@ -96,9 +95,9 @@ First, create two folders, one named "javascript", one named
 Then download the relevant files and move them to the 
 appropriate folder:
 <ul>
-	<li>Download <a href="../examples/tutorials/tuto1_trace_visualisation/javascript/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
-	<li>Download <a href="../examples/tutorials/tuto1_trace_visualisation/javascript/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
-	<li>Download <a href="../examples/tutorials/tuto1_trace_visualisation/css/samotraces.css">samotraces.css</a> and copy it in the "css" folder</li>
+	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/css/samotraces.css">samotraces.css</a> and copy it in the "css" folder</li>
 </ul>
 Then, update the HTML code to link the files you have just 
 downloaded.
@@ -128,8 +127,8 @@ We will focus now on the javascript code.
 
 <p>
 First, we want to create a trace visualisation. For this, we
-will use the {@link Samotraces.Widgets.d3Basic.TraceDisplayIcons|TraceDisplayIcons} widget. If you have a look at the 
-{@link Samotraces.Widgets.d3Basic.TraceDisplayIcons|TraceDisplayIcons} 
+will use the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget. If you have a look at the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} 
 documentation, you will see that this widget needs to be 
 initialised with 5 parameters:
 <ol>
@@ -144,7 +143,7 @@ the moment. In order to initialise the widget, we need to
 write something like:
 </p>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.d3Basic.TraceDisplayIcons(id,trace,obsel_selector,time_window);
+<pre class="prettyprint"><code>new Samotraces.Widgets.TraceDisplayIcons(id,trace,obsel_selector,time_window);
 </code></pre>
 
 <p>
@@ -157,7 +156,7 @@ defined in the HTML source: <code>"my-widget"</code>. We
 can replace it direcly:
 </p>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,time_window);
+<pre class="prettyprint"><code>new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,time_window);
 </code></pre>
 
 <p>
@@ -167,25 +166,40 @@ Now, we will initialise the other 3 parameters:
 <code>time_window</code> with the following code:
 </p>
 
-<pre class="prettyprint"><code>// Logical objects
+<pre class="prettyprint"><code>// Create logical objects
 var trace 		= new Samotraces.Lib.DemoTrace();
 var obsel_selector	= new Samotraces.Lib.ObselSelector();
 var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 </code></pre>
 
 <p>
-Let's explain what this mean.
+Let's explain what this means.
 First, we initialise a trace, using the object 
 {@link Samotraces.Lib.DemoTrace|DemoTrace}.
 By doing this, we create a new (empty) trace.<br>
 Then, we create an obsel selector. An obsel selector makes
 it possible to know when an obsel has been selected or
-unselected.<br>
+unselected in the trace (you select an obsel by clicking on it).<br>
 Then, we create a {@link Samotraces.Lib.TimeWindow|TimeWindow}.
-There are two ways to create a time window. In this tutorial,
+The {@link Samotraces.Lib.TimeWindow|TimeWindow} object is 
+created with an initial time frame.
+There are two ways to initialise the time frame:
+either by giving the times where the time window starts and ends,
+or by giving the time of the center of the time frame and
+defining its width.
+In this tutorial,
 we focus on the most simple way: defining the start and the
 end of the time window.
-Here, the time windows goes from 0 to 20.
+</p>
+
+<p>
+Here, the time window is initialised from 0 to 20.
+Note that this is the initial time window. Using the 
+application (for instance zooming in or out) will impact
+the time window which will be updated. If an obsel is
+initially out of the time window, then it will not be
+visible at first. But zooming out, for instance, will allow
+you to see it.
 </p>
 
 <p>
@@ -196,12 +210,12 @@ you can wrap it in a function.
 
 <pre class="prettyprint"><code>&lt;script type="text/javascript"&gt;
 function init() {
-	// Logical objects
+	// Create logical objects
 	var trace 		= new Samotraces.Lib.DemoTrace();
 	var obsel_selector	= new Samotraces.Lib.ObselSelector();
 	var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-	// Widgets
-	new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+	// Create widgets
+	new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 }
 
 // calling the init function when the DOM has been loaded
@@ -222,12 +236,12 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;div id="my-widget"&gt;&lt;/div&gt;
 		&lt;script type="text/javascript"&gt;
 		function init() {
-			// Logical objects
+			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			// Widgets
-			new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 		}
 
 		// calling the init function when the DOM has been loaded
@@ -285,16 +299,18 @@ Now, your source code should look as follows.
 		&lt;div id="my-widget"&gt;&lt;/div&gt;
 		&lt;script type="text/javascript"&gt;
 		function init() {
-			// Logical objects
+			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			// Widgets
-			new Samotraces.Widgets.d3Basic.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 
+			// Add obsels to the trace
 			trace.newObsel('click',1);
 			trace.newObsel('click',5);
 			trace.newObsel('click',12);
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -307,9 +323,11 @@ window.addEventListener('DOMContentLoaded', init );
 <p>
 And you should be able to visualise something like this when
 you load the HTML page on your web browser:
-<img src="tutorials/tuto1_trace_visualisation_trace.png"></img>
+</p>
+<img src="tutorials/tuto1.1_trace_visualisation_trace.png"></img>
+<p>
 You can try out the final result of this tutorial
-<a href="../examples/tutorials/tuto1_trace_visualisation/index.html">here</a>.
+<a href="../examples/tutorials/tuto1.1_trace_visualisation/index.html">here</a>.
 </p>
 
 <p>
@@ -317,4 +335,11 @@ Now, enjoy and play with the trace visualisation widget!
 You can zoom in or out by scrolling vertically on the widget.
 You can also move the time by clicking on the widget and
 maintening the click while moving your pointer right or left.
+</p>
+
+<p>
+Now, you are ready to go to the next part of this tutorial
+({@tutorial tuto1.2_adding_widgets}), 
+where you will learn how to add other widgets and create a
+more complex application.
 </p>

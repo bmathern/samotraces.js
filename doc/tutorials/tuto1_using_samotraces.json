@@ -1,0 +1,8 @@
+{
+	"title": "Tutorial 1: using Samotraces",
+	"children": [
+		"tuto1.1_trace_visualisation",
+		"tuto1.2_adding_widgets",
+		"tuto1.3_visualisation_personalisation"
+	]
+}

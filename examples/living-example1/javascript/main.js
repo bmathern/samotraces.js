@@ -14,24 +14,24 @@ function init() {
 	// Create a Trace Object (gets the URL of the KTBS trace
 	// from the form.
 	var url_form_el 	= document.getElementById('url');
-	var trace 			= new Σ.Objects.KtbsBogueTrace(url_form_el.value);
+	var trace 			= new Σ.Lib.KtbsBogueTrace(url_form_el.value);
 
 	// currently selected obsel
-	var current_obsel	= new Σ.Objects.ObselSelector();
+	var current_obsel	= new Σ.Lib.ObselSelector();
 	
 	// timer observable (describes current visualisation time)
-	var timer 			= new Σ.Objects.Timer(Date.now());
+	var timer 			= new Σ.Lib.Timer(Date.now());
 //	var timer 			= new Σ.Objects.SelfUpdatingTimer();
 
 	var hour = 3600*1000;
 	var day = 24*hour;
 
 	// time window of the first set of widgets (wide time window)
-	var tw_day		= new Σ.Objects.TimeWindowCenteredOnTime(timer,day);
+	var tw_day		= new Σ.Lib.TimeWindow({timer: timer, width: day});
 	// time window of the second set of widgets (small time window)
-	var tw_hour		= new Σ.Objects.TimeWindowCenteredOnTime(timer,hour);
+	var tw_hour		= new Σ.Lib.TimeWindow({timer: timer, width: hour});
 	// time window of the whole trace
-	var tw_trace	= new Σ.Objects.TimeWindow(Date.now()-3*day,Date.now()+day);
+	var tw_trace	= new Σ.Lib.TimeWindow({start: Date.now()-3*day, end: Date.now()+day});
 
 
 	/*
@@ -41,7 +41,7 @@ function init() {
 	// visualisation options for the TraceDisplayIcons Widget
 	var visu_options = {
 		x: function(o) {
-			return this.calculate_x(o.attributes.hasBegin) - 8; 
+			return this.calculate_x(parseFloat(o.attributes.hasBegin)) - 8; 
 		},	// */
 		url: function(o) {			
 			switch(o.type) {
@@ -72,29 +72,29 @@ function init() {
 	// Widgets linked to the wide time window
 	// Trace visualisation Widget
 	// Slider
-	new Σ.Widgets.Basic.WindowSlider('background_slider1',tw_hour,tw_day);
-	new Σ.Widgets.Basic.WindowSlider('background_slider2',tw_day,tw_hour);
-	new Σ.Widgets.d3Basic.TraceDisplayIcons('trace',trace,current_obsel,tw_day,visu_options);
+	new Σ.Widgets.WindowSlider('background_slider1',tw_hour,tw_day);
+	new Σ.Widgets.WindowSlider('background_slider2',tw_day,tw_hour);
+	new Σ.Widgets.TraceDisplayIcons('trace',trace,current_obsel,tw_day,visu_options);
 	// Slider
-	new Σ.Widgets.Basic.WindowSlider('slider',tw_trace,tw_day);
+	new Σ.Widgets.WindowSlider('slider',tw_trace,tw_day);
 	// Scale
-	new Σ.Widgets.d3Basic.WindowScale('scale',tw_day);
+	new Σ.Widgets.WindowScale('scale',tw_day);
 
 	// Widgets linked to the small time window
 	// Trace visualisation Widget
-	new Σ.Widgets.Basic.WindowSlider('background_slider3',tw_day,tw_hour);
-	new Σ.Widgets.Basic.WindowSlider('background_slider4',tw_hour,tw_day);
-	new Σ.Widgets.d3Basic.TraceDisplayIcons('trace2',trace,current_obsel,tw_hour,visu_options);
+	new Σ.Widgets.WindowSlider('background_slider3',tw_day,tw_hour);
+	new Σ.Widgets.WindowSlider('background_slider4',tw_hour,tw_day);
+	new Σ.Widgets.TraceDisplayIcons('trace2',trace,current_obsel,tw_hour,visu_options);
 	// Slider
-	new Σ.Widgets.Basic.WindowSlider('slider2',tw_trace,tw_hour);
+	new Σ.Widgets.WindowSlider('slider2',tw_trace,tw_hour);
 	// Scale
-	new Σ.Widgets.d3Basic.WindowScale('scale2',tw_hour);
+	new Σ.Widgets.WindowScale('scale2',tw_hour);
 
 	// Misc. widgets
 	// Widget that displays a time form
-	new Σ.Widgets.Basic.TimeForm('time_form',timer);
+	new Σ.Widgets.TimeForm('time_form',timer);
 	// Obsel inspector
-	new Σ.Widgets.Basic.ObselInspector('obselinspector',current_obsel);
+	new Σ.Widgets.ObselInspector('obselinspector',current_obsel);
 
 
 	/*
@@ -137,7 +137,7 @@ function init() {
 
 	// function that init the event listeners in the iframe
 	var init_iframe = function() {
-		var collecteur = new Samotraces.Collecte.Collecteur();
+		var collecteur = new Samotraces.Lib.Collecteur();
 		collecteur.addIFrameEspion('focus,click,change','input,a',event_tracer,trace,'iframe');
 		collecteur.start();
 	};
@@ -158,7 +158,6 @@ function init() {
 
 // run the previous code when all the page has been properly loaded.
 window.addEventListener('DOMContentLoaded', init );
-
 
 
 

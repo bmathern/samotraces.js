@@ -5,7 +5,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
 
 
 /**
- * @class Widget class
+ * @mixin
  * @description
  * All widgets should inherit from this Samotraces.Widgets.Widget.
  * 

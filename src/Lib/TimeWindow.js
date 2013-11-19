@@ -9,11 +9,13 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @constructor
  * @augments Samotraces.Lib.EventBuilder
  * @description
- * Samotraces.Lib.TimeWindow is a Javascript Object that 
- * stores the current time window.
+ * The {@link Samotraces.Lib.TimeWindow} object is a Javascript Object
+ * that stores the current time window.
  * This Object stores a time window and informs widgets or other
- * objects when the time window changes.
- * A TimeWindow can be defined in two ways:
+ * objects when the time window changes via the 
+ * {@link Samotraces.Lib.TimeWindow#event:updateTimeWindow|updateTimeWindow}
+ * event.
+ * A {@link Samotraces.Lib.TimeWindow|TimeWindow} can be defined in two ways:
  * 1.  by defining a lower and upper bound
  * 2.  by defining a timer and a width.
  *
@@ -31,7 +33,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.TimeWindow = function(opt) {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.Observable.call(this); 
 	Samotraces.Lib.EventBuilder.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
@@ -56,6 +58,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.set_width(this.width,time);
 	},
 	/** 
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -63,11 +66,18 @@ Samotraces.Lib.TimeWindow.prototype = {
 		if(this.start != time) {
 			this.start = time;
 			this.__calculate_width();
+			/**
+			 * Time window change event.
+			 * @event Samotraces.Lib.TimeWindow#updateTimeWindow
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "updateTimeWindow").
+			 */
 			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
-	/** 
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -82,7 +92,8 @@ Samotraces.Lib.TimeWindow.prototype = {
 	get_width: function() {
 		return this.width;
 	},
-	/** 
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -96,7 +107,10 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.notify('updateTimeWindow');
 		this.trigger('updateTimeWindow');
 	},
-	/** @todo this.notify kept for compatibility -> remove */
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @todo this.notify kept for compatibility -> remove
+	 */
 	translate: function(delta) {
 		if(this.timer) {
 			this.timer.set(this.timer.time + delta);
