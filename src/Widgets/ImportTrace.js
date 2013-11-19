@@ -58,8 +58,12 @@ Samotraces.Widgets.ImportTrace.prototype = {
 		this.element.appendChild(this.form_element);
 
 		var button_el = document.createElement('p');
-		button_el.innerHTML = "toggle console";
-		button_el.addEventListener('click',this.on_toggle.bind(this));
+		var a_el = document.createElement('a');
+		a_el.href = "";
+		a_el.innerHTML = "toggle console";
+		button_el.appendChild(a_el);
+//		button_el.innerHTML = "<a href=\"\">toggle console</a>";
+		a_el.addEventListener('click',this.on_toggle.bind(this));
 		this.element.appendChild(button_el);
 
 		this.display_element = document.createElement('div');
@@ -92,6 +96,7 @@ Samotraces.Widgets.ImportTrace.prototype = {
 	},
 
 	on_toggle: function(e) {
+		e.preventDefault();
 		if(this.display_element.style.display == 'none') {
 			this.display_element.style.display = 'block';
 		} else {

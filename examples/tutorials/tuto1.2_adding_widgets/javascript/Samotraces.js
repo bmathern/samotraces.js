@@ -305,32 +305,86 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @constructor
  * @augments Samotraces.Lib.EventBuilder
  * @description
- * Samotraces.Lib.ObselSelector is a Javascript object that
- * stores the currently selected obsel.
+ * The {@link Samotraces.Lib.ObselSelector|ObselSelector} object
+ * is a Javascript object that stores the currently selected obsel.
  * This Object stores an obsel that is selected and informs 
- * widgets or other objects when the selected object changes
- * or if the obsel has been unselected.
+ * widgets or other objects (via the 
+ * {@link Samotraces.Lib.ObselSelector#event:obselSelected|obselSelected}
+ * and the 
+ * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
+ * events) when the selected object changes
+ * or if the obsel has been unselected. When first instanciated,
+ * no obsel is selected.
+ *
+ * In order to select an obsel, the 
+ * {@link Samotraces.Lib.ObselSelector#select|ObselSelector#select()} 
+ * method has to be called.
+ * Similarly, in order to unselect an obsel, the 
+ * {@link Samotraces.Lib.ObselSelector#unselect|ObselSelector#unselect()} 
+ * method has to be called.
+ * 
+ * Note: selecting a new obsel is equivalent to unselecting 
+ * the current obsel and selecting the new obsel, except
+ * that the widget listening to the 
+ * {@link Samotraces.Lib.ObselSelector} events will only 
+ * receive a
+ * {@link Samotraces.Lib.ObselSelector#event:obselSelected|obselSelected}, 
+ * and no 
+ * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
+ * event.
+ * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.ObselSelector = function() {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventBuilder.call(this);
 	this.obsel = undefined;
 };
 
 Samotraces.Lib.ObselSelector.prototype = {
+	/**
+     * Method to call to select an obsel.
+     * This method is typically called from widgets that can
+     * visualise a trace. For instance, clicking on an obsel
+     * displayed with the 
+     * {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
+     * widget, will call this method to select the obsel that
+     * had been the target of the click.
+     * @param {Samotraces.Lib.Obsel} obsel
+     *     {@link Samotraces.Lib.Obsel|Obsel} object that is 
+	 *     selected.
+	 * @fires Samotraces.Lib.ObselSelector#obselSelected
+	 * @todo this.notify kept for compatibility -> remove
+     */
 	select: function(obsel) {
 		this.obsel = obsel;
+		/**
+		 * Obsel selected event.
+		 * @event Samotraces.Lib.ObselSelector#obselSelected
+		 * @type {object}
+		 * @property {String} type - The type of the event (= "obselSelected").
+		 * @property {Samotraces.Lib.Obsel} data - The selected obsel.
+		 */
 		this.notify('obselSelected',obsel);
+		this.trigger('obselSelected',obsel);
 	},
+	/**
+     * Method to call to unselect an obsel.
+     * This method is typically called from widgets that can
+     * visualise an obsel.
+	 * @fires Samotraces.Lib.ObselSelector#obselUnselected
+	 * @todo this.notify kept for compatibility -> remove
+     */
 	unselect: function() {
 		this.obsel = undefined;
 		/**
 		 * Obsel unselected event.
 		 * @event Samotraces.Lib.ObselSelector#obselUnselected
 		 * @type {object}
-		 * @property {String} type - Type of the event.
+		 * @property {String} type - The type of the event (= "obselUnselected").
 		 */
 		this.notify('obselUnselected');
+		this.trigger('obselUnselected',obsel);
 	}
 };
 
@@ -950,11 +1004,13 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @constructor
  * @augments Samotraces.Lib.EventBuilder
  * @description
- * Samotraces.Lib.TimeWindow is a Javascript Object that 
- * stores the current time window.
+ * The {@link Samotraces.Lib.TimeWindow} object is a Javascript Object
+ * that stores the current time window.
  * This Object stores a time window and informs widgets or other
- * objects when the time window changes.
- * A TimeWindow can be defined in two ways:
+ * objects when the time window changes via the 
+ * {@link Samotraces.Lib.TimeWindow#event:updateTimeWindow|updateTimeWindow}
+ * event.
+ * A {@link Samotraces.Lib.TimeWindow|TimeWindow} can be defined in two ways:
  * 1.  by defining a lower and upper bound
  * 2.  by defining a timer and a width.
  *
@@ -972,7 +1028,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.TimeWindow = function(opt) {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.Observable.call(this); 
 	Samotraces.Lib.EventBuilder.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
@@ -997,6 +1053,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.set_width(this.width,time);
 	},
 	/** 
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -1004,11 +1061,18 @@ Samotraces.Lib.TimeWindow.prototype = {
 		if(this.start != time) {
 			this.start = time;
 			this.__calculate_width();
+			/**
+			 * Time window change event.
+			 * @event Samotraces.Lib.TimeWindow#updateTimeWindow
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "updateTimeWindow").
+			 */
 			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
-	/** 
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -1023,7 +1087,8 @@ Samotraces.Lib.TimeWindow.prototype = {
 	get_width: function() {
 		return this.width;
 	},
-	/** 
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 * @todo this.notify kept for compatibility -> remove
 	 */
@@ -1037,7 +1102,10 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.notify('updateTimeWindow');
 		this.trigger('updateTimeWindow');
 	},
-	/** @todo this.notify kept for compatibility -> remove */
+	/**
+	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @todo this.notify kept for compatibility -> remove
+	 */
 	translate: function(delta) {
 		if(this.timer) {
 			this.timer.set(this.timer.time + delta);
@@ -1140,9 +1208,10 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @see Samotraces.Widgets.Basic.ImportTrace
  * @todo ATTENTION code qui vient d'ailleurs !
  * @description
- * Samotraces.Widgets.Basic.ImportTrace is a generic
+ * The {Samotraces.Widgets.Basic.ImportTrace} widget is a generic
  * Widget to import a trace from a CSV file.
  * 
+ * @todo DESCRIBE THE FORMAT OF THE CSV FILE.
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
@@ -1186,7 +1255,9 @@ Samotraces.Widgets.ImportTrace.prototype = {
 		this.element.appendChild(this.form_element);
 
 		var button_el = document.createElement('p');
-		button_el.innerHTML = "toggle console";
+		var a_el = document.createElement('a').innerHTML("toggle console");
+		button_el.appendChild(a_el);
+		button_el.innerHTML = "<a>toggle console</a>";
 		button_el.addEventListener('click',this.on_toggle.bind(this));
 		this.element.appendChild(button_el);
 
@@ -1359,11 +1430,13 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * Samotraces.Widgets.ObselInspector is a generic
  * Widget to visualise Obsels.
  * 
- * This widget observes a Samotraces.Objects.ObselSelector
- * object. When an obsel is selected, the informations about
- * this obsel are displayed in the widget. When an obsel is
+ * This widget observes a {@link Samotraces.Lib.ObselSelector|ObselSelector}
+ * object. When an obsel is selected, the information about
+ * this obsel is displayed in the widget. When an obsel is
  * unselected, the widget closes. Clicking on the red cross
  * will close the widget (and automatically unselect the obsel).
+ * When no obsel are selected, the widget is not visible,
+ * selecting an obsel will make it appear.
  *
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
@@ -1805,24 +1878,29 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @constructor
  * @mixes Samotraces.Widgets.Widget
  * @description
- * Samotraces.Widgets.d3Basic.TraceDisplayIcons is a generic
+ * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+ * is a generic
  * Widget to visualise traces with images. This widget uses 
  * d3.js to display traces as images in a SVG image.
  * The default settings are set up to visualise 16x16 pixels
  * icons. If no url is defined (see options), a questionmark 
  * icon will be displayed by default for each obsel.
  *
+ * Note that clicking on an obsel will result in this obsel
+ * being selected in the 
+ * {@link Samotraces.Lib.ObselSelector|ObselSelector}.
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Trace}	trace
+ * @param {Samotraces.Lib.Trace}	trace
  *     Trace object to display
  * @param {Samotraces.Lib.ObselSelector} obsel_selector
  *     ObselSelector object that will be updated when
  *     clicking on one Obsel
- * @param time_window
- *     TimeWindowCenteredOnTime object
-
+ * @param {Samotraces.Lib.TimeWindow} time_window
+ *     TimeWindow object that defines the time frame
+ *     being currently displayed.
+ *
  * @param {Object} options
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
@@ -1837,7 +1915,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     the x position or y position of an icon. This 
  *     makes it easy to define various types of behaviours.
  *     Relevant methods to use are:
- *     link Samotraces.Widgets.d3Basic.TraceDisplayIcons.calculate_x}
+ *     link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
  * @param {Number|Function}	options.x		
  *     X coordinates of the top-left corner of the 
  *     image (default: <code>function(o) {
@@ -2132,10 +2210,16 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @constructor
  * @mixes Samotraces.Widgets.Widget
  * @description
- * Samotraces.Widgets.d3Basic.WindowScale is a generic
- * Widget to visualise the temporal scale of a trace. This
+ * Samotraces.Widgets.WindowScale is a generic
+ * Widget to visualise the temporal scale of a 
+ * {@link Samotraces.Lib.TimeWindow|TimeWindow}. This
  * widget uses d3.js to calculate and display the scale.
  *
+ * Note: unless the optional argument is_javascript_date is defined,
+ * the widget will try to guess if time is displayed as numbers,
+ * or if time is displayed in year/month/day/hours/etc.
+ * This second option assumes that the time is represented in
+ * milliseconds since 1 January 1970 UTC.
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
