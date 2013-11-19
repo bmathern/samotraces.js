@@ -82,7 +82,7 @@ Samotraces.Widgets.WindowScale.prototype = {
 				onMoveCallback: function(offset) {
 				},
 			});*/
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
 	},
 
 	draw: function() {

@@ -52,7 +52,7 @@ Samotraces.Widgets.TimeSlider.prototype = {
 		// hand made drag&drop
 //		this.slider_element.addEventListener('mousedown',this.build_callback('mousedown'));
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+		this.add_behaviour('changeTimeOnDrag',this.slider_element,{
 				onUpCallback: function(delta_x) {
 					var new_time = widget.timer.time + delta_x*widget.time_window.get_width()/widget.element.clientWidth;
 					widget.timer.set(new_time);

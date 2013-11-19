@@ -52,7 +52,7 @@ Samotraces.Widgets.WindowSlider.prototype = {
 		// hand made drag&drop
 		// event listeners
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+		this.add_behaviour('changeTimeOnDrag',this.slider_element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = delta_x*widget.wide_window.get_width()/widget.element.clientWidth;
 					widget.slider_window.translate(time_delta);	
@@ -61,7 +61,7 @@ Samotraces.Widgets.WindowSlider.prototype = {
 					widget.slider_element.style.left = widget.slider_offset+offset+'px';
 				},
 			});
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
 	},
 
 	draw: function() {

@@ -156,7 +156,7 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 
 		// event listeners
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.element,{
+		this.add_behaviour('changeTimeOnDrag',this.element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
 					widget.window.translate(time_delta);	
@@ -170,7 +170,7 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 					widget.svg_gp.attr('transform','translate('+offset+',0)');
 				},
 			});
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
 //		this.element.addEventListener('wheel',this.build_callback('wheel'));
 //		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
