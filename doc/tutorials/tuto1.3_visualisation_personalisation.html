@@ -1,2 +1,200 @@
 <h2>Introduction</h2>
 
+<p>
+In the first part of this tutorial, you have seen how to
+create a first basic visualisation of a trace with the 
+{@link Samotraces.Widget.d3Basic.TraceDisplayIcons|TraceDisplayIcons}
+widget.
+In this second part of the tutorial, you have learnt how to 
+add other widgets.
+In this third and last part of the tutorial, you will learn how
+to tune the visualisation of a trace to more specific needs.
+</p>
+
+<p>
+In this part of the tutorial, you will visualise a trace that
+represents music notes. The goal is to setup the visualisation
+so that notes are displayed in a way that is similar to music sheets.
+For this, you will need to setup the
+{@link Samotraces.Widget.TraceDisplayIcons|TraceDisplayIcons} widget,
+and tweak the HTML and CSS files.
+For this reason, this last part of the tutorial requires some knowledge
+of CSS.
+</p>
+
+<h2>Reminder from part 2 of the tutorial.</h2>
+
+<p>
+Let's start with the code obtained at the end of the previous part of the tutorial:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="my-widget"&gt;&lt;/div&gt;
+		&lt;div id="scale"&gt;&lt;/div&gt;
+		&lt;div id="importer"&gt;&lt;/div&gt;
+		&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h3>Reminders</h3>
+<p>
+<ul>
+	<li>Files "Samotraces.js" and "d3.js" must be placed in a folder called 
+	"javascript" and "samotraces.css" in a folder called "css".
+	</li>
+	<li>This code contains <code>&lt;div&gt;</code> HTML tag elements, each 
+	having an unique <code>id</code> attribute. Each widget will be 
+	instanciated in the corresponding HTML DIV element.
+	</li>
+	<li>The Javascript <code>init()</code> function is run when the page is 
+	loaded. This function will:
+	<ul>
+		<li>Create a trace object, an obsel selector object and a time window
+		object.
+		</li>
+		<li>Create the following widgets:
+			<ul>
+				<li>{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}: 
+				a trace visualisation widget</li>
+				<li>{@link Samotraces.Widgets.WindowScale|WindowScale}: 
+				a time scale widget</li>
+				<li>{@link Samotraces.Widgets.ImportTrace|ImportTrace}: 
+				a widget to import CSV files in the current trace</li>
+				<li>{@link Samotraces.Widgets.ObselInspector|ObselInspector}: 
+				a widget that inspect obsels</li>
+			</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+</p>
+
+<h2>Setting up the visualisation: adapting the image to the obsel attributes</h2>
+
+<p>
+In this tutorial, you will have to download the following images that
+we will use in our visualisation:
+</p>
+<table>
+	<style>
+td {
+width: 100px;
+border: 1px solid gray;
+}
+	</style>
+	<tr>
+		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"></img></a>
+		</td>
+		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"></img></a>
+		</td>
+		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"></img></a>
+		</td>
+		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/cle.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/cle.png"></img></a>
+		</td>
+	</tr>
+</table>
+
+
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">// visualisation options for the TraceDisplayIcons Widget
+var visu_options = {
+	width: 34,
+	height: 60,
+	url: function(o) {
+		return 'images/'+o.attributes.duration+'.png';
+	},
+};
+</pre>
+
+<h2>Adding a music stave using CSS</h2>
+
+<pre class="prettyprint sunlight-highlight-css linenums">div.WidgetTraceDisplayIcons {
+	height: 150px;
+}
+
+div.WidgetTraceDisplayIcons svg {
+	background: url("./images/portee.png") repeat-x 0px 40px;
+}
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">// visualisation options for the TraceDisplayIcons Widget
+var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+var visu_options = {
+	y: function(o) {
+		return 74-note_height[o.type]*7.5;
+	},
+/*				x: function(o) {
+		return this.calculate_x(o.timestamp) - 10; 
+	},*/
+	width: 34,
+	height: 60,
+	url: function(o) {
+		return 'images/'+o.attributes.duration+'.png';
+	},
+};
+</pre>
+
+<h2>Polishing the result</h2>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">
+&lt;div id="cle"&gt;&lt;/div&gt;
+&lt;div id="widgets"&gt;
+    &lt;div id="my-widget"&gt;&lt;/div&gt;
+    &lt;div id="scale"&gt;&lt;/div&gt;
+	&lt;div id="importer"&gt;&lt;/div&gt;
+	&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<pre class="prettyprint sunlight-highlight-css linenums">div.WidgetWindowScale {
+	width: auto;
+}
+
+div.WidgetTraceDisplayIcons {
+	height: 150px;
+	width: auto;
+}
+
+div.WidgetTraceDisplayIcons svg {
+	background: url("./images/portee.png") repeat-x 0px 40px;
+}
+
+#cle {
+	width: 62px;
+	background: url("./images/cle.png") no-repeat 0px 41px;
+	float: left;
+	height: 300px;
+}
+
+#widgets {
+	width: auto;
+	height: 100%;
+}
+</pre>
+
