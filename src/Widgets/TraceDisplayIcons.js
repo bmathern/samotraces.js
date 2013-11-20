@@ -21,6 +21,10 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * Note that clicking on an obsel will result in this obsel
  * being selected in the 
  * {@link Samotraces.Lib.ObselSelector|ObselSelector}.
+ *
+ * Tutorials {@tutorial tuto1.1_trace_visualisation} and 
+ * {@tutorial tuto1.3_visualisation_personalisation} illustrates
+ * in more details how to use this class.
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
@@ -48,6 +52,9 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     makes it easy to define various types of behaviours.
  *     Relevant methods to use are:
  *     link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+ *     See tutorial 
+ *     {@tutorial tuto1.3_visualisation_personalisation}
+ *     for more details and examples.
  * @param {Number|Function}	options.x		
  *     X coordinates of the top-left corner of the 
  *     image (default: <code>function(o) {

@@ -6,89 +6,24 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
- * @class Observable class
- * @deprecated This class will be removed and progressively 
- * replaced with Samotraces.Lib.EventBuilder mix-in.
- * @description
- * The Observable Object is not a class. However, it is 
- * designed for other classes to inherit of a predefined
- * Observable behaviour. For this reason, this function is
- * documented as a Class. 
- * 
- * In order to use create a class that "inherits" from the 
- * "Observable class", one must run the following code:
- * <code>
- * Samotraces.Objects.Observable.call(myObject.prototype);
- * </code>
- *
- * @property {Array} observerList
- *     Array of objects that subscribed as observers.
- */
-Samotraces.Lib.Observable = (function() {
-	/**
-	 * Notify all the observer elements with a message and
-	 * an associated object.
-	 * @memberof Samotraces.Objects.Observable.prototype
-	 * @param {String} message
-	 *     Message transmitted to the Observers.
-	 * @param {Object} object
-	 *     Object sent with the message to the Observers.
-	 */
-	function notify(message,object) {
-		this.observerList.forEach(function(observer) {
-			observer.update(message,object);
-		});
-	}
-	/**
-	 * Add an Observer object to the list of Observers
-	 * @memberof Samotraces.Objects.Observable.prototype
-	 * @param {Observer} observer
-	 *     The Observer object to add to the Observer list.
-	 */
-	function addObserver(observer) {
-		this.observerList.push(observer);
-	}
-	return function() {
-		// DOCUMENTED ABOVE
-		this.observerList = this.observerList || [];
-		this.notify = notify;
-		this.addObserver = addObserver;
-		return this;
-	};
-})();
-
-// Technique found at: http://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
-// In order to use it:
-//Samotraces.Objects.Observable.call(myObject.prototype);
-
-
-// THIS FILE MUST BE INCLUDED FIRST!!!
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
-/**
  * @mixin
  * @description
- * The EventBuilder Object is not a class. However, it is 
+ * The EventHandler Object is not a class. However, it is 
  * designed for other classes to inherit of a predefined
  * Observable behaviour. For this reason, this function is
  * documented as a Class. 
  * 
  * In order to use create a class that "inherits" from the 
- * "EventBuilder class", one must run the following code in 
+ * "EventHandler class", one must run the following code in 
  * the constructor:
  * <code>
- * Samotraces.Lib.EventBuilder.call(this);
+ * Samotraces.Lib.EventHandler.call(this);
  * </code>
  *
  * @property {Object} callbacks
  *     Hash matching callbacks to event_types.
- *
- * @todo rename to EventHandler?
  */
-Samotraces.Lib.EventBuilder = (function() {
+Samotraces.Lib.EventHandler = (function() {
 	/**
 	 * Triggers all the registred callbacks.
 	 * @memberof Samotraces.Lib.EventBuilder.prototype
@@ -124,6 +59,10 @@ Samotraces.Lib.EventBuilder = (function() {
 	 *     event.data: optional data that is transmitted with the event
 	 */
 	function addEventListener(event_type,callback) {
+		if({}.toString.call(callback) !== '[object Function]') {
+			console.log(callback);
+			throw "Callback for event "+event_type+" is not a function";
+		}
 		this.callbacks[event_type] = this.callbacks[event_type] || [];
 		this.callbacks[event_type].push(callback);
 	}
@@ -233,59 +172,13 @@ Samotraces.Lib.IFrameEspion.prototype = {
 var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
-Samotraces.Lib.addBehaviour = function(behaviourName,eventTargetElement,opt) {
-
-	switch(behaviourName) {
-		case 'changeTimeOnDrag':
-			var mousedown,mouseup,mousemove;
-			var init_client_x;
-			mousedown = function(e) {
-			//	console.log('mousedown');
-				init_client_x = e.clientX;
-				eventTargetElement.addEventListener('mousemove',mousemove);
-				eventTargetElement.addEventListener('mouseup',mouseup);
-				eventTargetElement.addEventListener('mouseleave',mouseup);
-				return false;
-			};
-			mouseup = function(e) {
-			//	console.log('mouseup');
-				if(init_client_x !== undefined) {
-					var delta_x = (e.clientX - init_client_x);
-					opt.onUpCallback(delta_x);
-					eventTargetElement.removeEventListener('mousemove',mousemove);
-					eventTargetElement.removeEventListener('mouseup',mouseup);
-					eventTargetElement.removeEventListener('mouseleave',mouseup);
-				}
-				return false;
-			};
-			mousemove = function(e) {
-				var delta_x = (e.clientX - init_client_x);
-				opt.onMoveCallback(delta_x);
-				return false;
-			};
-			eventTargetElement.addEventListener('mousedown',mousedown);
-			break;	
-		case 'zommOnScroll':
-			wheel = function(e) {
-				var coef = Math.pow(0.8,-e.deltaY/3);
-				opt.timeWindow.zoom(coef);
-//				opt.onWheelCallback.call(opt.bind,coef);
-				e.preventDefault();
-				return false;
-			};
-			eventTargetElement.addEventListener('wheel',wheel);
-			break;
-		default:
-			break;
-	}
-
-}
-
-
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
-/* classe Obsel */
+/**
+ * @class JavaScript Obsel class
+ * @param {String} id Identifier of the obsel.
+ * @param {Number} timestamp Timestamp of the obsel
+ * @param {String} type Type of the obsel.
+ * @param {Object} attributes Optional attributes of the obsel.
+ */
 Samotraces.Lib.Obsel = function(id,timestamp,type,attributes) {
 	this.id = id;
 	this.timestamp = timestamp;
@@ -303,7 +196,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Object that stores the currently selected obsel
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * The {@link Samotraces.Lib.ObselSelector|ObselSelector} object
  * is a Javascript object that stores the currently selected obsel.
@@ -332,12 +225,10 @@ Samotraces.Lib = Samotraces.Lib || {};
  * and no 
  * {@link Samotraces.Lib.ObselSelector#event:obselUnselected|obselUnselected}
  * event.
- * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.ObselSelector = function() {
 	// Adding the Observable trait
-	Samotraces.Lib.Observable.call(this);
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.obsel = undefined;
 };
 
@@ -354,7 +245,6 @@ Samotraces.Lib.ObselSelector.prototype = {
      *     {@link Samotraces.Lib.Obsel|Obsel} object that is 
 	 *     selected.
 	 * @fires Samotraces.Lib.ObselSelector#obselSelected
-	 * @todo this.notify kept for compatibility -> remove
      */
 	select: function(obsel) {
 		this.obsel = obsel;
@@ -365,7 +255,6 @@ Samotraces.Lib.ObselSelector.prototype = {
 		 * @property {String} type - The type of the event (= "obselSelected").
 		 * @property {Samotraces.Lib.Obsel} data - The selected obsel.
 		 */
-		this.notify('obselSelected',obsel);
 		this.trigger('obselSelected',obsel);
 	},
 	/**
@@ -373,7 +262,6 @@ Samotraces.Lib.ObselSelector.prototype = {
      * This method is typically called from widgets that can
      * visualise an obsel.
 	 * @fires Samotraces.Lib.ObselSelector#obselUnselected
-	 * @todo this.notify kept for compatibility -> remove
      */
 	unselect: function() {
 		this.obsel = undefined;
@@ -383,8 +271,7 @@ Samotraces.Lib.ObselSelector.prototype = {
 		 * @type {object}
 		 * @property {String} type - The type of the event (= "obselUnselected").
 		 */
-		this.notify('obselUnselected');
-		this.trigger('obselUnselected',obsel);
+		this.trigger('obselUnselected');
 	}
 };
 
@@ -397,8 +284,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Javascript Trace Object.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.Observable
- * @mixes Samotraces.Lib.EventBuilder
+ * @mixes Samotraces.Lib.EventHandler
  * @augments Samotraces.Lib.Trace
  * @description
  * Samotraces.Lib.DemoTrace is a Javascript Trace object.
@@ -410,7 +296,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.DemoTrace = function() {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	var current_trace = this;
 
 	/* Nombre d'obsels dans la trace */
@@ -430,16 +316,16 @@ Samotraces.Lib.DemoTrace.prototype = {
 	 * @todo update documentation by creating (fake) Trace
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
+	 * @fires Samotraces.Lib.Trace#updateTrace
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
 		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
-		//this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
-		this.notify('updateTrace',this.traceSet);
+		this.trigger('updateTrace',this.traceSet);
 	},
-// */	
+
 	updateObsel: function(old_obs,new_obs) {
 		console.log('Method KtbsTrace:updateObsel() not implemented yet...');
 //		this.traceSet.erase(old_obs);
@@ -470,10 +356,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 
-/* Classe Trace */
+/**
+ * @class JavaScript Trace class connected to a kTBS
+ * @augments Samotraces.Lib.Trace
+ */
 Samotraces.Lib.KtbsBogueTrace = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.url = url;
 	var current_trace = this;
 
@@ -484,7 +373,6 @@ Samotraces.Lib.KtbsBogueTrace = function(url) {
 };
 
 Samotraces.Lib.KtbsBogueTrace.prototype = {
-
 	newObsel: function(type,timeStamp,attributes) {
 		var newObselOnSuccess = function(data,textStatus,jqXHR) {
 			var url = jqXHR.getResponseHeader('Location');
@@ -530,6 +418,9 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 				success: this.getNewObselSuccess.bind(this),
 			});
 	},
+	/**
+	 * @fires Samotraces.Lib.Trace#newObsel
+	 */
 	getNewObselSuccess: function(data,textStatus,jqXHR) {
 		// workaround to get the id eventhough the ktbs doesn't return it.
 		var url = jqXHR.getResponseHeader('Content-Location');
@@ -547,7 +438,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 		if(obs !== undefined) {
 			obs.id = obsel_id; 
 			this.traceSet.push(obs);
-			this.notify('newObsel',obs);
+			this.trigger('newObsel',obs);
 		}
 	},
 
@@ -559,6 +450,9 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 				success: this.refreshObselsSuccess.bind(this)
 			});
 	},
+	/**
+	 * @fires Samotraces.Lib.Trace#updateTrace
+	 */
 	refreshObselsSuccess: function(data) {
 			var raw_json = Samotraces.Tools.xmlToJson(data);
 			var obsels = [];
@@ -570,7 +464,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 					}
 				},this);
 			this.traceSet = obsels;
-			this.notify('updateTrace',this.traceSet);
+			this.trigger('updateTrace',this.traceSet);
 	},
 
 	rdf2obs: function(el) {
@@ -616,9 +510,9 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @requires ktbs4js (see <a href="https://github.com/oaubert/ktbs4js">on github</a>)
  * @constructor
- * @augments Samotraces.Objects.Observable
+ * @augments Samotraces.Lib.EventHandler
  * @description
- * Samotraces.Objects.Ktbs4jsTrace is a Javascript Trace object
+ * Samotraces.Lib.Ktbs4jsTrace is a Javascript Trace object
  * that is bound to a KTBS trace. This Object wraps the 
  * ktbs4js API to the KTBS to make it compatible with the
  * Samotraces framework.
@@ -627,7 +521,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs4jsTrace = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 
 	this.trace = tracemanager.init_trace('trace1',{url: url, syncmode: 'sync', format: 'turtle'});
 	this.traceSet = this.trace.obsels;
@@ -638,7 +532,7 @@ Samotraces.Lib.Ktbs4jsTrace = function(url) {
 Samotraces.Lib.Ktbs4jsTrace.prototype = {
 	onUpdate: function() {
 		this.traceSet = this.trace.obsels;
-		this.notify('updateTrace',this.obsels);
+		this.trigger('updateTrace',this.obsels);
 	},
 	newObsel: function(type,timeStamp,attributes) {
 		this.trace.trace(type,attributes,timeStamp);
@@ -660,7 +554,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Lib.Observable
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * Samotraces.Lib.Ktbs is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
@@ -679,7 +573,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 Samotraces.Lib.Ktbs = function(url) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.url = url;
 	this.bases = [];
 	this.refresh();
@@ -690,7 +584,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Lib.Observable
+	 * @augments Samotraces.Lib.EventHandler
 	 * @description
 	 * Samotraces.Lib.KtbsBase is a Javascript KTBS base
 	 * object that is bound to a KTBS. This Object can be seen
@@ -710,7 +604,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsBase = function(url) {
 		// Addint the Observable trait
-		Samotraces.Lib.Observable.call(this);
+		Samotraces.Lib.EventHandler.call(this);
 		this.url = url;
 		this.traces = [];
 		this.refresh();
@@ -740,7 +634,7 @@ Samotraces.Lib.Ktbs = function(url) {
 			// parse data to get list of bases and check if it has changed...
 			if(this.traces !== traces) {
 				this.traces = traces;
-				this.notify('TracesListChanged',this.traces);
+				this.trigger('TracesListChanged',this.traces);
 			}
 		},
 		/** @todo implement this method */
@@ -772,7 +666,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 * @author Benoît Mathern
 	 * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
 	 * @constructor
-	 * @augments Samotraces.Lib.Observable
+	 * @mixes Samotraces.Lib.EventHandler
 	 * @description
 	 * Samotraces.Lib.KtbsTrace is a Javascript Trace object
 	 * that is bound to a KTBS trace. This Object can be seen as
@@ -795,7 +689,7 @@ Samotraces.Lib.Ktbs = function(url) {
 	 */
 	var KtbsTrace = function(url) {
 		// Addint the Observable trait
-		Samotraces.Lib.Observable.call(this);
+		Samotraces.Lib.EventHandler.call(this);
 		this.url = url;
 		var current_trace = this;
 
@@ -868,7 +762,7 @@ Samotraces.Lib.Ktbs = function(url) {
 					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
 				});
 			this.traceSet = obsels;
-			this.notify('updateTrace',this.traceSet);
+			this.trigger('updateTrace',this.traceSet);
 		},
 
 	};
@@ -898,7 +792,7 @@ Samotraces.Lib.Ktbs.prototype = {
 		// parse data to get list of bases and check if it has changed...
 		if(this.bases !== bases) {
 			this.bases = bases;
-			this.notify('BasesListChanged',this.bases);
+			this.trigger('BasesListChanged',this.bases);
 		}
 	},
 	/** @todo implement this method */
@@ -947,17 +841,26 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 Samotraces.Lib.Timer = function(time) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.time = time || 0;
 };
-/** @todo this.notify kept for compatibility -> remove */
+
 Samotraces.Lib.Timer.prototype = {
+	/**
+	 * Sets the Timer to the given time.
+	 * @fires Samotraces.Lib.Timer#updateTime
+	 * @param {Number} time New time
+	 */
 	set: function(time) {
 		new_time = Number(time);
 		if(this.time != new_time) {
-			this.time = new_time;
-			this.notify('updateTime',this.time); 
+			this.time = new_time; 
+			/**
+			 * Time change event.
+			 * @event Samotraces.Lib.Timer#updateTime
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "updateTime").
+			 */
 			this.trigger('updateTime',this.time);
 		}
 	}
@@ -969,7 +872,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 Samotraces.Lib.SelfUpdatingTimer = function(init_time,period,update_function) {
 	// Addint the Observable trait
-	Samotraces.Lib.Observable.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	this.time = init_time || 0;
 	period = period || 2000;
 	update_function = update_function || function() {return Date.now();};
@@ -986,7 +889,7 @@ Samotraces.Lib.SelfUpdatingTimer.prototype = {
 		new_time = Number(time);
 		if(this.time != new_time) {
 			this.time = new_time;
-			this.notify('updateTime',this.time);
+			this.trigger('updateTime',this.time);
 		}
 	}
 };
@@ -1002,7 +905,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Object that stores the current time window
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.EventHandler
  * @description
  * The {@link Samotraces.Lib.TimeWindow} object is a Javascript Object
  * that stores the current time window.
@@ -1011,6 +914,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * {@link Samotraces.Lib.TimeWindow#event:updateTimeWindow|updateTimeWindow}
  * event.
  * A {@link Samotraces.Lib.TimeWindow|TimeWindow} can be defined in two ways:
+ *
  * 1.  by defining a lower and upper bound
  * 2.  by defining a timer and a width.
  *
@@ -1025,12 +929,10 @@ Samotraces.Lib = Samotraces.Lib || {};
  *     is used to define the middle of the current time window.
  * @param {Number} opt.width Width of the time window.
  *
- * @todo Samotraces.Lib.Observable.call(this); kept for compatibility -> remove
  */
 Samotraces.Lib.TimeWindow = function(opt) {
 	// Adding the Observable trait
-	Samotraces.Lib.Observable.call(this); 
-	Samotraces.Lib.EventBuilder.call(this);
+	Samotraces.Lib.EventHandler.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
 		this.start = opt.start;
 		this.end = opt.end;
@@ -1055,7 +957,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 	/** 
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_start: function(time) {
 		if(this.start != time) {
@@ -1067,20 +968,17 @@ Samotraces.Lib.TimeWindow.prototype = {
 			 * @type {object}
 			 * @property {String} type - The type of the event (= "updateTimeWindow").
 			 */
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_end: function(time) {
 		if(this.start != time) {
 			this.end = time;
 			this.__calculate_width();
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
@@ -1090,7 +988,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	set_width: function(width,center) {
 		if( center === undefined) {
@@ -1099,12 +996,10 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.start = center - width/2;
 		this.end = center + width/2;
 		this.width = width;
-		this.notify('updateTimeWindow');
 		this.trigger('updateTimeWindow');
 	},
 	/**
 	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
-	 * @todo this.notify kept for compatibility -> remove
 	 */
 	translate: function(delta) {
 		if(this.timer) {
@@ -1112,7 +1007,6 @@ Samotraces.Lib.TimeWindow.prototype = {
 		} else {
 			this.start = this.start + delta;
 			this.end = this.end + delta;
-			this.notify('updateTimeWindow');
 			this.trigger('updateTimeWindow');
 		}
 	},
@@ -1127,18 +1021,31 @@ Samotraces.Lib.TimeWindow.prototype = {
 var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
-
+/**
+ * @class
+ * Singleton object that detects when the size of the
+ * window changes.
+ * Widgets that need to update themselves when the size of
+ * the window changes should listen to the 'resize' event
+ * triggered by the WindowState object.
+ * @fires Samotraces.Lib.WindowState#resize
+ * @todo fix this... this is not a class
+ */
 Samotraces.Lib.WindowState = (function() {
 	var WS = function() {
 		// Addint the Observable trait
-		Samotraces.Lib.Observable.call(this); /** @todo kept for compatibility -> remove */
-		Samotraces.Lib.EventBuilder.call(this);
+		Samotraces.Lib.EventHandler.call(this);
 		window.onresize = this.resize.bind(this);
 	};
 	
 	WS.prototype = {
 		resize: function() {
-			this.notify('resize'); /** @todo kept for compatibility -> remove */
+			/**
+			 * Window resize event.
+			 * @event Samotraces.Lib.WindowState#resize
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "resize").
+			 */
 			this.trigger('resize'); 
 		},
 	};
@@ -1208,9 +1115,25 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @see Samotraces.Widgets.Basic.ImportTrace
  * @todo ATTENTION code qui vient d'ailleurs !
  * @description
- * The {Samotraces.Widgets.Basic.ImportTrace} widget is a generic
+ * The {@link Samotraces.Widgets.Basic.ImportTrace} widget is a generic
  * Widget to import a trace from a CSV file.
  * 
+ * This widget currently accept the following format:
+ *
+ * 1. The CSV file can use either ',' or ';' as a value separator
+ * 2. Each line represents an obsel
+ * 3. The first column represents the time when the obsel occurs
+ * 4. The second column represents the type of the obsel
+ * 5. The following columns represent pairs of "attribute" / "value" columns
+ *
+ * The number of columns may vary from line to line.
+ * For example, a CSV file might look like this:
+ * <pre>
+ * 0,click,target,button2
+ * 2,click,target,button1,value,toto
+ * 3,focus,target,submit
+ * 5,click,target,submit
+ * </pre>
  * @todo DESCRIBE THE FORMAT OF THE CSV FILE.
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
@@ -1255,10 +1178,12 @@ Samotraces.Widgets.ImportTrace.prototype = {
 		this.element.appendChild(this.form_element);
 
 		var button_el = document.createElement('p');
-		var a_el = document.createElement('a').innerHTML("toggle console");
+		var a_el = document.createElement('a');
+		a_el.href = "";
+		a_el.innerHTML = "toggle console";
 		button_el.appendChild(a_el);
-		button_el.innerHTML = "<a>toggle console</a>";
-		button_el.addEventListener('click',this.on_toggle.bind(this));
+//		button_el.innerHTML = "<a href=\"\">toggle console</a>";
+		a_el.addEventListener('click',this.on_toggle.bind(this));
 		this.element.appendChild(button_el);
 
 		this.display_element = document.createElement('div');
@@ -1291,6 +1216,7 @@ Samotraces.Widgets.ImportTrace.prototype = {
 	},
 
 	on_toggle: function(e) {
+		e.preventDefault();
 		if(this.display_element.style.display == 'none') {
 			this.display_element.style.display = 'block';
 		} else {
@@ -1450,7 +1376,8 @@ Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	this.add_class('WidgetObselInspector');
 
 	this.obsel = obsel_selector;
-	obsel_selector.addObserver(this);
+	this.obsel.addEventListener('obselSelected',this.inspect.bind(this));
+	this.obsel.addEventListener('obselUnselected',this.close.bind(this));
 
 	this.init_DOM();
 };
@@ -1471,20 +1398,8 @@ Samotraces.Widgets.ObselInspector.prototype = {
 
 		this.close_element.addEventListener('click',this.onCloseAction.bind(this));
 	},
-	update: function(message,object) {
-		switch(message) {
-			case 'obselSelected':
-				obs = object;
-				this.inspect(obs);
-				break;
-			case 'obselUnselected':
-				this.close();
-				break;
-			default:
-				break;
-		}
-	},
-	inspect: function(obs) {
+	inspect: function(event) {
+		var obs = event.data;
 		// clear
 		this.datalist_element.innerHTML = '';
 
@@ -1530,24 +1445,24 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.Basic.TimeForm
+ * @see Samotraces.Widgets.TimeForm
  * @description
- * Samotraces.Widgets.Basic.ReadableTimeForm is a generic
+ * Samotraces.Widgets.ReadableTimeForm is a generic
  * Widget to visualise the current time.
  *
  * The time (in ms from the 01/01/1970) is converted in a
  * human readable format (as opposed to
- * {@link Samotraces.Widgets.Basic.TimeForm} widget
+ * {@link Samotraces.Widgets.TimeForm} widget
  * which display raw time).
  * 
- * This widget observes a Samotraces.Objects.Timer object.
+ * This widget observes a Samotraces.Lib.Timer object.
  * When the timer changes the new time is displayed.
  * This widget also allow to change the time of the timer.
  * 
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.Timer} timer
+ * @param {Samotraces.Lib.Timer} timer
  *     Timer object to observe.
  */
 Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
@@ -1557,10 +1472,10 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	this.add_class('ReadableTimeForm');
 
 	this.timer = timer;
-	timer.addObserver(this);
+	this.timer.addEventListener('updateTime',this.refresh.bind(this));
 
 	this.init_DOM();
-	this.refresh(this.timer.time);
+	this.refresh({data: this.timer.time});
 };
 
 Samotraces.Widgets.ReadableTimeForm.prototype = {
@@ -1639,18 +1554,8 @@ Samotraces.Widgets.ReadableTimeForm.prototype = {
 		this.element.appendChild(this.form_element);
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateTime':
-				time = object;
-				this.refresh(time);	
-				break;
-			default:
-				break;
-		}
-	},
-
-	refresh: function(time) {
+	refresh: function(e) {
+		time = e.data
 		var date = new Date();
 		date.setTime(time);
 		this.year_element.value   = date.getFullYear();
@@ -1700,24 +1605,24 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.Basic.ReadableTimeForm
+ * @see Samotraces.Widgets.ReadableTimeForm
  * @description
- * Samotraces.Widgets.Basic.TimeForm is a generic
+ * Samotraces.Widgets.TimeForm is a generic
  * Widget to visualise the current time.
  *
  * The time is displayed as a number. See
- * {@link Samotraces.Widgets.Basic.TimeForm} to convert
+ * {@link Samotraces.Widgets.TimeForm} to convert
  * raw time (in ms from the 01/01/1970) to a human readable
  * format.
  * 
- * This widget observes a Samotraces.Objects.Timer object.
+ * This widget observes a Samotraces.Lib.Timer object.
  * When the timer changes the new time is displayed.
  * This widget also allow to change the time of the timer.
  * 
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.Timer} timer
+ * @param {Samotraces.Lib.Timer} timer
  *     Timer object to observe.
  */
 Samotraces.Widgets.TimeForm = function(html_id,timer) {
@@ -1725,10 +1630,10 @@ Samotraces.Widgets.TimeForm = function(html_id,timer) {
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.timer = timer;
-	timer.addObserver(this);
+	this.timer.addEventListener('updateTime',this.refresh.bind(this));
 
 	this.init_DOM();
-	this.refresh(this.timer.time);
+	this.refresh({data: this.timer.time});
 };
 
 Samotraces.Widgets.TimeForm.prototype = {
@@ -1759,19 +1664,8 @@ Samotraces.Widgets.TimeForm.prototype = {
 		this.element.appendChild(this.form_element);
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateTime':
-				time = object;
-				this.refresh(time);	
-				break;
-			default:
-				break;
-		}
-	},
-
-	refresh: function(time) {
-		this.input_element.value = time;
+	refresh: function(e) {
+		this.input_element.value = e.data;
 	},
 
 	build_callback: function(event) {
@@ -1826,7 +1720,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	this.timer.addEventListener('updateTime',this.draw.bind(this));
 
 	this.time_window = time_window;
-	time_window.addObserver(this);
+	this.time_window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
 	// update slider style
 	this.slider_offset = 0;
@@ -1844,9 +1738,8 @@ Samotraces.Widgets.TimeSlider.prototype = {
 		this.element.appendChild(this.slider_element);
 
 		// hand made drag&drop
-//		this.slider_element.addEventListener('mousedown',this.build_callback('mousedown'));
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+		this.add_behaviour('changeTimeOnDrag',this.slider_element,{
 				onUpCallback: function(delta_x) {
 					var new_time = widget.timer.time + delta_x*widget.time_window.get_width()/widget.element.clientWidth;
 					widget.timer.set(new_time);
@@ -1961,7 +1854,8 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
-	trace.addObserver(this);
+	this.trace.addEventListener('updateTrace',this.draw.bind(this));
+	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
 	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
@@ -2024,7 +1918,7 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 
 		// event listeners
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.element,{
+		this.add_behaviour('changeTimeOnDrag',this.element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
 					widget.window.translate(time_delta);	
@@ -2038,48 +1932,12 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 					widget.svg_gp.attr('transform','translate('+offset+',0)');
 				},
 			});
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
 //		this.element.addEventListener('wheel',this.build_callback('wheel'));
 //		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
 
-	update: function(message,object) {
-		switch(message) {
-			case 'updateTrace':
-				this.data = this.trace.traceSet;
-				this.draw();	
-				break;
-/*			case 'updateTimeWindow':
-				this.refresh_x();
-				break;*/
-/*			case 'resize':
-				this.refresh_x(); // TODO: REFRESH_Y as well?
-				break;*/
-			case 'newObsel':
-				obs = object;
-				this.addObsel(obs);	
-				break;
-			case 'updateObsel':
-				old_obs = object.old_obs;
-				new_obs = object.new_obs;
-				this.updateObsel(old_obs,new_obs);
-				break;
-			case 'obselSelected':
-				obs = object;
-//				this.selectObsel(obs);
-				break;
-			case 'obselUnselected':
-				obs = object;
-//				this.unselectObsel(obs);
-				break;
-			case 'removeObsel':
-				obs = object;
-				this.removeObsel(obs);	
-				break;
-			default:
-				break;
-		}
-	},
+
 	// TODO: needs to be named following a convention 
 	// to be decided on
 	/**
@@ -2107,7 +1965,10 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
 	},*/
 
-	draw: function() {
+	draw: function(e) {
+		if(e) {
+			this.data = this.trace.traceSet;
+		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
@@ -2124,7 +1985,8 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		this.draw();	
 	},
 
-	addObsel: function(obs) {
+	addObsel: function(e) {
+		var obs = e.data;
 //console.log('addObsel '+obs.id);
 //console.log(obs);
 		this.data.push(obs);
@@ -2186,11 +2048,105 @@ Samotraces.Widgets.Widget = (function() {
 	function add_class(class_name) {
 		this.element.className += ' '+class_name;
 	}
+	/**
+	 * Creates a new behaviour (interaction possibility)
+	 * with the widget.
+	 * Two behaviours are implemented so far:
+	 * 1. 'changeTimeOnDrag'
+	 * 2. 'zommOnScroll'
+	 *
+	 * 1. 'changeTimeOnDrag' behaviour allows to change
+	 * a {@link Samotraces.Lib.Timer} on a drag-n-drop like event
+	 * (JavaScript 'mousedown', 'mousemove', 'mouseup' and 'mouseleave'
+	 * events). This allows to change the current time by dragging
+	 * a trace visualisation or a slider for instance.
+	 *
+	 * 2. 'changeTimeOnDrag' behaviour allows to change
+	 * a {@link Samotraces.Lib.TimeWindow} on a mouse scroll event
+	 * (JavaScript 'wheel' event)
+	 *
+	 * @memberof Samotraces.Widgets.Widget.prototype
+	 * @public
+	 * @method
+	 * @param {String} behaviourName Name of the behaviour
+	 *     ('changeTimeOnDrag' or 'zommOnScroll'). See description above.
+	 * @param {HTMLElement} eventTargetElement HTML Element on which
+	 *     an eventListener will be created (typically, the element you
+	 *     want to interact with).
+	 * @param {Object} opt Options that vary depending on the
+	 *     selected behaviour.
+	 * @param {Function} opt.onUpCallback
+	 *    (for 'changeTimeOnDrag' behaviour only)
+	 *    Callback that will be called when the 'mouseup' event will be
+	 *    triggered. The argument delta_x is passed to the callback
+	 *    and represents the offset of the x axis in pixels between the
+	 *    moment the mousedown event has been triggered and the moment
+	 *    the current mouseup event has been triggered.
+	 * @param {Function} opt.onMoveCallback
+	 *    (for 'changeTimeOnDrag' behaviour only)
+	 *    Callback that will be called when the 'mousemove' event will be
+	 *    triggered. The argument delta_x is passed to the callback
+	 *    and represents the offset of the x axis in pixels between the
+	 *    moment the mousedown event has been triggered and the moment
+	 *    the current mousemove event has been triggered.
+	 * @param {Samotraces.Lib.TimeWindow} opt.timeWindow
+	 *    (for 'zommOnScroll' behaviour only)
+	 *    {@link Samotraces.Lib.TimeWindow} object that will
+	 *    be edited when the zoom action is produced.
+	 */
+	function add_behaviour(behaviourName,eventTargetElement,opt) {
+
+		switch(behaviourName) {
+			case 'changeTimeOnDrag':
+				var mousedown,mouseup,mousemove;
+				var init_client_x;
+				mousedown = function(e) {
+				//	console.log('mousedown');
+					init_client_x = e.clientX;
+					eventTargetElement.addEventListener('mousemove',mousemove);
+					eventTargetElement.addEventListener('mouseup',mouseup);
+					eventTargetElement.addEventListener('mouseleave',mouseup);
+					return false;
+				};
+				mouseup = function(e) {
+				//	console.log('mouseup');
+					if(init_client_x !== undefined) {
+						var delta_x = (e.clientX - init_client_x);
+						opt.onUpCallback(delta_x);
+						eventTargetElement.removeEventListener('mousemove',mousemove);
+						eventTargetElement.removeEventListener('mouseup',mouseup);
+						eventTargetElement.removeEventListener('mouseleave',mouseup);
+					}
+					return false;
+				};
+				mousemove = function(e) {
+					var delta_x = (e.clientX - init_client_x);
+					opt.onMoveCallback(delta_x);
+					return false;
+				};
+				eventTargetElement.addEventListener('mousedown',mousedown);
+				break;	
+			case 'zommOnScroll':
+				wheel = function(e) {
+					var coef = Math.pow(0.8,-e.deltaY/3);
+					opt.timeWindow.zoom(coef);
+	//				opt.onWheelCallback.call(opt.bind,coef);
+					e.preventDefault();
+					return false;
+				};
+				eventTargetElement.addEventListener('wheel',wheel);
+				break;
+			default:
+				break;
+		}
+
+	}
 	return function(id) {
 		// DOCUMENTED ABOVE
 		this.id = id;
 		this.element = document.getElementById(this.id);
 		this.add_class = add_class;
+		this.add_behaviour = add_behaviour;
 
 		// call method
 		this.add_class('Widget');
@@ -2247,16 +2203,17 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 //	time_window.addObserver(this);
 	this.window.addEventListener('updateTimeWindow',this.draw.bind(this));
 
-	this.init_DOM();
-	// update slider's position
-	this.draw();
-
 	// trying to guess if time_window is related to a Date() object
 	if(this.window.start > 1000000000) { // 1o^9 > 11 Jan 1970 if a Date object
 		this.is_javascript_date = is_javascript_date || true;
 	} else {
 		this.is_javascript_date = is_javascript_date || false;
 	}
+
+	this.init_DOM();
+	// update slider's position
+	this.draw();
+
 };
 
 Samotraces.Widgets.WindowScale.prototype = {
@@ -2282,7 +2239,7 @@ Samotraces.Widgets.WindowScale.prototype = {
 				onMoveCallback: function(offset) {
 				},
 			});*/
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
 	},
 
 	draw: function() {
@@ -2348,7 +2305,7 @@ Samotraces.Widgets.WindowSlider.prototype = {
 		// hand made drag&drop
 		// event listeners
 		var widget = this;
-		Samotraces.Lib.addBehaviour('changeTimeOnDrag',this.slider_element,{
+		this.add_behaviour('changeTimeOnDrag',this.slider_element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = delta_x*widget.wide_window.get_width()/widget.element.clientWidth;
 					widget.slider_window.translate(time_delta);	
@@ -2357,25 +2314,15 @@ Samotraces.Widgets.WindowSlider.prototype = {
 					widget.slider_element.style.left = widget.slider_offset+offset+'px';
 				},
 			});
-		Samotraces.Lib.addBehaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.slider_window});
 	},
 
 	draw: function() {
-//		if(this.time_window.start < this.timer.time && this.timer.time < this.time_window.end) {
-//toto = this.element;
-//console.log(this.element);
-			this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
-		//	this.slider_element.setAttribute();
-			this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
-		//	this.slider_element.setAttribute('style','display: block; width: '+this.width+'px; left: '+this.slider_offset+'px;');
-			this.slider_element.style.display = 'block';
-			this.slider_element.style.width = this.width+'px';
-			this.slider_element.style.left = this.slider_offset+'px';
-
-	//		this.slider_element.setAttribute('display','block');
-//		} else {
-//			this.slider_element.setStyle('display','none');
-//		}
+		this.width = this.slider_window.get_width()/this.wide_window.get_width()*this.element.clientWidth;
+		this.slider_offset = (this.slider_window.start - this.wide_window.start)*this.element.clientWidth/this.wide_window.get_width();
+		this.slider_element.style.display = 'block';
+		this.slider_element.style.width = this.width+'px';
+		this.slider_element.style.left = this.slider_offset+'px';
 	},
 
 
