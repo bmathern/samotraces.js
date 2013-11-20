@@ -68,7 +68,7 @@ instance, here, we create a <code>div</code> with the id
 <code>"my-widget"</code>.
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -77,7 +77,7 @@ instance, here, we create a <code>div</code> with the id
 		&lt;div id="my-widget"&gt;&lt;/div&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <p>
 Now, extra files must be included.
@@ -104,7 +104,7 @@ downloaded.
 The code should look like this now:
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -116,7 +116,7 @@ The code should look like this now:
 		&lt;div id="my-widget"&gt;&lt;/div&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <h2>Javascript code</h2>
 
@@ -143,8 +143,8 @@ the moment. In order to initialise the widget, we need to
 write something like:
 </p>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.TraceDisplayIcons(id,trace,obsel_selector,time_window);
-</code></pre>
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons(id,trace,obsel_selector,time_window);
+</pre>
 
 <p>
 Now, let's see how to initialise the parameters correctly.
@@ -156,8 +156,8 @@ defined in the HTML source: <code>"my-widget"</code>. We
 can replace it direcly:
 </p>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,time_window);
-</code></pre>
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,time_window);
+</pre>
 
 <p>
 Now, we will initialise the other 3 parameters: 
@@ -166,11 +166,11 @@ Now, we will initialise the other 3 parameters:
 <code>time_window</code> with the following code:
 </p>
 
-<pre class="prettyprint"><code>// Create logical objects
+<pre class="prettyprint sunlight-highlight-javascript linenums">// Create logical objects
 var trace 		= new Samotraces.Lib.DemoTrace();
 var obsel_selector	= new Samotraces.Lib.ObselSelector();
 var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-</code></pre>
+</pre>
 
 <p>
 Let's explain what this means.
@@ -208,7 +208,7 @@ of Samotraces.js has been successfully loaded in the web page,
 you can wrap it in a function.
 </p>
 
-<pre class="prettyprint"><code>&lt;script type="text/javascript"&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;script type="text/javascript"&gt;
 function init() {
 	// Create logical objects
 	var trace 		= new Samotraces.Lib.DemoTrace();
@@ -221,10 +221,10 @@ function init() {
 // calling the init function when the DOM has been loaded
 window.addEventListener('DOMContentLoaded', init );
 &lt;/script&gt;
-</code></pre>
+</pre>
 
 <p>The full HTML code should look like this:</p>
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -249,7 +249,7 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <p>
 Congratulations! Now, you are successfully visualising... 
@@ -278,16 +278,16 @@ This is done with the following code (that should be inserted
 at the end of the <code>init()</code> function):
 </p>
 
-<pre class="prettyprint"><code>	trace.newObsel('click',1);
+<pre class="prettyprint sunlight-highlight-javascript linenums">	trace.newObsel('click',1);
 	trace.newObsel('click',5);
 	trace.newObsel('click',12);
-</code></pre>
+</pre>
 
 <p>
 Now, your source code should look as follows.
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -318,7 +318,7 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <p>
 And you should be able to visualise something like this when

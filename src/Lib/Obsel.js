@@ -3,7 +3,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
- * Obsel class
+ * @class JavaScript Obsel class
  * @param {String} id Identifier of the obsel.
  * @param {Number} timestamp Timestamp of the obsel
  * @param {String} type Type of the obsel.

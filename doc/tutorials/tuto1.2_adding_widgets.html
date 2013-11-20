@@ -19,7 +19,7 @@ detailed informations about a selected Obsel.
 Let's start with the code obtained at the end of the previous part of the tutorial:
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -50,7 +50,7 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <h3>Reminders</h3>
 <p>
@@ -132,11 +132,11 @@ All we need to do is to create a HTML DIV element for the widget
 have already been instanciated:
 </p>
 
-<pre class="prettyprint"><code>&lt;div id="scale"&gt;&lt;/div&gt;
-</code></pre>
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="scale"&gt;&lt;/div&gt;
+</pre>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.WindowScale('scale',tw);
-</code></pre>
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.WindowScale('scale',tw);
+</pre>
 
 <p>
 Now you should see something like this:
@@ -182,17 +182,17 @@ for instance) and then instanciate the
 trace object already instanciated in parameter:
 </p>
 
-<pre class="prettyprint"><code>&lt;div id="importer"&gt;&lt;/div&gt;
-</code></pre>
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="importer"&gt;&lt;/div&gt;
+</pre>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.ImportTrace('importer',trace);
-</code></pre>
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ImportTrace('importer',trace);
+</pre>
 
 <p>
 The resulting code should be the following:
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -222,7 +222,7 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <p>
 Now, when you load the page, you see a new button appearing asking you to browse
@@ -275,11 +275,11 @@ with the previously defined
 {@link Samotraces.Lib.ObselSelector|ObselSelector} object:
 </p>
 
-<pre class="prettyprint"><code>&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
-</code></pre>
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+</pre>
 
-<pre class="prettyprint"><code>new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
-</code></pre>
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+</pre>
 
 <p>
 Now, let's see what happens!
@@ -349,7 +349,7 @@ When you click on an obsel, you should see something like this:
 Here is the final code that you should have obtained:
 </p>
 
-<pre class="prettyprint"><code>&lt;!doctype html&gt;
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
@@ -381,7 +381,7 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;/script&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</pre>
 
 <p>
 You can try out the final result of this tutorial

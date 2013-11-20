@@ -4,12 +4,14 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @class
  * Singleton object that detects when the size of the
  * window changes.
  * Widgets that need to update themselves when the size of
  * the window changes should listen to the 'resize' event
  * triggered by the WindowState object.
  * @fires Samotraces.Lib.WindowState#resize
+ * @todo fix this... this is not a class
  */
 Samotraces.Lib.WindowState = (function() {
 	var WS = function() {
