@@ -21,19 +21,21 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
 Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.Lib.EventHandler.call(this);
 	this.add_class('WidgetListBases');
 
-	this.ktbs_base = ktbs_base;
-	ktbs_base.addObserver(this);
+	this.base = ktbs_base;
+	this.base.addEventListener('updated',this.refresh.bind(this));
 
 	this.init_DOM();
 };
 
 Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 	init_DOM: function() {
+		this.element.innerHTML = "";
 
 		var title = document.createElement('h2');
-		var title_text = document.createTextNode(this.ktbs_base.url);
+		var title_text = document.createTextNode('Base: '+this.base.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
 
@@ -41,23 +43,15 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 		this.element.appendChild(this.datalist_element);
 
 	},
-	update: function(message,object) {
-		switch(message) {
-			case 'TracesListChanged':
-				this.refresh(object);
-				break;
-			default:
-				break;
-		}
-	},
-	refresh: function(bases) {
+	refresh: function() {
 		// clear
 console.log('refresh');
 		this.datalist_element.innerHTML = '';
 		var li_element;
-		bases.forEach(function(el) {
+		this.base.list_traces().forEach(function(t) {
 				li_element = document.createElement('li');
-				li_element.appendChild(document.createTextNode(el));
+				li_element.appendChild(document.createTextNode(t['@id']));
+				li_element.addEventListener('click',(function() {this.trigger('selected_trace',t['@id'])}).bind(this));
 				this.datalist_element.appendChild(li_element);
 			},this);
 

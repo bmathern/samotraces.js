@@ -7,6 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 
 /**
+ * @summary Javascript Ktbs Object that is bound to a KTBS. 
  * @class Javascript Ktbs Object that is bound to a KTBS. 
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
@@ -28,12 +29,87 @@ Samotraces.Lib = Samotraces.Lib || {};
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Lib.Ktbs = function(url) {
-	// Addint the Observable trait
-	Samotraces.Lib.EventHandler.call(this);
-	this.url = url;
+Samotraces.Lib.Ktbs = function(uri) {
+//	this.url = url;
+//	this.bases = [];
+//	this.refresh();
+
+	/* MIXIN */
+	var Resource = (function(id,uri,label) {
+		
+		// RESOURCE API
+		function get_id() { return this.id; }
+		function get_uri() { return this.uri; }
+		function force_state_refresh() {
+			$.ajax({
+				url: this.uri+'.json',
+				type: 'GET',
+				dataType: 'json',
+				success: this._on_state_refresh_.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log("Error in force_state_refresh():");
+					if(textStatus == "parsererror") {
+						console.log("--> parsererror -->");
+						console.log(jqXHR.responseText);
+					}
+				}
+			});
+		}
+		function start_auto_refresh(period) {
+			this.auto_refresh_id?this.stop_auto_refresh():null;
+			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period/1000);
+		}
+		function stop_auto_refresh() {
+			if(this.auto_refresh_id) {
+				window.clearInterval(this.auto_refresh_id);
+				delete(this.auto_refresh_id);
+			}
+		}
+//		function _on_state_refresh_(data) { this.data = data; console.log("here"); }
+		function get_read_only() {}
+		function remove() {}
+		function get_label() {}
+		function set_label() {}
+		function reset_label() {}
+
+		// ADDED FUNCTIONS
+		function _check_change_(local_field,distant,message_if_changed) {
+			if(this[local_field] !== distant) {
+				this[local_field] = distant;
+				this.trigger(message_if_changed);
+			}
+		}
+
+		return function(id,uri) {
+			// a Resource is an EventHandler
+			Samotraces.Lib.EventHandler.call(this);
+			// DOCUMENTED ABOVE
+			// ATTRIBUTES
+			this.id = id;
+			this.uri = uri;
+			this.label = label;
+			// API METHODS
+			this.get_id = get_id;
+			this.get_uri = get_uri;
+			this.force_state_refresh = force_state_refresh;
+			this.get_read_only = get_read_only;
+			this.remove = remove;
+			this.get_label = get_label;
+			this.set_label = set_label;
+			this.reset_label = reset_label;
+			// helper
+			this._check_change_ = _check_change_;
+			this.start_auto_refresh = start_auto_refresh;
+			this.stop_auto_refresh = stop_auto_refresh;
+			return this;
+		};
+	})();
+
+	// KTBS is a Resource
+	Resource.call(this,uri,uri,"");
 	this.bases = [];
-	this.refresh();
+	this.builtin_methods = [];
+	this.force_state_refresh();
 
 
 	/**
@@ -59,63 +135,35 @@ Samotraces.Lib.Ktbs = function(url) {
 	 *
 	 * @param {String}	url	Url of the KTBS to load.
 	 */
-	var KtbsBase = function(url) {
-		// Addint the Observable trait
-		Samotraces.Lib.EventHandler.call(this);
-		this.url = url;
+	var Base = function(id,uri) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,"");
 		this.traces = [];
-		this.refresh();
+		this.force_state_refresh();
 	};
+	this.Base = Base;
 
-	KtbsBase.prototype = {
-		refresh: function() {
-			jQuery.ajax({
-					url: this.url+'.json',
-					type: 'GET',
-					dataType: 'json',
-					success: this.parseRefreshResponse.bind(this)
-				});
-		},
-		parseRefreshResponse: function(data) {
-			console.log(data);
-		//	var raw_json = Samotraces.Tools.xmlToJson(data);
-		//	console.log(raw_json);
-		
-			var traces = [];
-			data.contains.forEach(
-				function(el) {
-					traces.push(el['@id']);
-				});
-
-	//		console.log('Method KtbsBase:parseRefreshResponse() not implemented yet...');
-			// parse data to get list of bases and check if it has changed...
-			if(this.traces !== traces) {
-				this.traces = traces;
-				this.trigger('TracesListChanged',this.traces);
-			}
-		},
-		/** @todo implement this method */
-		autorefresh: function(period) {
-			console.log('Method KtbsBase:autorefresh() not implemented yet...');
-		},
-		/** @todo implement this method */
-		createTrace: function() {
-			console.log('Method Ktbs:createBase() not implemented yet...');
-		},
-		getAllTracesIds: function() {
+	Base.prototype = {
+		get: function(id) {},
+		list_traces: function() {
 			return this.traces;
 		},
-		/**
-		 * Create a Samotraces.Objects.KtbsBogueTrace Object
-		 * corresponding to the given id.
-		 * @param {String} id Id of the KtbsTrace to seek.
-		 * @returns {Samotraces.Lib.KtbsBogueTrace}
-		 *     KtbsTrace object.
-		 */
-		getKtbsTrace: function(id) {
-			return new Samotraces.Lib.KtbsBogueTrace(this.url+id);
+		list_models: function() {},
+		create_stored_trace: function(id,model,origin,default_subject,label) {},
+		create_computed_trace: function(id,method,parameters,sources,label) {},
+		create_model: function(id,parents,label) {},
+		create_method: function(id,parent,parameters,label) {},
+///////////
+		_on_state_refresh_: function(data) {
+		//	console.log(data);
+			this._check_change_('label',data["http://www.w3.org/2000/01/rdf-schema#label"],'updated');
+			this._check_change_('traces', data.contains, 'updated');
 		},
-
+/////////// ADDED / API
+		get_trace: function(id) {
+			return new Trace(id,this.uri+id);
+		},
+////////////
 	};
 
 	/**
@@ -144,136 +192,165 @@ Samotraces.Lib.Ktbs = function(url) {
 	 *
 	 * @param {String}	url	Url of the KTBS trace to load.
 	 */
-	var KtbsTrace = function(url) {
-		// Addint the Observable trait
-		Samotraces.Lib.EventHandler.call(this);
-		this.url = url;
-		var current_trace = this;
+	var Trace = function(id,uri) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,"");
 
-		/* Array d'obsels */
-		this.traceSet = [];
+		this.default_subject = "";
+		this.model_uri = "";
+		this.obsel_list_uri = "";
+		this.base_uri = "";
+		this.origin = "";
+		this.obsel_list = []; this.traceSet = [];
 
-		this.refreshObsels();
+		this.force_state_refresh();
 	};
+	this.Trace = Trace;
 
-	KtbsTrace.prototype = {
-
-		newObsel: function(type,timeStamp,attributes) {
-			var newObselOnSuccess = function() {
-				this.refreshObsels();
-			};
-
-			var ttl_obsel = '@prefix : <http://liris.cnrs.fr/silex/2009/ktbs#> .\n@prefix m: <http://liris.cnrs.fr/silex/2011/simple-trace-model/> .\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n';
-			ttl_obsel += '[ a "'+type+'" ;\n';
-			ttl_obsel += '  :hasTrace <> ;\n';
-	//		ttl_obsel += '  rdf:type "'+type+'" ;\n';
-			var readable_timestamp = new Date(timeStamp).toString();
-			ttl_obsel += '  m:timestamp "'+readable_timestamp+'" ;\n';
-			for(var key in attributes) {
-				ttl_obsel += '  m:'+key+' "'+attributes[key]+'" ;\n';
+	Trace.prototype = {
+/////////// OFFICIAL API
+		get_base: function() {},
+		get_model: function() {},
+		get_origin: function() {},
+		list_source_traces: function() {},
+		list_transformed_traces: function() {},
+		list_obsels: function(begin,end,reverse) {
+			if(this.obsel_list_uri === "") {
+				console.log("Error in Ktbs:Trace:list_obsels() unknown uri");
+				return false;
 			}
-
-			ttl_obsel += '].';
-			jQuery.ajax({
-					url: this.url,
-					type: 'POST',
-					contentType: 'text/turtle',
-					success: newObselOnSuccess.bind(this),
-					data: ttl_obsel
-				});
+			$.ajax({
+				url: this.obsel_list_uri+'.json',
+				type: 'GET',
+				dataType: 'json',
+				data: {begin: begin, end: end, reverse: reverse},
+				success: this._on_refresh_obsel_list_.bind(this)
+			});
+			return this.obsel_list.filter(function(o) {
+				if(end && o.get_begin() > end) { return false; }
+				if(begin && o.get_end() < begin) { return false; }
+				return true;
+			});
 		},
-
-		updateObsel: function(old_obs,new_obs) {
-			console.log('Method KtbsTrace:updateObsel() not implemented yet...');
+		get_obsel: function(id) {},
+///////////
+		_on_state_refresh_: function(data) {
+	//		console.log(data);
+			this._check_change_('default_subject', data.hasDefaultSubject, '');
+			this._check_change_('model_uri', data.hasModel, '');
+			this._check_change_('obsel_list_uri', data.hasObselList, 'updateTrace');
+			this._check_change_('base_uri', data.inBase, '');
+			this._check_change_('origin', data.origin, '');
 		},
-	
-		removeObsel: function(obs) {
-			console.log('Method KtbsTrace:removeObsel() not implemented yet...');
+///////////
+		_on_refresh_obsel_list_: function(data) {
+	//		console.log(data);
+			var id, label, type, begin, end, attributes, obs;
+			var new_obsel_loaded = false;
+			data.obsels.forEach(function(el,key) {
+				id = el['@id'];
+				label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
+				type = el['@type'];
+				begin = el['begin'];
+				end = el['end'];
+				attributes = el;
+				delete(attributes['@id']);
+				delete(attributes['http://www.w3.org/2000/01/rdf-schema#label']);
+				delete(attributes['@type']);
+				delete(attributes['begin']);
+				delete(attributes['end']);
+				obs = new Obsel(id,this.uri+id,label,this.id,type,begin,end,attributes);
+				
+				if(! this._check_obsel_loaded_(obs)) {
+					new_obsel_loaded = true;
+				}
+			},this);
+			if(new_obsel_loaded) {
+				this.trigger('updateTrace',this.traceSet);
+			}
 		},
-	
-		getObsel: function(id) {
-			console.log('Method KtbsTrace:getObsel() not implemented yet...');
+		_check_obsel_loaded_: function(obs) {
+			if(this.obsel_list.some(function(o) {
+				return o.get_id() == obs.get_id(); // first approximation: obsel has the same ID => it is already loaded... We don't check if the obsel has changed!
+			})) {
+				return true;
+			} else {
+				this.obsel_list.push(obs);
+				this._compatibility_();
+				return false;
+			}
 		},
-
-		refreshObsels: function() {
-			jQuery.ajax({
-					url: this.url+'@obsels.json',
-					type: 'GET',
-					dataType: 'json',
-					success: this.refreshObselsSuccess.bind(this)
-				});
-		},
-
-		refreshObselsSuccess: function(data) {
-			var obsels = [];
-			var id = '';
-			var type = '';
-			var timestamp = '';
-			var attributes = {};
-			data.obsels.forEach(
-				function(el,key) {
-					id = el['@id'];
-					type = el['@type'];
-					timestamp = el['begin'];
-					attributes = el;
-					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
-				});
-			this.traceSet = obsels;
-			this.trigger('updateTrace',this.traceSet);
-		},
-
+///////////
+		_compatibility_: function() {
+			this.traceSet = this.obsel_list;
+		}
 	};
+// */
 
+	var Obsel = function(id,uri,label,trace,type,begin,end,attributes,relations) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,label || "");
+		this.trace = trace;
+		this.type = type;
+		this.begin = begin;
+		this.end = end;
+		this.attributes = attributes || {};
+		this.relations = relations || {};
+	}
+	this.Obsel = Obsel;
+
+	Obsel.prototype = {
+		get_trace: function() { return this.trace; },
+		get_obsel_type: function() { return this.type; },
+		get_begin: function() { return this.begin; },
+		get_end: function() { return this.end; },
+		list_source_obsels: function() {},
+		list_attribute_types: function() {},
+		list_relation_types: function() {},
+		list_related_obsels: function() {},
+		list_inverse_relation_types: function() {},
+		get_attribute_value: function() {},
+		set_attribute_value: function() {},
+		gel_attribute_value: function() {},
+		add_related_obsel: function() {},
+		del_related_obsel: function() {}
+	};
 };
 
 Samotraces.Lib.Ktbs.prototype = {
-	refresh: function() {
-		jQuery.ajax({
-				url: this.url+'.xml',
-				type: 'GET',
-				dataType: 'xml',
-				success: this.parseRefreshResponse.bind(this)
-			});
-	},
-	parseRefreshResponse: function(data) {
-		var raw_json = Samotraces.Tools.xmlToJson(data);
-		console.log(raw_json);
-		
-		var bases = [];
-		raw_json['rdf:RDF']['rdf:Description']['hasBase'].forEach(
-			function(el) {
-				bases.push(el['@attributes']['rdf:resource']);
-			});
-
-//		console.log('Method Ktbs:parseRefreshResponse() not implemented yet...');
-		// parse data to get list of bases and check if it has changed...
-		if(this.bases !== bases) {
-			this.bases = bases;
-			this.trigger('BasesListChanged',this.bases);
-		}
-	},
-	/** @todo implement this method */
-	autorefresh: function(period) {
-		console.log('Method Ktbs:autorefresh() not implemented yet...');
-	},
-	/** @todo implement this method */
-	createBase: function() {
-		console.log('Method Ktbs:createBase() not implemented yet...');
-	},
-	getAllBasesIds: function() {
+/////////// OFFICIAL API
+	list_builtin_methods: function() {},
+	get_builtin_method: function() {},
+	list_bases: function() {
 		return this.bases;
 	},
 	/**
-	 * Create a Samotraces.Lib.KtbsBase Object
-	 * corresponding to the given id.
-	 * @param {String} id Id of the KtbsBase to seek.
-	 * @returns {Samotraces.Lib.KtbsBase}
-	 *     KtbsBase object.
+	 * @param id {String} URI of the base
 	 */
-	getKtbsBase: function(id) {
-		return new KtbsBase(this.url+id);
+	get_base: function(id) {
+		return new this.Base(id,this.uri+id);
 	},
-
+	/**
+	 * @param id {String} URI of the base (optional)
+	 * @param label {String} Label of the base (optional)
+	 */
+	create_base: function(id, label) {
+/*
+		$.ajax({
+			url: this.uri,
+			type: 'GET',
+			dataType: 'json',
+			success: this._on_state_refresh_.bind(this)
+		});
+*/
+	},
+///////////
+	_on_state_refresh_: function(data) {
+	//	console.log(data);
+		this._check_change_('bases', data.hasBase, 'updated');
+		this._check_change_('builtin_methods', data.hasBuildinMethod, 'updated');
+	},
+///////////
 };
 
 
