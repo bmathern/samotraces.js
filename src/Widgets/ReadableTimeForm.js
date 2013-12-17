@@ -33,7 +33,7 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('ReadableTimeForm');
+	this.add_class('Widget-ReadableTimeForm');
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.refresh.bind(this));

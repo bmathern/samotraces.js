@@ -4,23 +4,19 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @summary Widget for visualising the current time as a number.
- * @class Widget for visualising the current time as a number.
+ * @summary Widget for playing/pausing a timer and controlling videos.
+ * @class Widget for playing/pausing a timer and controlling videos.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.ReadableTimeForm
  * @description
- * Samotraces.Widgets.TimeForm is a generic
- * Widget to visualise the current time.
- *
- * The time is displayed as a number. See
- * {@link Samotraces.Widgets.TimeForm} to convert
- * raw time (in ms from the 01/01/1970) to a human readable
- * format.
+ * Samotraces.Widgets.TimePlayer is a Widget
+ * that allow to trigger the "play/pause" mechanism
+ * of a timer. In addition, it controls a set of videos
+ * that are synchronised to this timer.
  * 
  * This widget observes a Samotraces.Lib.Timer object.
- * When the timer changes the new time is displayed.
+ * When the timer changes the videos are .
  * This widget also allow to change the time of the timer.
  * 
  * @param {String}	html_id
@@ -28,19 +24,30 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     instantiated
  * @param {Samotraces.Lib.Timer} timer
  *     Timer object to observe.
+ * @param {Array.<Samotraces.Widgets.TimePlayer.VideoConfig>} [videos]
+ *     Array of VideoConfig, that defines the set of
+ *     videos that will be synchronised on the timer.
  */
 Samotraces.Widgets.TimePlayer = function(html_id,timer,videos) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-
+	/**
+	 * @typedef Samotraces.Widgets.TimePlayer.VideoConfig
+	 * @property {string} id - Id of the HTML element
+	 *     containing the video
+	 * @property {string} [youtube] - Url of the youtube
+	 *     video to display
+	 * @property {string} [vimeo] - Url of the vimeo
+	 *     video to display
+	 */
 	var video_ids = videos || [];
 
 	this.videos = video_ids.map(function(v) {
 		if(v.youtube) {
 			return Popcorn.youtube('#'+v.id,v.youtube);
 		} else if(v.vimeo) {
-			return Popcorn.vimeo('#'+v.id,v.youtube);
+			return Popcorn.vimeo('#'+v.id,v.vimeo);
 		} else {
 			return Popcorn('#'+v.id);
 		}
