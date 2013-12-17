@@ -14,7 +14,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * that stores the current time window.
  * This Object stores a time window and informs widgets or other
  * objects when the time window changes via the 
- * {@link Samotraces.Lib.TimeWindow#event:updateTimeWindow|updateTimeWindow}
+ * {@link Samotraces.Lib.TimeWindow#event:tw:update|tw:update}
  * event.
  * A {@link Samotraces.Lib.TimeWindow|TimeWindow} can be defined in two ways:
  *
@@ -43,8 +43,8 @@ Samotraces.Lib.TimeWindow = function(opt) {
 	} else if (opt.timer !== undefined && opt.width  !== undefined) {
 		this.set_width(opt.width,opt.timer.time)
 		this.timer = opt.timer;
-		this.timer.addEventListener('updateTime',this.updateTime.bind(this));
-		this.timer.addEventListener('updateTimePlay',this.updateTime.bind(this));
+		this.timer.addEventListener('timer:update',this.updateTime.bind(this));
+		this.timer.addEventListener('timer:play:update',this.updateTime.bind(this));
 	} else {
 		throw('Samotraces.Lib.TimeWindow error. Arguments could not be parsed.');
 	}
@@ -59,7 +59,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.set_width(this.width,time);
 	},
 	/** 
-	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @fires Samotraces.Lib.TimeWindow#tw:update
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_start: function(time) {
@@ -68,29 +68,29 @@ Samotraces.Lib.TimeWindow.prototype = {
 			this.__calculate_width();
 			/**
 			 * Time window change event.
-			 * @event Samotraces.Lib.TimeWindow#updateTimeWindow
+			 * @event Samotraces.Lib.TimeWindow#tw:update
 			 * @type {object}
-			 * @property {String} type - The type of the event (= "updateTimeWindow").
+			 * @property {String} type - The type of the event (= "tw:update").
 			 */
-			this.trigger('updateTimeWindow');
+			this.trigger('tw:update');
 		}
 	},
 	/**
-	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @fires Samotraces.Lib.TimeWindow#tw:update
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_end: function(time) {
 		if(this.start != time) {
 			this.end = time;
 			this.__calculate_width();
-			this.trigger('updateTimeWindow');
+			this.trigger('tw:update');
 		}
 	},
 	get_width: function() {
 		return this.width;
 	},
 	/**
-	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @fires Samotraces.Lib.TimeWindow#tw:update
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_width: function(width,center) {
@@ -100,10 +100,10 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.start = center - width/2;
 		this.end = center + width/2;
 		this.width = width;
-		this.trigger('updateTimeWindow');
+		this.trigger('tw:update');
 	},
 	/**
-	 * @fires Samotraces.Lib.TimeWindow#updateTimeWindow
+	 * @fires Samotraces.Lib.TimeWindow#tw:update
 	 */
 	translate: function(delta) {
 		if(this.timer) {
@@ -111,7 +111,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		} else {
 			this.start = this.start + delta;
 			this.end = this.end + delta;
-			this.trigger('updateTimeWindow');
+			this.trigger('tw:update');
 		}
 	},
 	/** @todo Handle correctly the bind to the timer (if this.timer) */

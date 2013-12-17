@@ -102,7 +102,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 			});
 	},
 	/**
-	 * @fires Samotraces.Lib.Trace#updateTrace
+	 * @fires Samotraces.Lib.Trace#trace:update
 	 */
 	refreshObselsSuccess: function(data) {
 			var raw_json = Samotraces.Tools.xmlToJson(data);
@@ -115,7 +115,7 @@ Samotraces.Lib.KtbsBogueTrace.prototype = {
 					}
 				},this);
 			this.traceSet = obsels;
-			this.trigger('updateTrace',this.traceSet);
+			this.trigger('trace:update',this.traceSet);
 	},
 
 	rdf2obs: function(el) {

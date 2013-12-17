@@ -28,12 +28,12 @@ Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-WindowSlider');
-	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('window:resize',this.draw.bind(this));
 
 	this.wide_window = wide_window;
-	this.wide_window.addEventListener('updateTimeWindow',this.draw.bind(this));
+	this.wide_window.addEventListener('tw:update',this.draw.bind(this));
 	this.slider_window = slider_window;
-	this.slider_window.addEventListener('updateTimeWindow',this.draw.bind(this));
+	this.slider_window.addEventListener('tw:update',this.draw.bind(this));
 
 	this.slider_offset = 0;
 	this.width = 0;

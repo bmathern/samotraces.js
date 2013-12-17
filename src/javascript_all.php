@@ -28,7 +28,6 @@ echo(file_get_contents('Lib/SelfUpdatingTimer.js'));
 echo(file_get_contents('Lib/TimeWindow.js'));
 echo(file_get_contents('Lib/WindowState.js'));
 
-export_all_js('Tools/');
 export_all_js('Widgets/');
 
 

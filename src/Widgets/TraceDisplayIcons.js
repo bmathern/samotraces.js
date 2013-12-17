@@ -93,11 +93,11 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
-	this.trace.addEventListener('updateTrace',this.draw.bind(this));
+	this.trace.addEventListener('trace:update',this.draw.bind(this));
 	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
-	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
+	this.window.addEventListener('tw:update',this.refresh_x.bind(this));
 
 //	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));

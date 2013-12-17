@@ -10,7 +10,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * Widgets that need to update themselves when the size of
  * the window changes should listen to the 'resize' event
  * triggered by the WindowState object.
- * @fires Samotraces.Lib.WindowState#resize
+ * @fires Samotraces.Lib.WindowState#window:resize
  * @todo fix this... this is not a class
  */
 Samotraces.Lib.WindowState = (function() {
@@ -24,11 +24,11 @@ Samotraces.Lib.WindowState = (function() {
 		resize: function() {
 			/**
 			 * Window resize event.
-			 * @event Samotraces.Lib.WindowState#resize
+			 * @event Samotraces.Lib.WindowState#window:resize
 			 * @type {object}
-			 * @property {String} type - The type of the event (= "resize").
+			 * @property {String} type - The type of the event (= "window:resize").
 			 */
-			this.trigger('resize'); 
+			this.trigger('window:resize'); 
 		},
 	};
 

@@ -34,7 +34,7 @@ Samotraces.Lib.Ktbs4jsTrace = function(url) {
 Samotraces.Lib.Ktbs4jsTrace.prototype = {
 	onUpdate: function() {
 		this.traceSet = this.trace.obsels;
-		this.trigger('updateTrace',this.obsels);
+		this.trigger('trace:update',this.obsels);
 	},
 	newObsel: function(type,timeStamp,attributes) {
 		this.trace.trace(type,attributes,timeStamp);

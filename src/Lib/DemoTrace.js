@@ -40,14 +40,14 @@ Samotraces.Lib.DemoTrace.prototype = {
 	 * @todo update documentation by creating (fake) Trace
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
-	 * @fires Samotraces.Lib.Trace#updateTrace
+	 * @fires Samotraces.Lib.Trace#trace:update
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
 		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
-		this.trigger('updateTrace',this.traceSet);
+		this.trigger('trace:update',this.traceSet);
 	},
 
 	updateObsel: function(old_obs,new_obs) {

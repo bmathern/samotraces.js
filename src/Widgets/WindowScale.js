@@ -42,11 +42,11 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-WindowScale');
-	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('window:resize',this.draw.bind(this));
 
 	this.window = time_window;
 //	time_window.addObserver(this);
-	this.window.addEventListener('updateTimeWindow',this.draw.bind(this));
+	this.window.addEventListener('tw:update',this.draw.bind(this));
 
 	// trying to guess if time_window is related to a Date() object
 	if(this.window.start > 1000000000) { // 1o^9 > 11 Jan 1970 if a Date object

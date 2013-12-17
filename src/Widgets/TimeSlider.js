@@ -30,11 +30,11 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.timer = timer;
-	this.timer.addEventListener('updateTime',this.draw.bind(this));
-	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
+	this.timer.addEventListener('timer:update',this.draw.bind(this));
+	this.timer.addEventListener('timer:play:update',this.refresh.bind(this));
 
 	this.time_window = time_window;
-	this.time_window.addEventListener('updateTimeWindow',this.draw.bind(this));
+	this.time_window.addEventListener('tw:update',this.draw.bind(this));
 
 	// update slider style
 	this.slider_offset = 0;

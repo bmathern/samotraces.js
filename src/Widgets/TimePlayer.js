@@ -54,9 +54,9 @@ Samotraces.Widgets.TimePlayer = function(html_id,timer,videos) {
 	});
 
 	this.timer = timer;
-	this.timer.addEventListener('updateTime',this.onUpdateTime.bind(this));
-	this.timer.addEventListener('play',this.onPlay.bind(this));
-	this.timer.addEventListener('pause',this.onPause.bind(this));
+	this.timer.addEventListener('timer:update',this.onUpdateTime.bind(this));
+	this.timer.addEventListener('timer:play',this.onPlay.bind(this));
+	this.timer.addEventListener('timer:pause',this.onPause.bind(this));
 
 
 	this.init_DOM();
