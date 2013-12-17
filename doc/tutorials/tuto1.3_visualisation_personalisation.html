@@ -1,26 +1,59 @@
 <h2>Introduction</h2>
 
 <p>
-In the first part of this tutorial, you have seen how to
+In the first part of the tutorial, you have seen how to
 create a first basic visualisation of a trace with the 
-{@link Samotraces.Widget.d3Basic.TraceDisplayIcons|TraceDisplayIcons}
+{@link Samotraces.Widgets.d3Basic.TraceDisplayIcons|TraceDisplayIcons}
 widget.
-In this second part of the tutorial, you have learnt how to 
+In the second part of the tutorial, you have learnt how to 
 add other widgets.
 In this third and last part of the tutorial, you will learn how
 to tune the visualisation of a trace to more specific needs.
 </p>
 
 <p>
+In the previous part of the tutorial, when clicking on the different obsels,
+you might have noticed that the trace you have loaded
+looks very similar to music notes (with french notation!).
+If you have a closer look at the <a href="../examples/tutorials/tuto1.3_visualisation_personalisation/trace.csv">trace.csv</a>
+file, you will see that the obsels type correspond to the note's height (do, re, mi, etc.)
+and each obsel has an attribute "duration" which correspond
+to the note's duration ("blanche", "noire", etc.).
+</p>
+
+<p>
+For non-french musicians: a "blanche" is a "minim" (amercian: "half note")
+and a "noire" is a "crotchet" (american: "quarter note") and the note's heights are:
+</p>
+<ul>
+	<li>C for "do"</li>
+	<li>D for "re"</li>
+	<li>E for "mi"</li>
+	<li>F for "fa"</li>
+	<li>G for "sol"</li>
+	<li>A for "la"</li>
+	<li>B for "si"</li>
+</ul>
+<!-- sources:
+http://en.wikipedia.org/wiki/Modern_musical_symbols#Notes_and_rests
+http://en.wikipedia.org/wiki/Music_note#12-tone_chromatic_scale
+-->
+
+<p>
+In this tutorial, you will display these notes on a music sheet.
+For this purpose, you will setup the
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget,
+and tweak the HTML and CSS files.
+</p>
+
+<!--
+<p>
 In this part of the tutorial, you will visualise a trace that
 represents music notes. The goal is to setup the visualisation
 so that notes are displayed in a way that is similar to music sheets.
-For this, you will need to setup the
-{@link Samotraces.Widget.TraceDisplayIcons|TraceDisplayIcons} widget,
-and tweak the HTML and CSS files.
-For this reason, this last part of the tutorial requires some knowledge
-of CSS.
+For this, you will need to 
 </p>
+-->
 
 <h2>Reminder from part 2 of the tutorial.</h2>
 
@@ -95,75 +128,461 @@ window.addEventListener('DOMContentLoaded', init );
 </ul>
 </p>
 
-<h2>Setting up the visualisation: adapting the image to the obsel attributes</h2>
+<h2>Setting up the visualisation: displaying the image you want</h2>
 
 <p>
-In this tutorial, you will have to download the following images that
-we will use in our visualisation:
+First, you will have to download the (four) following images that
+will be used in our visualisation (Right click -> save image as) and place
+them to a new "images" folder of your project:
 </p>
-<table>
-	<style>
-td {
-width: 100px;
-border: 1px solid gray;
-}
-	</style>
-	<tr>
-		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"></img></a>
-		</td>
-		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"></img></a>
-		</td>
-		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"></img></a>
-		</td>
-		<td><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/cle.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/cle.png"></img></a>
-		</td>
-	</tr>
-</table>
 
+<!-- Quick'n dirty style for the tutorial -->
+<style>
+ul.tuto_floating_images {list-style-type:none;}
+ul.tuto_floating_images li {float:left;width: 100px;height:100px;border:1px solid gray;text-align:center;}
+</style>
 
+<ul class="tuto_floating_images">
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/clef.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/clef.png"></img></a>
+	</li>
+</ul>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">// visualisation options for the TraceDisplayIcons Widget
-var visu_options = {
-	width: 34,
-	height: 60,
-	url: function(o) {
-		return 'images/'+o.attributes.duration+'.png';
-	},
+<p style="clear: both;">
+Now, that you have the relevant images ready, we will use what has already been done in the previous parts of the tutorial
+and change the visualisation so that music notes are displayed instead of the default question-mark symbol.
+</p>
+
+<p>
+In order to change the default visualisation symbol of the displayed trace,
+we will go back to the documentation of the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
+</p>
+
+<p>
+When you initialise the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
+widget the last parameter is an optional parameter.
+It is actually this parameter that contains the information to setup
+your own visualisation parameters.
+More precisely, it defines how each obsel will be displayed:
+the image name (url), its height, width, and its coordinates x and y.
+Let's have a look at each parameters more precisely:
+</p>
+<ul>
+	<li>x: the X coordinates of the top-left corner of the image</li>
+	<li>y: the Y coordinates of the top-left corner of the image</li>
+	<li>width: the width (in pixels) of the image</li>
+	<li>height: the height (in pixels) of the image</li>
+	<li>url: the URL of the image to display (default: a question-mark symbol)</li>
+</ul>
+
+<p>
+For those who don't know much about JavaScript, a JavaScript object can
+be described in several different ways.
+For instance, both of the following codes are equivalent.
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {
+	my_field1: "value of field 1",
+	my_field2: "value of field 2"
 };
 </pre>
 
-<h2>Adding a music stave using CSS</h2>
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {};
+my_object.my_field1 = "value of field 1";
+my_object.my_field2 = "value of field 2";
+</pre>
+
+<p>
+Note that the value of the field can be a String, a Number or any type of JavaScript object.
+It can even be a function!
+But we will come back to this later.
+</p>
+
+<p>
+The first think we want to do is to edit the image that will be displayed
+for each obsel. Instead of displaying a question-mark symbol, it would
+be nicer to display a music note. This is done by editing the url field
+of the optional object.
+</p>
+
+<p>
+As you have copied the images in the "images" folder, the URL of the image
+of a music note should be something like "images/noire.png".
+Let's try this code:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: "images/noire.png"
+};
+</pre>
+
+<p>
+Of course, you need to update the initialisation of the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget to 
+pass this new object as a parameter.
+Your code should look like this:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">// Visualisation options
+var options = {
+	url: "images/noire.png"
+};
+
+// Create widgets
+new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+</pre>
+
+<p>
+Now, you should see something like this:
+</p>
+<img src="tutorials/tuto1.3_visualisation_personalisation_1.png"></img>
+
+<p>
+This is good. This is more music like.
+It is a bit too small though.
+</p>
+
+<p>
+The original image file is 34 pixel in width by 60 pixels in height.
+So, why is it so small?
+Well, this is because the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+displays images of 16px by 16px by default.
+So, now, you want to edit the visualisation to change de default width
+and default height. This is pretty easy (don't forget the commas to separate the attributes!):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60
+};
+</pre>
+
+<p>
+Uh Oh... The image doesn't fit. Let's try to change the y coordinate at which it is diplayed (default value is 17px from the top of the widget): 
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60,
+	y: 2
+};
+</pre>
+
+<p>
+Ok, this doesn't work. We will have to make the widget is too narrow.
+Well, don't worry, there is a way to make the widget wider.
+Good news: for this, you don't need to write any JavaScript!
+You'll have to edit the CSS properties of the widget.
+</p>
+
+<h2>CSS and Samotraces.js</h2>
+
+<h3>A short introduction to CSS</h3>
+
+<p>
+If you don't know what CSS are, here is a very short introduction.
+CSS stands for Cascading Style Sheets.
+CSS is a language used to define styles that you can apply to HTML content.
+With CSS, you can typically define the height of an element, 
+or its background colour, etc.
+</p>
+
+<p>
+The goal of this tutorial it not to teach you about CSS.
+However, there are two concepts that you need to understand: the concept of ID
+and the concept of class.
+</p>
+
+<p>
+Each ID is unique in one HTML page. You have already defined IDs in the HTML
+content you have writtend so far. An ID is stored in the "id" attribute of any
+HTML element. One HTML element can have at most one ID. The ID will identify
+this particular HTML element.
+</p>
+
+<p>
+A class, on the other hand, can be shared by several HTML elements.
+One HTML element can have one or several classes.
+Classes are stored in the "class" attribute of any HTML element.
+If an HTML element have several classes, they are separated in the HTML code by spaces
+</p>
+
+<p>
+In CSS language, IDs are represented with the prefix "#" and
+classes are represented by the prefix ".".
+</p>
+
+<h3>What you should know about CSS in Samotraces.js</h3>
+
+<p>
+Samotraces.js uses CSS to correctly display the widgets.
+That is why, from the very begining of the tutorial you had to include
+a CSS file (samotraces.css).
+If you were to try to remove this file, you would see that the
+display is arbitrary and doesn't work the way you want.
+</p>
+
+<p>
+The samotraces.css file is just a default template to display
+Samotraces.js widgets.
+But hang on, how does it work?
+How does the CSS file know which style is applied to which HTML element?
+So far, the HTML element containing the widgets only have (arbitrary) IDs.
+(Note that if you change the IDs in the HTML file and update the JavaScript
+code, the visualisation will still work).
+Does the CSS file communicate with the JavaScript code to know
+which style to apply to which plugin?
+</p>
+
+<p>
+Well, the solution is simple and based on the concept of classes.
+Whenever a widget of Samotraces.js is instanciated, the corresponding
+HTML element will be given two classes.
+The first class is the class "Widget". The second class is the class
+corresponding to the specific widget you have been instanciating
+(for instance "WidgetTraceDisplayIcons").
+Then, if you look at the CSS file samotraces.css, you will see that
+styles are defined for each widget.
+The common class "Widget" is shared by all widgets and is used to define
+common set of attributes that are shared by all Widgets.
+</p>
+
+<p>
+Of course, the samotraces.css file is just a default template to display
+Samotraces.js widgets. Feel free to edit it to make your own templates!
+</p>
+
+
+<h3>Editing the CSS of a widget</h3>
+
+<p>
+Now that we know how it works, let's go back to our initial problem.
+We want to change the height
+of the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
+For this, we must edit the CSS style of the "WidgetTraceDisplayIcons" class.
+</p>
+
+<p>
+There are several ways to edit the CSS styles.
+You can either edit your own template and use the samotraces.css file as a basis.
+You can also create your own css file which will complement the currently existing
+samotraces.css file.
+Or you can add the style directly in the HTML code with a <code>&lt;style&gt;</code> tag.
+In real life example, the first two options are highly recommanded as they 
+make the code far more maintanable and easy to read.
+However, for the purpose of the tutorial, we will use the last method,
+which will be easier to follow if you are not used to CSS.
+</p>
+
+<p>
+If you look at the samotraces.css file, you will see that
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget's
+height is setup to 50px. This explains why our 60px image wouldn't fit.
+Now, we will write some CSS code in the HTML page that will override this
+property to make the widget 150px in height:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;style type="text/css"&gt;
+div.WidgetTraceDisplayIcons {
+	height: 150px;
+}
+&lt;/style&gt;
+</pre>
+
+<p>
+Now, if you try again. The notes will actually fit in the widget. Pheeew!
+</p>
+
+<p>
+So, why not going further now and add a little background representing
+the music staff ("portée" in french)?
+For instance, we could put the staff as a background image of the widget.
+You can do it this way:
+</p>
 
 <pre class="prettyprint sunlight-highlight-css linenums">div.WidgetTraceDisplayIcons {
 	height: 150px;
-}
-
-div.WidgetTraceDisplayIcons svg {
 	background: url("./images/portee.png") repeat-x 0px 40px;
 }
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">// visualisation options for the TraceDisplayIcons Widget
-var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
-var visu_options = {
-	y: function(o) {
-		return 74-note_height[o.type]*7.5;
-	},
-/*				x: function(o) {
-		return this.calculate_x(o.timestamp) - 10; 
-	},*/
+<p>
+Note that the "repeat-x" argument means that the image of the staff
+is repeated horizontaly, and "0px 40px" means that an offset of 0px horizonaly
+and 40px vertically is applied to display the image.
+The offset is used to display the staff somewhat in the middle of the
+widget, instead of the very top.
+</p>
+
+<p>
+So, now, you have a staff and notes, but notes doesn't really match the staff.
+Ideally, we would like to have each note (A, B, C, D, etc.) at their correct
+spot on the staff.
+</p>
+
+<p>
+But hang on, how do I know if a note is A, B, C, etc.?
+Well, this information is stored on the {@link Samotraces.Lib.Obsel|Obsel} object.
+{@link Samotraces.Lib.Obsel|Obsel} objects each have a type, a timestamp and
+optional attributes. In our example, the note's height (A, B, C, etc.) 
+is stored in the type of the obsel.
+</p>
+
+<p>
+So now, we have to go back to the <code>options</code> JavaScript object
+that is used by {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
+widget to adapt the visualisation of each obsel:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: "images/noire.png",
 	width: 34,
 	height: 60,
-	url: function(o) {
-		return 'images/'+o.attributes.duration+'.png';
-	},
+	y: 2
 };
 </pre>
 
+<p>
+But hang on, we don't want all obsels to be displayed at the same y.
+We want each obsel to be displayed to it's own <code>y</code>,
+corresponding to its own type. How do we do that?
+Well, if you go back to the documentation of the
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget,
+you will see that each option argument can be either a value
+(like what we have done so far), or a function.
+If it is a function, the function will be passed as argument the 
+specific {@link Samotraces.Lib.Obsel|Obsel} object to display
+and should return the calculated value for this obsel.
+</p>
+
+<p>
+Based on that, we need to write a function that will calculate the
+<code>y</code> value depending on the obsel type.
+Here is what it might look like (I have calculated the values for you):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60,
+	y: function(obsel) {
+		switch(obsel.type) {
+			case "do":
+				return 74;
+			case "re":
+				return 66.5;
+			case "mi":
+				return 59;
+			case "fa":
+				return 51.5;
+			case "sol":
+				return 44;
+			case "la":
+				return 36.5;
+			case "si":
+				return 29;
+			default:
+				return 0;
+		}
+	}
+};
+</pre>
+
+<p>
+So, the <code>y</code> field is now a function that takes an obsel as an
+argument. It looks at the obsel type (<code>obsel.type</code>) to define
+the <code>y</code> parameter and returns it.
+For those who like more compact formulas, you could write it this way
+(which returns the very same result and is easier to maintain):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">
+	y: function(o) {
+		var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+		return 74-note_height[o.type]*7.5;
+	}
+</pre>
+
+<p>
+The same way you calculated the <code>y</code> field, you can also
+calculate the <code>url</code> field.
+You don't want all the obsels to be displayed with the same image.
+For instance, in the trace you are currently visualising, not all
+obsels are crotchet. Some are minims. Let's write a function that
+does that:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	url: function(obsel) {
+		switch(obsel.attributes.duration) {
+			case "noire":	// crotchet
+				return "images/noire.png";
+			case "blanche":	// minims
+				return "images/blanche.png";
+			default:
+				return "";
+		}
+	},
+	width: 34,
+	height: 60,
+	y: function(o) {
+		var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+		return 74-note_height[o.type]*7.5;
+	}
+};
+</pre>
+
+<p>
+The duration of the obsel-note is stored in the duration attribute.
+As duration is an optional attribute (the non-optional attributes are
+the id, the type and the timestamp), its value is stored in the
+"attributes" field of the {@link Samotraces.Lib.Obsel|Obsel} object.
+That explains why it is accessed with the code
+<code>obsel.attributes.duration</code>.
+</p>
+
+<p>
+Now, you should have a much nicer visualisation (like the image below), 
+that actually matches the note's heights and durations! Congratulation!
+</p>
+
+<img src="tutorials/tuto1.3_visualisation_personalisation_2.png"></img>
+
+<p>
+Again, a more compact function can be used to calculate the URL of the image:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">	url: function(o) {
+		return 'images/'+o.attributes.duration+'.png';
+	},
+</pre>
+
+
+
 <h2>Polishing the result</h2>
 
-<pre class="prettyprint sunlight-highlight-xml linenums">
-&lt;div id="cle"&gt;&lt;/div&gt;
+<p>
+This section is for the more advanced users and do not teach anything
+about Samotraces that have not been already stated.
+Feel free to skip and go directly to the final code.
+</p>
+
+<p>
+In order to make it look a bit nicer, you might want to add the C clef.
+This will require to work only with the CSS and HTML content.
+Here is the code HTML code followed by the CSS code.
+The explanations comes along.
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="clef"&gt;&lt;/div&gt;
 &lt;div id="widgets"&gt;
     &lt;div id="my-widget"&gt;&lt;/div&gt;
     &lt;div id="scale"&gt;&lt;/div&gt;
@@ -172,22 +591,34 @@ var visu_options = {
 &lt;/div&gt;
 </pre>
 
+<p>
+Two new HTML <code>&lt;div&gt;</code> have been created.
+One with the ID "clef", which will contain the image of the C clef,
+one with the ID "widgets" that acts like a container of all the widgets
+(note that this DIV element literally contains all the DIV elements of
+the widgets).
+The reason why all the widgets are encapsulated into a "widgets" DIV is
+to make it possible for all the widget to have the same width.
+Without doing so, the width of the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} and
+{@link Samotraces.Widgets.WindowScale|WindowScale} widget might be different,
+and therefore, the time representation would not match.
+</p>
+
+
 <pre class="prettyprint sunlight-highlight-css linenums">div.WidgetWindowScale {
 	width: auto;
 }
 
 div.WidgetTraceDisplayIcons {
 	height: 150px;
+	background: url("./images/portee.png") repeat-x 0px 40px;
 	width: auto;
 }
 
-div.WidgetTraceDisplayIcons svg {
-	background: url("./images/portee.png") repeat-x 0px 40px;
-}
-
-#cle {
+#clef {
 	width: 62px;
-	background: url("./images/cle.png") no-repeat 0px 41px;
+	background: url("./images/clef.png") no-repeat 0px 41px;
 	float: left;
 	height: 300px;
 }
@@ -197,4 +628,116 @@ div.WidgetTraceDisplayIcons svg {
 	height: 100%;
 }
 </pre>
+
+<p>
+On the CSS side, the "clef" DIV element is setup to display the "clef.png"
+image as a background image.
+The width of the "widget" DIV element is setup to <code>auto</code> so
+that it adapts itself to the available space.
+</p>
+
+<p>
+the attribute <code>width</code> of the widgets
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} and
+{@link Samotraces.Widgets.WindowScale|WindowScale} had to be overridden.
+The default value in samotraces.css file is <code>width: 100%;</code>,
+which corresponds to the width of the HTML page, not to the width
+of the available space on the left.
+</p>
+
+
+<h2>Final result</h2>
+
+<p>Here is the final code.
+You can try it out 
+<a href="../examples/tutorials/tuto1.3_visualisation_personalisation/index.html">here</a>.
+Enjoy the result!</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;style type="text/css"&gt;
+		div.WidgetWindowScale {
+			width: auto;
+		}
+
+		div.WidgetTraceDisplayIcons {
+			height: 150px;
+			background: url("./images/portee.png") repeat-x 0px 40px;
+			width: auto;
+		}
+
+		#clef {
+			width: 62px;
+			background: url("./images/clef.png") no-repeat 0px 41px;
+			float: left;
+			height: 300px;
+		}
+
+		#widgets {
+			width: auto;
+			height: 100%;
+		}
+		&lt;/style&gt;
+		&lt;div id="clef"&gt;&lt;/div&gt;
+		&lt;div id="widgets"&gt;
+			&lt;div id="my-widget"&gt;&lt;/div&gt;
+			&lt;div id="scale"&gt;&lt;/div&gt;
+			&lt;div id="importer"&gt;&lt;/div&gt;
+			&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+			// Visualisation options
+			var options = {
+				url: function(o) {
+					return 'images/'+o.attributes.duration+'.png';
+				},
+				width: 34,
+				height: 60,
+				y: function(o) {
+					var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+					return 74-note_height[o.type]*7.5;
+				}
+			};
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>You shoud be able to see something like this:</p>
+
+<img src="tutorials/tuto1.3_visualisation_personalisation_3.png"></img>
+
+<h2>Conclusion</h2>
+
+<p>
+Congratulations! Now you have learnt the basic principles that
+are necessary to use Samotraces.js.
+Of course, there is a lot more to learn.
+Now, you should know enough to better understand the documentation
+if you need to go any further (<a href="index.html">start here</a>).
+Now, feel free to enjoy Samotraces.js and to use it in your own applications!
+</p>
 
