@@ -26,8 +26,8 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     instantiated
  * @param {} time_window
  *     TimeWindowCenteredOnTime object
- * @param {Boolean} is_javascript_date
- *     (Optional) Boolean that describes if the scale represents a JavaScript Date object.
+ * @param {Boolean} [is_javascript_date]
+ *     Boolean that describes if the scale represents a JavaScript Date object.
  *     If set to true, the widget will display years, months, days, hours, minutes...
  *     as if the time given was the number of milliseconds ellapsed since 1 January 1970 UTC.
  *     If set to false, the widget will display the numbers without attempting

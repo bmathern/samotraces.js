@@ -31,14 +31,13 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     instantiated
  * @param {Samotraces.Lib.Trace}	trace
  *     Trace object to display
- * @param {Samotraces.Lib.ObselSelector} obsel_selector
- *     ObselSelector object that will be updated when
- *     clicking on one Obsel
  * @param {Samotraces.Lib.TimeWindow} time_window
  *     TimeWindow object that defines the time frame
  *     being currently displayed.
  *
- * @param {Object} options
+ * @param {Object} [options]
+ *     Object with two fields: visu and events.
+ * @param {Samotraces.Widgets.TraceDisplayIcons.VisuConfig} [options.visu]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
  *     a value or a function that will be called by 
@@ -56,43 +55,33 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
- * @param {Number|Function}	options.x		
- *     X coordinates of the top-left corner of the 
- *     image (default: <code>function(o) {
- *         return this.calculate_x(o.timestamp) - 8;
- *     })</code>)
- * @param {Number|Function}	options.y
- *     Y coordinates of the top-left corner of the 
- *     image (default: 17)
- * @param {Number|Function}	options.width
- *     Width of the image (default: 16)
- * @param {Number|Function}	options.height
- *     Height of the image (default: 16)
- * @param {String|Function}	options.url
+ * @param {Samotraces.Widgets.EventConfig}	[options.events]
  *     Url of the image to display (default: a 
  *     questionmark dataurl)
  *
  * @example
- * Example of options:
- * <code>
  * var options = {
- *     y: 20,
- *     width: 32,
- *     height: 32,
- *     url: function(obsel) {
- *         switch(obsel.type) {
- *             case 'click':
- *                 return 'images/click.png';
- *             case 'focus':
- *                 return 'images/focus.png';
- *             default:
- *                 return 'images/default.png';
+ *     visu: {
+ *         y: 20,
+ *         width: 32,
+ *         height: 32,
+ *         url: function(obsel) {
+ *             switch(obsel.type) {
+ *                 case 'click':
+ *                     return 'images/click.png';
+ *                 case 'focus':
+ *                     return 'images/focus.png';
+ *                 default:
+ *                     return 'images/default.png';
+ *             }
  *         }
  *     },
+ *     events: {
+ *         'clickOnObsel': obsel_selector.select.bind(obsel_selector)
+ *     }
  * };
- * </code>
  */
-Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
+Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
@@ -107,15 +96,56 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 	this.window = time_window;
 	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
 
-	this.obsel_selector = obsel_selector;
+//	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));
 
 	this.init_DOM();
 	this.data = this.trace.traceSet;
 
+
 	this.options = {};
 	options = options || {};
+	options.visu = options.visu || {};
+	options.events = options.events || {};
 
+	Samotraces.Lib.EventHandler.call(this);
+	this.parse_events(options.events);
+
+	/**
+	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @property {(number|function)}	[x]		
+	 *     X coordinates of the top-left corner of the 
+	 *     image (default: <code>function(o) {
+	 *         return this.calculate_x(o.timestamp) - 8;
+	 *     })</code>)
+	 * @property {(number|function)}	[y=17]
+	 *     Y coordinates of the top-left corner of the 
+	 *     image
+	 * @property {(number|function)}	[width=16]
+	 *     Width of the image
+	 * @property {(number|function)}	[height=16]
+	 *     Height of the image
+	 * @property {(string|function)}	[url=a questionmark dataurl string]
+	 *     Url of the image to display
+	 * @description
+	 * Object determining how to display the icons
+	 * (Optional). All the options field can be either 
+	 * a value or a function that will be called by 
+	 * d3.js. The function will receive as the first
+	 * argument the Obsel to display and should return 
+	 * the calculated value.
+	 * If a function is defined as an argument, it will
+	 * be binded to the TraceDisplayIcons instance.
+	 * This means that you can call any method of the 
+	 * TraceDisplayIcons instance to help calculate 
+	 * the x position or y position of an icon. This 
+	 * makes it easy to define various types of behaviours.
+	 * Relevant methods to use are:
+	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+	 * See tutorial 
+	 * {@tutorial tuto1.3_visualisation_personalisation}
+	 * for more details and examples.
+	 */
 	// create function that returns value or function
 	var this_widget = this;
 	var bind_function = function(val_or_fun) {
@@ -125,13 +155,13 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 				return val_or_fun;
 			}
 		};
-	this.options.x = bind_function(options.x || function(o) {
+	this.options.x = bind_function(options.visu.x || function(o) {
 			return this.calculate_x(o.timestamp) - 8;
 		});
-	this.options.y = bind_function(options.y || 17);
-	this.options.width = bind_function(options.width || 16);
-	this.options.height = bind_function(options.height || 16);
-	this.options.url = bind_function(options.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
+	this.options.y = bind_function(options.visu.y || 17);
+	this.options.width = bind_function(options.visu.width || 16);
+	this.options.height = bind_function(options.visu.height || 16);
+	this.options.url = bind_function(options.visu.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
 
 	this.draw();
 };
@@ -216,6 +246,9 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		if(e) {
 			this.data = this.trace.traceSet;
 		}
+		function clickOnObsel(obs) {
+			this.trigger('clickOnObsel',obs);
+		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
@@ -225,7 +258,7 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			.attr('height',this.options.height)
 			.attr('xlink:href',this.options.url)
 			// why not direcly here !?
-			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+			.on('click',clickOnObsel.bind(this));
 //		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
@@ -246,13 +279,16 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
 					.data(this.data); //,function(d) { return d.id;});
 	},
-
+/*
 	// TODO: is it relevant to keep this function? Or merged into build_callback?
 	updateEventListener: function() {
+		function clickOnObsel(obs) {
+			this.trigger('clickOnObsel',obs);
+		}
 		this.d3Obsels()
-			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+			.on('click',clickOnObsel.bind(this));
 	},
-
+*/
 
 };
 
