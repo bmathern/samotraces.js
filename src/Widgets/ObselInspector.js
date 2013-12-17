@@ -24,7 +24,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.ObselSelector} obsel_selector
+ * @param {Samotraces.Lib.Selector<Obsel>} obsel_selector
  *     ObselSelector object to observe.
  */
 Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
@@ -33,8 +33,9 @@ Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	this.add_class('Widget-ObselInspector');
 
 	this.obsel = obsel_selector;
-	this.obsel.addEventListener('obselSelected',this.inspect.bind(this));
-	this.obsel.addEventListener('obselUnselected',this.close.bind(this));
+	this.obsel.addEventListener('selection:add',this.inspect.bind(this));
+	this.obsel.addEventListener('selection:empty',this.close.bind(this));
+	this.obsel.addEventListener('selection:remove',this.close.bind(this));
 
 	this.init_DOM();
 };

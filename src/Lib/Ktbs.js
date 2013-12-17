@@ -156,8 +156,8 @@ Samotraces.Lib.Ktbs = function(uri) {
 ///////////
 		_on_state_refresh_: function(data) {
 		//	console.log(data);
-			this._check_change_('label',data["http://www.w3.org/2000/01/rdf-schema#label"],'updated');
-			this._check_change_('traces', data.contains, 'updated');
+			this._check_change_('label',data["http://www.w3.org/2000/01/rdf-schema#label"],'base:update');
+			this._check_change_('traces', data.contains, 'base:update');
 		},
 /////////// ADDED / API
 		get_trace: function(id) {
@@ -238,7 +238,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 	//		console.log(data);
 			this._check_change_('default_subject', data.hasDefaultSubject, '');
 			this._check_change_('model_uri', data.hasModel, '');
-			this._check_change_('obsel_list_uri', data.hasObselList, 'updateTrace');
+			this._check_change_('obsel_list_uri', data.hasObselList, 'trace:update');
 			this._check_change_('base_uri', data.inBase, '');
 			this._check_change_('origin', data.origin, '');
 		},
@@ -266,7 +266,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 				}
 			},this);
 			if(new_obsel_loaded) {
-				this.trigger('updateTrace',this.traceSet);
+				this.trigger('trace:update',this.traceSet);
 			}
 		},
 		_check_obsel_loaded_: function(obs) {
@@ -347,8 +347,8 @@ Samotraces.Lib.Ktbs.prototype = {
 ///////////
 	_on_state_refresh_: function(data) {
 	//	console.log(data);
-		this._check_change_('bases', data.hasBase, 'updated');
-		this._check_change_('builtin_methods', data.hasBuildinMethod, 'updated');
+		this._check_change_('bases', data.hasBase, 'ktbs:update');
+		this._check_change_('builtin_methods', data.hasBuildinMethod, 'ktbs:update');
 	},
 ///////////
 };

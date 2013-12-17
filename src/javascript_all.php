@@ -16,7 +16,7 @@ echo(file_get_contents('Lib/EventHandler.js'));
 echo(file_get_contents('Lib/Collecteur.js'));
 echo(file_get_contents('Lib/addBehaviour.js'));
 echo(file_get_contents('Lib/Obsel.js'));
-echo(file_get_contents('Lib/ObselSelector.js'));
+echo(file_get_contents('Lib/Selector.js'));
 echo(file_get_contents('Lib/DemoTrace.js'));
 echo(file_get_contents('Lib/KtbsTrace.js'));
 echo(file_get_contents('Lib/KtbsBogueTrace.js'));

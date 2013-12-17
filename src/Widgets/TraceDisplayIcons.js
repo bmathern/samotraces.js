@@ -59,8 +59,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
  * @param {Samotraces.Widgets.EventConfig}	[options.events]
- *     Url of the image to display (default: a 
- *     questionmark dataurl)
+ *     Events to listen to and their corresponding callbacks.
  *
  * @example
  * var options = {
@@ -88,9 +87,10 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
+	Samotraces.Lib.EventHandler.call(this);
 
 	this.add_class('Widget-TraceDisplayIcons');
-	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
+	Samotraces.Lib.WindowState.addEventListener('window:resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
@@ -105,13 +105,11 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	this.init_DOM();
 	this.data = this.trace.traceSet;
 
-
 	this.options = {};
 	options = options || {};
 	options.visu = options.visu || {};
 	options.events = options.events || {};
 
-	Samotraces.Lib.EventHandler.call(this);
 	this.parse_events(options.events);
 
 	/**

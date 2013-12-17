@@ -15,17 +15,21 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Objects.Ktbs} ktbs
+ * @param {Samotraces.Lib.Ktbs} ktbs
  *     Ktbs to bind to.
+ * @param {Samotraces.Widgets.EventConfig} [events]
+ *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs) {
+Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 	Samotraces.Lib.EventHandler.call(this);
-	this.add_class('WidgetListBases');
+	this.add_class('Widget-ListBases');
+	
+	this.parse_events(events);
 
 	this.ktbs = ktbs;
-	ktbs.addEventListener('updated',this.refresh.bind(this));
+	ktbs.addEventListener('ktbs:update',this.refresh.bind(this));
 
 	this.init_DOM();
 };
@@ -50,7 +54,7 @@ Samotraces.Widgets.ktbs.ListBases.prototype = {
 		this.ktbs.list_bases().forEach(function(b) {
 				li_element = document.createElement('li');
 				li_element.appendChild(document.createTextNode(b));
-				li_element.addEventListener('click',(function() {this.trigger('selected_base',b)}).bind(this));
+				li_element.addEventListener('click',(function() {this.trigger('ui:click:base',b)}).bind(this));
 				this.datalist_element.appendChild(li_element);
 			},this);
 
