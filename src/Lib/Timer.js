@@ -3,6 +3,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the current time
  * @class Object that stores the current time
  * @author Benoît Mathern
  * @constructor
@@ -17,7 +18,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 
 Samotraces.Lib.Timer = function(time) {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
 	this.time = time || 0;
 };

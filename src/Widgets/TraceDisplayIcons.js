@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising traces with images.
+ * @summary Widget for visualising a trace where obsels are displayed as images.
+ * @class Widget for visualising a trace where obsels are displayed as images
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor

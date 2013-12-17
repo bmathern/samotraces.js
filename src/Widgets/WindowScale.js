@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising a temporal scale.
+ * @summary Widget for visualising a time scale.
+ * @class Widget for visualising a time scale.
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor

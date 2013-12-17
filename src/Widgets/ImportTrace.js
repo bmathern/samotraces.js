@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for importing a trace from a CSV file.
+ * @summary Widget for importing a trace from a CSV file.
+ * @class Widget for importing a trace from a CSV file.
  * @author Benoît Mathern
  * @constructor
  * @augments Samotraces.Widgets.Widget
@@ -213,7 +214,8 @@ Samotraces.Widgets.ImportTrace.prototype = {
 	//	console.log('fichier chargé');
 		// guessing the separator
 		var sep = text[text.search('[,;\t]')];
-		var csv = CSVToArray(text,sep);
+		csv = CSVToArray(text,sep);
+		csv.pop(); // remove the last line... Why?...
 	//	console.log('fichier parsé');
 		csv.map(function(line) {
 			var time = line.shift();

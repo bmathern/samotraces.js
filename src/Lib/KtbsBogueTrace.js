@@ -7,6 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 
 /**
+ * @summary JavaScript Trace class connected to a kTBS
  * @class JavaScript Trace class connected to a kTBS
  * @augments Samotraces.Lib.Trace
  */

@@ -31,7 +31,7 @@ function init() {
 	// time window of the second set of widgets (small time window)
 	var tw_hour		= new Σ.Lib.TimeWindow({timer: timer, width: hour});
 	// time window of the whole trace
-	var tw_trace	= new Σ.Lib.TimeWindow({start: Date.now()-3*day, end: Date.now()+day});
+	var tw_trace	= new Σ.Lib.TimeWindow({start: Date.now()-40*day, end: Date.now()+day});
 
 
 	/*
@@ -75,6 +75,8 @@ function init() {
 	new Σ.Widgets.WindowSlider('background_slider1',tw_hour,tw_day);
 	new Σ.Widgets.WindowSlider('background_slider2',tw_day,tw_hour);
 	new Σ.Widgets.TraceDisplayIcons('trace',trace,current_obsel,tw_day,visu_options);
+	new Σ.Widgets.TraceDisplayObselOccurrences('trace3',trace
+,tw_trace);
 	// Slider
 	new Σ.Widgets.WindowSlider('slider',tw_trace,tw_day);
 	// Scale

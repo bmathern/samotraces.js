@@ -4,6 +4,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the current time window
  * @class Object that stores the current time window
  * @author Benoît Mathern
  * @constructor
@@ -43,6 +44,7 @@ Samotraces.Lib.TimeWindow = function(opt) {
 		this.set_width(opt.width,opt.timer.time)
 		this.timer = opt.timer;
 		this.timer.addEventListener('updateTime',this.updateTime.bind(this));
+		this.timer.addEventListener('updateTimePlay',this.updateTime.bind(this));
 	} else {
 		throw('Samotraces.Lib.TimeWindow error. Arguments could not be parsed.');
 	}

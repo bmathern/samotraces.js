@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
- * @class JavaScript Trace class.
+ * @summary JavaScript (abstract) Trace class.
+ * @class JavaScript (abstract) Trace class.
  * @author Benoît Mathern
  * @constructor
  * @abstract

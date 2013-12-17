@@ -21,6 +21,14 @@
 
 
 
+#trace3.WidgetTraceDisplayObselOccurrences {
+	position: relative;
+/*	top: 0px;*/
+	height: 10px;
+	margin-top: -12px;
+	z-index: -1;
+}
+
 #background_slider2.WidgetBasicWindowSlider {
 	position: relative;
 /*	top: 0px;*/
@@ -28,7 +36,6 @@
 	margin-bottom: -52px;
 	z-index: -1;
 }
-
 
 #background_slider2.WidgetBasicWindowSlider div {
 	height: 50px;

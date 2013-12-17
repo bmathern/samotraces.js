@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising an Obsel.
+ * @summary Widget for visualising an Obsel as an HTML list.
+ * @class Widget for visualising an Obsel as an HTML list.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget

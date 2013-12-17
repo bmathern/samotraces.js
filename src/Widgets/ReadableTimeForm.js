@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising the current time.
+ * @summary Widget for visualising the current time as a date/time.
+ * @class Widget for visualising the current time as a date/tim.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -36,6 +37,7 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.refresh.bind(this));
+	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
 
 	this.init_DOM();
 	this.refresh({data: this.timer.time});

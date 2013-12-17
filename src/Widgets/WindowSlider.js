@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising a temporal slider.
+ * @summary Widget for visualising a window slider.
+ * @class Widget for visualising a window slider.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget

@@ -4,7 +4,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising the current time.
+ * @summary Widget for visualising a time slider.
+ * @class Widget for visualising a time slider.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -30,6 +31,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.draw.bind(this));
+	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
 
 	this.time_window = time_window;
 	this.time_window.addEventListener('updateTimeWindow',this.draw.bind(this));

@@ -4,6 +4,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the currently selected obsel
  * @class Object that stores the currently selected obsel
  * @author Benoît Mathern
  * @constructor

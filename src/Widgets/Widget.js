@@ -32,6 +32,10 @@ Samotraces.Widgets.Widget = (function() {
 	function add_class(class_name) {
 		this.element.className += ' '+class_name;
 	}
+	function unload() {
+		this.element.className = '';
+//		this.element.
+	}
 	/**
 	 * Creates a new behaviour (interaction possibility)
 	 * with the widget.

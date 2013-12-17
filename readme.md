@@ -1,10 +1,53 @@
-Description of Samotraces.js Project
-====================================
+Samotraces.js documentation
+===========================
 
 About Samotraces 
 ----------------
 
-Samotraces stands for... TODO
+Samotraces.js is a framework for the development of trace-based applications.
+
+"Samotraces" stands for "a framework for scanning, skiming,
+supervising, apprehending, analysing, manipulating, managing and organizing
+observed traces". TODO -> update
+
+
+How to read this documentation?
+-------------------------------
+
+This documentation includes the information you need to use Samotraces.js
+to develop your own Trace-Based Systems (TBS).
+
+The code is structured into namespaces that allow to easily identify objects.
+The documentation follows the same structure as the code:
+All the widgets are contained in the {@link Samotraces.Widgets} namespace
+and all the logical objects and shared functions are stored in 
+the {@link Samotraces.Lib} namespace.
+The global {@link Samotraces} namespace is shared by all Samotraces.js objects
+in order to prevent potential incompatibility issues with other JavaScript
+frameworks or libraries.
+
+### About the Widgets
+
+Widgets are reusable objects that provide a graphical user interface.
+For instance, available widgets can:
+
+- Display a trace, with obsels represented graphically as images
+({@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons widget})
+- Display the attributes of an obsel
+({@link Samotraces.Widgets.ObselInspector|ObselInspector widget})
+- Display a time scale
+({@link Samotraces.Widgets.WindowScale|WindowScale widget})
+- Import a CSV file in a trace
+({@link Samotraces.Widgets.ImporTrace|WindowScale widget})
+- Display the current time
+({@link Samotraces.Widgets.TimeForm|TimeForm widget} or
+{@link Samotraces.Widgets.ReadableTimeForm|ReadableTimeForm widget})
+- And more! Have a look at the {@link Samotraces.Widgets|full list of widgets}.
+
+### About the Lib
+
+(Logical) Objects that are shared by widgets are included in the {@link Samotraces.Lib} namespace.
+
 
 Samotraces.js
 -------------
@@ -12,7 +55,7 @@ Samotraces.js
 Samotraces.js is a JavaScript version of the Samotraces 
 project (see http://sourceforge.net/projects/samotraces/).
 Samotraces.js provides a set of tools to collect, 
-visualise and manage traces.
+visualise, tansforme and manage traces.
 
 ### Trace management
 
