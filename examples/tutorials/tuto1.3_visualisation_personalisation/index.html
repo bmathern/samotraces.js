@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="javascript/d3.js"></script>
+        <script type="text/javascript" src="javascript/Samotraces.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
+    </head>
+    <body>
+        <style type="text/css">
+        div.WidgetWindowScale {
+            width: auto;
+        }
+
+        div.WidgetTraceDisplayIcons {
+            height: 150px;
+            background: url("./images/portee.png") repeat-x 0px 40px;
+            width: auto;
+        }
+
+        #clef {
+            width: 62px;
+            background: url("./images/clef.png") no-repeat 0px 41px;
+            float: left;
+            height: 300px;
+        }
+
+        #widgets {
+            width: auto;
+            height: 100%;
+        }
+        </style>
+        <div id="clef"></div>
+        <div id="widgets">
+            <div id="my-widget"></div>
+            <div id="scale"></div>
+            <div id="importer"></div>
+            <div id="obsel-inspector"></div>
+        </div>
+        <script type="text/javascript">
+        function init() {
+            // Create logical objects
+            var trace        = new Samotraces.Lib.DemoTrace();
+            var obsel_selector    = new Samotraces.Lib.ObselSelector();
+            var tw            = new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+            // Visualisation options
+            var options = {
+                url: function(o) {
+                    return 'images/'+o.attributes.duration+'.png';
+                },
+                width: 34,
+                height: 60,
+                y: function(o) {
+                    var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+                    return 74-note_height[o.type]*7.5;
+                }
+            };
+
+            // Create widgets
+            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+            new Samotraces.Widgets.WindowScale('scale',tw);
+            new Samotraces.Widgets.ImportTrace('importer',trace);
+            new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+        }
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+        </script>
+    </body>
+</html>
+
