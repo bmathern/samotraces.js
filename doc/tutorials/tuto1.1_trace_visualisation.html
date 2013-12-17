@@ -134,16 +134,15 @@ initialised with 5 parameters:
 <ol>
 	<li>An HTML id</li>
 	<li>A trace {@link Samotraces.Lib.DemoTrace|Trace}</li>
-	<li>An obsel selector {@link Samotraces.Lib.ObselSelector|ObselSelector}</li>
 	<li>A time window {@link Samotraces.Lib.TimeWindow|TimeWindow}</li>
-	<li>Optional parameters for the visualisation</li>
+	<li>Optional parameters for specifying the visualisation and handling events</li>
 </ol>
 As the last parameter is optional, let's put it aside for 
 the moment. In order to initialise the widget, we need to
 write something like:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons(id,trace,obsel_selector,time_window);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons(id,trace,time_window);
 </pre>
 
 <p>
@@ -156,19 +155,17 @@ defined in the HTML source: <code>"my-widget"</code>. We
 can replace it direcly:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,time_window);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,time_window);
 </pre>
 
 <p>
-Now, we will initialise the other 3 parameters: 
+Now, we will initialise the other 2 parameters: 
 <code>trace</code>,
-<code>obsel_selector</code>, and
 <code>time_window</code> with the following code:
 </p>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">// Create logical objects
 var trace 		= new Samotraces.Lib.DemoTrace();
-var obsel_selector	= new Samotraces.Lib.ObselSelector();
 var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 </pre>
 
@@ -177,9 +174,6 @@ Let's explain what this means.
 First, we initialise a trace, using the object 
 {@link Samotraces.Lib.DemoTrace|DemoTrace}.
 By doing this, we create a new (empty) trace.<br>
-Then, we create an obsel selector. An obsel selector makes
-it possible to know when an obsel has been selected or
-unselected in the trace (you select an obsel by clicking on it).<br>
 Then, we create a {@link Samotraces.Lib.TimeWindow|TimeWindow}.
 The {@link Samotraces.Lib.TimeWindow|TimeWindow} object is 
 created with an initial time frame.
@@ -212,10 +206,9 @@ you can wrap it in a function.
 function init() {
 	// Create logical objects
 	var trace 		= new Samotraces.Lib.DemoTrace();
-	var obsel_selector	= new Samotraces.Lib.ObselSelector();
 	var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 	// Create widgets
-	new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+	new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 }
 
 // calling the init function when the DOM has been loaded
@@ -238,10 +231,9 @@ window.addEventListener('DOMContentLoaded', init );
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 		// calling the init function when the DOM has been loaded
@@ -301,7 +293,6 @@ Now, your source code should look as follows.
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 
 			// Add obsels to the trace
@@ -310,7 +301,7 @@ Now, your source code should look as follows.
 			trace.newObsel('click',12);
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 // calling the init function when the DOM has been loaded

@@ -41,11 +41,15 @@
         function init() {
             // Create logical objects
             var trace        = new Samotraces.Lib.DemoTrace();
-            var obsel_selector    = new Samotraces.Lib.ObselSelector();
             var tw            = new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+            var obsel_selector    = new Samotraces.Lib.ObselSelector();
 
             // Visualisation options
-            var options = {
+            var options = {};
+            options.events = {
+                "ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+            };
+            options.visu = {
                 url: function(o) {
                     return 'images/'+o.attributes.duration+'.png';
                 },
@@ -58,7 +62,7 @@
             };
 
             // Create widgets
-            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
             new Samotraces.Widgets.WindowScale('scale',tw);
             new Samotraces.Widgets.ImportTrace('importer',trace);
             new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);

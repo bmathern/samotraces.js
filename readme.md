@@ -92,3 +92,18 @@ Examples
 
 Check out the example of a trace visualisation provided in 
 the examples folder.
+
+Change log
+----------
+
+### v0.1
+
+## Samotraces.Widgets.TraceDisplayIcons
+The Samotraces.Widgets.TraceDisplayIcons widget constructor
+signature has changed:
+
+- the Samotraces.Widgets.ObselSelector is not used anymore
+- the options parameter has been changed:
+  - the old options parameters are stored in options.visu
+  - a new parameter options.events (Samotraces.Widgets.EventConfig)
+    manages default responses to the widget's events.

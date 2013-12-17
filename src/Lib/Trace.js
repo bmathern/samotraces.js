@@ -7,6 +7,8 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @summary JavaScript (abstract) Trace class.
  * @class JavaScript (abstract) Trace class.
  * @author Benoît Mathern
+ * @fires Samotraces.Lib.Trace#trace:create:obsel
+ * @fires Samotraces.Lib.Trace#trace:update
  * @constructor
  * @abstract
  * @augments Samotraces.Lib.EventHandler
@@ -19,52 +21,62 @@ Samotraces.Lib = Samotraces.Lib || {};
  * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
  */
 Samotraces.Lib.Trace = function() {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
-	var current_trace = this;
 
-	/* Nombre d'obsels dans la trace */
-	this.count = 0; // sert d'ID pour le prochain observé.
 	/* Array d'obsels */
-	this.traceSet = [];
+	this.obsels = [];
 
 };
 
 Samotraces.Lib.Trace.prototype = {
 	/**
 	 * Creates a new obsel in the trace.
-	 * @param {String} type Type of the new obsel
-	 * @param {Number} timeStamp Timestamp of the new obsel
+	 * @param {string} type Type of the new obsel
+	 * @param {number} timeStamp Timestamp of the new obsel
 	 * @param {Object} attributes Additional attributes of the
 	 *     new obsel.
 	 * @todo update documentation by creating (fake) Trace
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
-	 * @fires Samotraces.Lib.Trace#newObsel
-	 * @fires Samotraces.Lib.Trace#updateTrace
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		console.log('Method Trace:newObsel() is abstract...');
 		/**
 		 * New obsel event.
-		 * @event Samotraces.Lib.Trace#newObsel
+		 * @event Samotraces.Lib.Trace#trace:create:obsel
 		 * @type {object}
-		 * @property {String} type - The type of the event (= "newObsel").
+		 * @property {string} type - The type of the event (= "trace:create:obsel").
 		 * @property {Samotraces.Lib.Obsel} data - The new obsel.
 		 */
 		/**
 		 * Trace change event.
-		 * @event Samotraces.Lib.Trace#updateTrace
+		 * @event Samotraces.Lib.Trace#trace:update
 		 * @type {object}
-		 * @property {String} type - The type of the event (= "updateTrace").
-		 * @property {Array} data - Updated array of obsels of the trace.
+		 * @property {string} type - The type of the event (= "trace:update").
+		 * @property {Array.<Samotraces.Lib.Obsel>} data - Updated array of obsels of the trace.
 		 */
 	},
 	
 	getObsel: function(id) {
 		console.log('Method Trace:getObsel() is abstract...');
 	},
+
+/// OFFICIAL TRACE API
+
+	/**
+	 * Returns a list obsels of this trace matching the parameters
+	 * @abstract
+	 * @returns {Array.<Obsels>} List of obsels matching the parameters
+	 * @param {number} [begin] 
+	 * @param {number} [end] 
+	 * @param {boolean} [reverse] 
+	 */
+	list_obsels: function(begin,end,reverse) {
+		console.log('Error: Trace:list_obsels() is abstract...');
+	}
+
 
 };
 

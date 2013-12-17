@@ -173,6 +173,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary JavaScript Obsel class
  * @class JavaScript Obsel class
  * @param {String} id Identifier of the obsel.
  * @param {Number} timestamp Timestamp of the obsel
@@ -193,6 +194,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the currently selected obsel
  * @class Object that stores the currently selected obsel
  * @author Benoît Mathern
  * @constructor
@@ -281,6 +283,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Javascript Trace Object.
  * @class Javascript Trace Object.
  * @author Benoît Mathern
  * @constructor
@@ -357,6 +360,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 
 /**
+ * @summary JavaScript Trace class connected to a kTBS
  * @class JavaScript Trace class connected to a kTBS
  * @augments Samotraces.Lib.Trace
  */
@@ -505,6 +509,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Javascript Trace Object that is bound to a KTBS trace. 
  * @class Javascript Trace Object that is bound to a KTBS trace. 
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
@@ -550,6 +555,7 @@ Samotraces.Lib = Samotraces.Lib || {};
 
 
 /**
+ * @summary Javascript Ktbs Object that is bound to a KTBS. 
  * @class Javascript Ktbs Object that is bound to a KTBS. 
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
@@ -571,12 +577,87 @@ Samotraces.Lib = Samotraces.Lib || {};
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Lib.Ktbs = function(url) {
-	// Addint the Observable trait
-	Samotraces.Lib.EventHandler.call(this);
-	this.url = url;
+Samotraces.Lib.Ktbs = function(uri) {
+//	this.url = url;
+//	this.bases = [];
+//	this.refresh();
+
+	/* MIXIN */
+	var Resource = (function(id,uri,label) {
+		
+		// RESOURCE API
+		function get_id() { return this.id; }
+		function get_uri() { return this.uri; }
+		function force_state_refresh() {
+			$.ajax({
+				url: this.uri+'.json',
+				type: 'GET',
+				dataType: 'json',
+				success: this._on_state_refresh_.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log("Error in force_state_refresh():");
+					if(textStatus == "parsererror") {
+						console.log("--> parsererror -->");
+						console.log(jqXHR.responseText);
+					}
+				}
+			});
+		}
+		function start_auto_refresh(period) {
+			this.auto_refresh_id?this.stop_auto_refresh():null;
+			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period/1000);
+		}
+		function stop_auto_refresh() {
+			if(this.auto_refresh_id) {
+				window.clearInterval(this.auto_refresh_id);
+				delete(this.auto_refresh_id);
+			}
+		}
+//		function _on_state_refresh_(data) { this.data = data; console.log("here"); }
+		function get_read_only() {}
+		function remove() {}
+		function get_label() {}
+		function set_label() {}
+		function reset_label() {}
+
+		// ADDED FUNCTIONS
+		function _check_change_(local_field,distant,message_if_changed) {
+			if(this[local_field] !== distant) {
+				this[local_field] = distant;
+				this.trigger(message_if_changed);
+			}
+		}
+
+		return function(id,uri) {
+			// a Resource is an EventHandler
+			Samotraces.Lib.EventHandler.call(this);
+			// DOCUMENTED ABOVE
+			// ATTRIBUTES
+			this.id = id;
+			this.uri = uri;
+			this.label = label;
+			// API METHODS
+			this.get_id = get_id;
+			this.get_uri = get_uri;
+			this.force_state_refresh = force_state_refresh;
+			this.get_read_only = get_read_only;
+			this.remove = remove;
+			this.get_label = get_label;
+			this.set_label = set_label;
+			this.reset_label = reset_label;
+			// helper
+			this._check_change_ = _check_change_;
+			this.start_auto_refresh = start_auto_refresh;
+			this.stop_auto_refresh = stop_auto_refresh;
+			return this;
+		};
+	})();
+
+	// KTBS is a Resource
+	Resource.call(this,uri,uri,"");
 	this.bases = [];
-	this.refresh();
+	this.builtin_methods = [];
+	this.force_state_refresh();
 
 
 	/**
@@ -602,63 +683,35 @@ Samotraces.Lib.Ktbs = function(url) {
 	 *
 	 * @param {String}	url	Url of the KTBS to load.
 	 */
-	var KtbsBase = function(url) {
-		// Addint the Observable trait
-		Samotraces.Lib.EventHandler.call(this);
-		this.url = url;
+	var Base = function(id,uri) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,"");
 		this.traces = [];
-		this.refresh();
+		this.force_state_refresh();
 	};
+	this.Base = Base;
 
-	KtbsBase.prototype = {
-		refresh: function() {
-			jQuery.ajax({
-					url: this.url+'.json',
-					type: 'GET',
-					dataType: 'json',
-					success: this.parseRefreshResponse.bind(this)
-				});
-		},
-		parseRefreshResponse: function(data) {
-			console.log(data);
-		//	var raw_json = Samotraces.Tools.xmlToJson(data);
-		//	console.log(raw_json);
-		
-			var traces = [];
-			data.contains.forEach(
-				function(el) {
-					traces.push(el['@id']);
-				});
-
-	//		console.log('Method KtbsBase:parseRefreshResponse() not implemented yet...');
-			// parse data to get list of bases and check if it has changed...
-			if(this.traces !== traces) {
-				this.traces = traces;
-				this.trigger('TracesListChanged',this.traces);
-			}
-		},
-		/** @todo implement this method */
-		autorefresh: function(period) {
-			console.log('Method KtbsBase:autorefresh() not implemented yet...');
-		},
-		/** @todo implement this method */
-		createTrace: function() {
-			console.log('Method Ktbs:createBase() not implemented yet...');
-		},
-		getAllTracesIds: function() {
+	Base.prototype = {
+		get: function(id) {},
+		list_traces: function() {
 			return this.traces;
 		},
-		/**
-		 * Create a Samotraces.Objects.KtbsBogueTrace Object
-		 * corresponding to the given id.
-		 * @param {String} id Id of the KtbsTrace to seek.
-		 * @returns {Samotraces.Lib.KtbsBogueTrace}
-		 *     KtbsTrace object.
-		 */
-		getKtbsTrace: function(id) {
-			return new Samotraces.Lib.KtbsBogueTrace(this.url+id);
+		list_models: function() {},
+		create_stored_trace: function(id,model,origin,default_subject,label) {},
+		create_computed_trace: function(id,method,parameters,sources,label) {},
+		create_model: function(id,parents,label) {},
+		create_method: function(id,parent,parameters,label) {},
+///////////
+		_on_state_refresh_: function(data) {
+		//	console.log(data);
+			this._check_change_('label',data["http://www.w3.org/2000/01/rdf-schema#label"],'updated');
+			this._check_change_('traces', data.contains, 'updated');
 		},
-
+/////////// ADDED / API
+		get_trace: function(id) {
+			return new Trace(id,this.uri+id);
+		},
+////////////
 	};
 
 	/**
@@ -687,136 +740,165 @@ Samotraces.Lib.Ktbs = function(url) {
 	 *
 	 * @param {String}	url	Url of the KTBS trace to load.
 	 */
-	var KtbsTrace = function(url) {
-		// Addint the Observable trait
-		Samotraces.Lib.EventHandler.call(this);
-		this.url = url;
-		var current_trace = this;
+	var Trace = function(id,uri) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,"");
 
-		/* Array d'obsels */
-		this.traceSet = [];
+		this.default_subject = "";
+		this.model_uri = "";
+		this.obsel_list_uri = "";
+		this.base_uri = "";
+		this.origin = "";
+		this.obsel_list = []; this.traceSet = [];
 
-		this.refreshObsels();
+		this.force_state_refresh();
 	};
+	this.Trace = Trace;
 
-	KtbsTrace.prototype = {
-
-		newObsel: function(type,timeStamp,attributes) {
-			var newObselOnSuccess = function() {
-				this.refreshObsels();
-			};
-
-			var ttl_obsel = '@prefix : <http://liris.cnrs.fr/silex/2009/ktbs#> .\n@prefix m: <http://liris.cnrs.fr/silex/2011/simple-trace-model/> .\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n';
-			ttl_obsel += '[ a "'+type+'" ;\n';
-			ttl_obsel += '  :hasTrace <> ;\n';
-	//		ttl_obsel += '  rdf:type "'+type+'" ;\n';
-			var readable_timestamp = new Date(timeStamp).toString();
-			ttl_obsel += '  m:timestamp "'+readable_timestamp+'" ;\n';
-			for(var key in attributes) {
-				ttl_obsel += '  m:'+key+' "'+attributes[key]+'" ;\n';
+	Trace.prototype = {
+/////////// OFFICIAL API
+		get_base: function() {},
+		get_model: function() {},
+		get_origin: function() {},
+		list_source_traces: function() {},
+		list_transformed_traces: function() {},
+		list_obsels: function(begin,end,reverse) {
+			if(this.obsel_list_uri === "") {
+				console.log("Error in Ktbs:Trace:list_obsels() unknown uri");
+				return false;
 			}
-
-			ttl_obsel += '].';
-			jQuery.ajax({
-					url: this.url,
-					type: 'POST',
-					contentType: 'text/turtle',
-					success: newObselOnSuccess.bind(this),
-					data: ttl_obsel
-				});
+			$.ajax({
+				url: this.obsel_list_uri+'.json',
+				type: 'GET',
+				dataType: 'json',
+				data: {begin: begin, end: end, reverse: reverse},
+				success: this._on_refresh_obsel_list_.bind(this)
+			});
+			return this.obsel_list.filter(function(o) {
+				if(end && o.get_begin() > end) { return false; }
+				if(begin && o.get_end() < begin) { return false; }
+				return true;
+			});
 		},
-
-		updateObsel: function(old_obs,new_obs) {
-			console.log('Method KtbsTrace:updateObsel() not implemented yet...');
+		get_obsel: function(id) {},
+///////////
+		_on_state_refresh_: function(data) {
+	//		console.log(data);
+			this._check_change_('default_subject', data.hasDefaultSubject, '');
+			this._check_change_('model_uri', data.hasModel, '');
+			this._check_change_('obsel_list_uri', data.hasObselList, 'updateTrace');
+			this._check_change_('base_uri', data.inBase, '');
+			this._check_change_('origin', data.origin, '');
 		},
-	
-		removeObsel: function(obs) {
-			console.log('Method KtbsTrace:removeObsel() not implemented yet...');
+///////////
+		_on_refresh_obsel_list_: function(data) {
+	//		console.log(data);
+			var id, label, type, begin, end, attributes, obs;
+			var new_obsel_loaded = false;
+			data.obsels.forEach(function(el,key) {
+				id = el['@id'];
+				label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
+				type = el['@type'];
+				begin = el['begin'];
+				end = el['end'];
+				attributes = el;
+				delete(attributes['@id']);
+				delete(attributes['http://www.w3.org/2000/01/rdf-schema#label']);
+				delete(attributes['@type']);
+				delete(attributes['begin']);
+				delete(attributes['end']);
+				obs = new Obsel(id,this.uri+id,label,this.id,type,begin,end,attributes);
+				
+				if(! this._check_obsel_loaded_(obs)) {
+					new_obsel_loaded = true;
+				}
+			},this);
+			if(new_obsel_loaded) {
+				this.trigger('updateTrace',this.traceSet);
+			}
 		},
-	
-		getObsel: function(id) {
-			console.log('Method KtbsTrace:getObsel() not implemented yet...');
+		_check_obsel_loaded_: function(obs) {
+			if(this.obsel_list.some(function(o) {
+				return o.get_id() == obs.get_id(); // first approximation: obsel has the same ID => it is already loaded... We don't check if the obsel has changed!
+			})) {
+				return true;
+			} else {
+				this.obsel_list.push(obs);
+				this._compatibility_();
+				return false;
+			}
 		},
-
-		refreshObsels: function() {
-			jQuery.ajax({
-					url: this.url+'@obsels.json',
-					type: 'GET',
-					dataType: 'json',
-					success: this.refreshObselsSuccess.bind(this)
-				});
-		},
-
-		refreshObselsSuccess: function(data) {
-			var obsels = [];
-			var id = '';
-			var type = '';
-			var timestamp = '';
-			var attributes = {};
-			data.obsels.forEach(
-				function(el,key) {
-					id = el['@id'];
-					type = el['@type'];
-					timestamp = el['begin'];
-					attributes = el;
-					obsels.push(new Samotraces.Lib.Obsel(id,timestamp,type,attributes));
-				});
-			this.traceSet = obsels;
-			this.trigger('updateTrace',this.traceSet);
-		},
-
+///////////
+		_compatibility_: function() {
+			this.traceSet = this.obsel_list;
+		}
 	};
+// */
 
+	var Obsel = function(id,uri,label,trace,type,begin,end,attributes,relations) {
+		// KTBS.Base is a Resource
+		Resource.call(this,id,uri,label || "");
+		this.trace = trace;
+		this.type = type;
+		this.begin = begin;
+		this.end = end;
+		this.attributes = attributes || {};
+		this.relations = relations || {};
+	}
+	this.Obsel = Obsel;
+
+	Obsel.prototype = {
+		get_trace: function() { return this.trace; },
+		get_obsel_type: function() { return this.type; },
+		get_begin: function() { return this.begin; },
+		get_end: function() { return this.end; },
+		list_source_obsels: function() {},
+		list_attribute_types: function() {},
+		list_relation_types: function() {},
+		list_related_obsels: function() {},
+		list_inverse_relation_types: function() {},
+		get_attribute_value: function() {},
+		set_attribute_value: function() {},
+		gel_attribute_value: function() {},
+		add_related_obsel: function() {},
+		del_related_obsel: function() {}
+	};
 };
 
 Samotraces.Lib.Ktbs.prototype = {
-	refresh: function() {
-		jQuery.ajax({
-				url: this.url+'.xml',
-				type: 'GET',
-				dataType: 'xml',
-				success: this.parseRefreshResponse.bind(this)
-			});
-	},
-	parseRefreshResponse: function(data) {
-		var raw_json = Samotraces.Tools.xmlToJson(data);
-		console.log(raw_json);
-		
-		var bases = [];
-		raw_json['rdf:RDF']['rdf:Description']['hasBase'].forEach(
-			function(el) {
-				bases.push(el['@attributes']['rdf:resource']);
-			});
-
-//		console.log('Method Ktbs:parseRefreshResponse() not implemented yet...');
-		// parse data to get list of bases and check if it has changed...
-		if(this.bases !== bases) {
-			this.bases = bases;
-			this.trigger('BasesListChanged',this.bases);
-		}
-	},
-	/** @todo implement this method */
-	autorefresh: function(period) {
-		console.log('Method Ktbs:autorefresh() not implemented yet...');
-	},
-	/** @todo implement this method */
-	createBase: function() {
-		console.log('Method Ktbs:createBase() not implemented yet...');
-	},
-	getAllBasesIds: function() {
+/////////// OFFICIAL API
+	list_builtin_methods: function() {},
+	get_builtin_method: function() {},
+	list_bases: function() {
 		return this.bases;
 	},
 	/**
-	 * Create a Samotraces.Lib.KtbsBase Object
-	 * corresponding to the given id.
-	 * @param {String} id Id of the KtbsBase to seek.
-	 * @returns {Samotraces.Lib.KtbsBase}
-	 *     KtbsBase object.
+	 * @param id {String} URI of the base
 	 */
-	getKtbsBase: function(id) {
-		return new KtbsBase(this.url+id);
+	get_base: function(id) {
+		return new this.Base(id,this.uri+id);
 	},
-
+	/**
+	 * @param id {String} URI of the base (optional)
+	 * @param label {String} Label of the base (optional)
+	 */
+	create_base: function(id, label) {
+/*
+		$.ajax({
+			url: this.uri,
+			type: 'GET',
+			dataType: 'json',
+			success: this._on_state_refresh_.bind(this)
+		});
+*/
+	},
+///////////
+	_on_state_refresh_: function(data) {
+	//	console.log(data);
+		this._check_change_('bases', data.hasBase, 'updated');
+		this._check_change_('builtin_methods', data.hasBuildinMethod, 'updated');
+	},
+///////////
 };
 
 
@@ -826,6 +908,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the current time
  * @class Object that stores the current time
  * @author Benoît Mathern
  * @constructor
@@ -840,7 +923,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  */
 
 Samotraces.Lib.Timer = function(time) {
-	// Addint the Observable trait
+	// Adding the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
 	this.time = time || 0;
 };
@@ -874,23 +957,68 @@ Samotraces.Lib.SelfUpdatingTimer = function(init_time,period,update_function) {
 	// Addint the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
 	this.time = init_time || 0;
-	period = period || 2000;
-	update_function = update_function || function() {return Date.now();};
-
-	var timer = this;
-	var update = function() {		
-		timer.set(update_function(timer.time));
-	};
-	window.setInterval(update,period);
+	this.period = period || 2000;
+	this.update_function = update_function || function() {return Date.now();};
+	this.is_playing = false;
 };
 
 Samotraces.Lib.SelfUpdatingTimer.prototype = {
+	/**
+	 * Sets the Timer to the given time.
+	 * @fires Samotraces.Lib.Timer#updateTime
+	 * @param {Number} time New time
+	 */
 	set: function(time) {
 		new_time = Number(time);
 		if(this.time != new_time) {
-			this.time = new_time;
+			this.time = new_time; 
+			/**
+			 * Time change event.
+			 * @event Samotraces.Lib.Timer#updateTime
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "updateTime").
+			 */
 			this.trigger('updateTime',this.time);
 		}
+	},
+	/**
+	 * Sets or get the Timer's current time.
+	 * If no parameter is given, the current time is returned.
+	 * Otherwise, sets the Timer to the givent time.
+	 * @fires Samotraces.Lib.Timer#updateTime
+	 * @param {Number} time New time (optional)
+	 */
+	time: function(time) {
+		if(time) {
+			new_time = Number(time);
+			if(this.time != new_time) {
+				this.time = new_time; 
+				/**
+				 * Time change event.
+				 * @event Samotraces.Lib.Timer#updateTime
+				 * @type {object}
+				 * @property {String} type - The type of the event (= "updateTime").
+				 */
+				this.trigger('updateTime',this.time);
+			}
+		} else {
+			return this.time;
+		}
+	},
+
+	play: function() {
+		var update = function() {
+			this.time = this.update_function(this.time);
+			this.trigger('updateTimePlay',this.time);
+		};
+		this.interval_id = window.setInterval(update.bind(this),this.period);
+		this.is_playing = true;
+		this.trigger('play',this.time);
+	},
+	pause: function() {
+		window.clearInterval(this.interval_id);
+		this.is_playing = false;
+		this.trigger('pause',this.time);
 	}
 };
 
@@ -902,6 +1030,7 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * @summary Object that stores the current time window
  * @class Object that stores the current time window
  * @author Benoît Mathern
  * @constructor
@@ -941,6 +1070,7 @@ Samotraces.Lib.TimeWindow = function(opt) {
 		this.set_width(opt.width,opt.timer.time)
 		this.timer = opt.timer;
 		this.timer.addEventListener('updateTime',this.updateTime.bind(this));
+		this.timer.addEventListener('updateTimePlay',this.updateTime.bind(this));
 	} else {
 		throw('Samotraces.Lib.TimeWindow error. Arguments could not be parsed.');
 	}
@@ -1108,7 +1238,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for importing a trace from a CSV file.
+ * @summary Widget for importing a trace from a CSV file.
+ * @class Widget for importing a trace from a CSV file.
  * @author Benoît Mathern
  * @constructor
  * @augments Samotraces.Widgets.Widget
@@ -1349,7 +1480,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising an Obsel.
+ * @summary Widget for visualising an Obsel as an HTML list.
+ * @class Widget for visualising an Obsel as an HTML list.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -1442,7 +1574,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising the current time.
+ * @summary Widget for visualising the current time as a date/time.
+ * @class Widget for visualising the current time as a date/tim.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -1474,6 +1607,7 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.refresh.bind(this));
+	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
 
 	this.init_DOM();
 	this.refresh({data: this.timer.time});
@@ -1602,7 +1736,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising the current time.
+ * @summary Widget for visualising the current time as a number.
+ * @class Widget for visualising the current time as a number.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -1632,6 +1767,7 @@ Samotraces.Widgets.TimeForm = function(html_id,timer) {
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.refresh.bind(this));
+	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
 
 	this.init_DOM();
 	this.refresh({data: this.timer.time});
@@ -1693,7 +1829,110 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising the current time.
+ * @summary Widget for visualising the current time as a number.
+ * @class Widget for visualising the current time as a number.
+ * @author Benoît Mathern
+ * @constructor
+ * @mixes Samotraces.Widgets.Widget
+ * @see Samotraces.Widgets.ReadableTimeForm
+ * @description
+ * Samotraces.Widgets.TimeForm is a generic
+ * Widget to visualise the current time.
+ *
+ * The time is displayed as a number. See
+ * {@link Samotraces.Widgets.TimeForm} to convert
+ * raw time (in ms from the 01/01/1970) to a human readable
+ * format.
+ * 
+ * This widget observes a Samotraces.Lib.Timer object.
+ * When the timer changes the new time is displayed.
+ * This widget also allow to change the time of the timer.
+ * 
+ * @param {String}	html_id
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Lib.Timer} timer
+ *     Timer object to observe.
+ */
+Samotraces.Widgets.TimePlayer = function(html_id,timer,videos) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,html_id);
+
+
+	var video_ids = videos || [];
+
+	this.videos = video_ids.map(function(v) {
+		if(v.youtube) {
+			return Popcorn.youtube('#'+v.id,v.youtube);
+		} else if(v.vimeo) {
+			return Popcorn.vimeo('#'+v.id,v.youtube);
+		} else {
+			return Popcorn('#'+v.id);
+		}
+	});
+
+	this.timer = timer;
+	this.timer.addEventListener('updateTime',this.onUpdateTime.bind(this));
+	this.timer.addEventListener('play',this.onPlay.bind(this));
+	this.timer.addEventListener('pause',this.onPause.bind(this));
+
+
+	this.init_DOM();
+	this.onUpdateTime({data: this.timer.time});
+};
+
+Samotraces.Widgets.TimePlayer.prototype = {
+	init_DOM: function() {
+
+		var p_element = document.createElement('p');
+
+		this.play_button = document.createElement('img');
+		this.play_button.setAttribute('src','images/control_play.png');
+
+		p_element.appendChild(this.play_button);
+
+		this.play_button.addEventListener('click',this.onClickPlayButton.bind(this));
+
+		this.element.appendChild(p_element);
+	},
+
+	onUpdateTime: function(e) {
+		this.videos.map(function(v) {
+			v.currentTime(e.data);
+		});
+	},
+
+	onClickPlayButton: function(e) {
+		if(this.timer.is_playing) {
+			this.timer.pause();
+			this.play_button.setAttribute('src','images/control_play.png');
+		} else {
+			this.timer.play();
+			this.play_button.setAttribute('src','images/control_pause.png');
+		}
+	},
+
+	onPlay: function(e) {
+		this.videos.map(function(v) {
+			v.play(e.data);
+		});
+	},
+
+	onPause: function(e) {
+		this.videos.map(function(v) {
+			v.pause(e.data);
+		});
+	},
+};
+
+
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
+
+/**
+ * @summary Widget for visualising a time slider.
+ * @class Widget for visualising a time slider.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -1719,6 +1958,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 
 	this.timer = timer;
 	this.timer.addEventListener('updateTime',this.draw.bind(this));
+	this.timer.addEventListener('updateTimePlay',this.refresh.bind(this));
 
 	this.time_window = time_window;
 	this.time_window.addEventListener('updateTimeWindow',this.draw.bind(this));
@@ -1766,11 +2006,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising traces with images.
+ * @summary Widget for visualising a trace where obsels are displayed as images.
+ * @class Widget for visualising a trace where obsels are displayed as images
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
  * @mixes Samotraces.Widgets.Widget
+ * @fires Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
  * @description
  * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
  * is a generic
@@ -1792,14 +2034,14 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     instantiated
  * @param {Samotraces.Lib.Trace}	trace
  *     Trace object to display
- * @param {Samotraces.Lib.ObselSelector} obsel_selector
- *     ObselSelector object that will be updated when
- *     clicking on one Obsel
  * @param {Samotraces.Lib.TimeWindow} time_window
  *     TimeWindow object that defines the time frame
  *     being currently displayed.
  *
- * @param {Object} options
+ * @param {Object} [options]
+ *     Parameter that specifies the visualisation options and
+ *     default event handling.
+ * @param {Samotraces.Widgets.TraceDisplayIcons.VisuConfig} [options.visu]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
  *     a value or a function that will be called by 
@@ -1817,43 +2059,33 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
- * @param {Number|Function}	options.x		
- *     X coordinates of the top-left corner of the 
- *     image (default: <code>function(o) {
- *         return this.calculate_x(o.timestamp) - 8;
- *     })</code>)
- * @param {Number|Function}	options.y
- *     Y coordinates of the top-left corner of the 
- *     image (default: 17)
- * @param {Number|Function}	options.width
- *     Width of the image (default: 16)
- * @param {Number|Function}	options.height
- *     Height of the image (default: 16)
- * @param {String|Function}	options.url
+ * @param {Samotraces.Widgets.EventConfig}	[options.events]
  *     Url of the image to display (default: a 
  *     questionmark dataurl)
  *
  * @example
- * Example of options:
- * <code>
  * var options = {
- *     y: 20,
- *     width: 32,
- *     height: 32,
- *     url: function(obsel) {
- *         switch(obsel.type) {
- *             case 'click':
- *                 return 'images/click.png';
- *             case 'focus':
- *                 return 'images/focus.png';
- *             default:
- *                 return 'images/default.png';
+ *     visu: {
+ *         y: 20,
+ *         width: 32,
+ *         height: 32,
+ *         url: function(obsel) {
+ *             switch(obsel.type) {
+ *                 case 'click':
+ *                     return 'images/click.png';
+ *                 case 'focus':
+ *                     return 'images/focus.png';
+ *                 default:
+ *                     return 'images/default.png';
+ *             }
  *         }
  *     },
+ *     events: {
+ *         'clickOnObsel': obsel_selector.select.bind(obsel_selector)
+ *     }
  * };
- * </code>
  */
-Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_window,options) {
+Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
@@ -1868,15 +2100,56 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 	this.window = time_window;
 	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
 
-	this.obsel_selector = obsel_selector;
+//	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));
 
 	this.init_DOM();
 	this.data = this.trace.traceSet;
 
+
 	this.options = {};
 	options = options || {};
+	options.visu = options.visu || {};
+	options.events = options.events || {};
 
+	Samotraces.Lib.EventHandler.call(this);
+	this.parse_events(options.events);
+
+	/**
+	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @property {(number|function)}	[x]		
+	 *     X coordinates of the top-left corner of the 
+	 *     image (default: <code>function(o) {
+	 *         return this.calculate_x(o.timestamp) - 8;
+	 *     })</code>)
+	 * @property {(number|function)}	[y=17]
+	 *     Y coordinates of the top-left corner of the 
+	 *     image
+	 * @property {(number|function)}	[width=16]
+	 *     Width of the image
+	 * @property {(number|function)}	[height=16]
+	 *     Height of the image
+	 * @property {(string|function)}	[url=a questionmark dataurl string]
+	 *     Url of the image to display
+	 * @description
+	 * Object determining how to display the icons
+	 * (Optional). All the options field can be either 
+	 * a value or a function that will be called by 
+	 * d3.js. The function will receive as the first
+	 * argument the Obsel to display and should return 
+	 * the calculated value.
+	 * If a function is defined as an argument, it will
+	 * be binded to the TraceDisplayIcons instance.
+	 * This means that you can call any method of the 
+	 * TraceDisplayIcons instance to help calculate 
+	 * the x position or y position of an icon. This 
+	 * makes it easy to define various types of behaviours.
+	 * Relevant methods to use are:
+	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+	 * See tutorial 
+	 * {@tutorial tuto1.3_visualisation_personalisation}
+	 * for more details and examples.
+	 */
 	// create function that returns value or function
 	var this_widget = this;
 	var bind_function = function(val_or_fun) {
@@ -1886,13 +2159,13 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,obsel_selector,time_
 				return val_or_fun;
 			}
 		};
-	this.options.x = bind_function(options.x || function(o) {
+	this.options.x = bind_function(options.visu.x || function(o) {
 			return this.calculate_x(o.timestamp) - 8;
 		});
-	this.options.y = bind_function(options.y || 17);
-	this.options.width = bind_function(options.width || 16);
-	this.options.height = bind_function(options.height || 16);
-	this.options.url = bind_function(options.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
+	this.options.y = bind_function(options.visu.y || 17);
+	this.options.width = bind_function(options.visu.width || 16);
+	this.options.height = bind_function(options.visu.height || 16);
+	this.options.url = bind_function(options.visu.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
 
 	this.draw();
 };
@@ -1977,6 +2250,16 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		if(e) {
 			this.data = this.trace.traceSet;
 		}
+		function clickOnObsel(obs) {
+			/**
+			 * @event Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "clickOnObsel").
+			 * @property {Samotraces.Lib.Obsel} data - The obsel that
+			 *     has been the target of the click.
+			 */
+			this.trigger('ui:click:obsel',obs);
+		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
@@ -1986,7 +2269,7 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			.attr('height',this.options.height)
 			.attr('xlink:href',this.options.url)
 			// why not direcly here !?
-			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+			.on('click',clickOnObsel.bind(this));
 //		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
@@ -2008,10 +2291,148 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 					.data(this.data); //,function(d) { return d.id;});
 	},
 
-	// TODO: is it relevant to keep this function? Or merged into build_callback?
-	updateEventListener: function() {
+
+};
+
+
+
+
+
+
+
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
+
+/**
+ * @summary Widget for visualising a trace.
+ * @class Widget for visualising a trace.
+ * @author Benoît Mathern
+ * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
+ * @constructor
+ * @mixes Samotraces.Widgets.Widget
+ * @description
+ * DESCRIPTION TO COME....
+ * @param {String}	divId
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Lib.Trace}	trace
+ *     Trace object to display
+ * @param {Samotraces.Lib.TimeWindow} time_window
+ *     TimeWindow object that defines the time frame
+ *     being currently displayed.
+ * @todo add description and update doc...
+ */
+Samotraces.Widgets.TraceDisplayObselOccurrences = function(divId,trace,time_window) {
+
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,divId);
+
+	this.add_class('WidgetTraceDisplayObselOccurrences');
+	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
+
+	this.trace = trace;
+	this.trace.addEventListener('updateTrace',this.draw.bind(this));
+	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
+
+	this.window = time_window;
+	this.window.addEventListener('updateTimeWindow',this.refresh_x.bind(this));
+
+
+	this.init_DOM();
+	this.data = this.trace.traceSet;
+
+	this.draw();
+};
+
+Samotraces.Widgets.TraceDisplayObselOccurrences.prototype = {
+	init_DOM: function() {
+		var div_elmt = d3.select('#'+this.id);
+		this.svg = div_elmt.append('svg');
+
+
+		this.svg_gp = this.svg.append('g')
+						.attr('transform', 'translate(0,0)');
+
+		// event listeners
+		var widget = this;
+		this.add_behaviour('changeTimeOnDrag',this.element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
+					widget.window.translate(time_delta);	
+				//	var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
+					// replace element.getSize() by element.clientWidth?
+					widget.svg_gp.attr('transform','translate(0,0)');
+				//	widget.timer.set(new_time);
+					
+				},
+				onMoveCallback: function(offset) {
+					widget.svg_gp.attr('transform','translate('+offset+',0)');
+				},
+			});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
+//		this.element.addEventListener('wheel',this.build_callback('wheel'));
+//		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
+	},
+
+
+	// TODO: needs to be named following a convention 
+	// to be decided on
+	/**
+	 * Calculates the X position in pixels corresponding to 
+	 * the time given in parameter.
+	 * @param {Number} time Time for which to seek the corresponding x parameter
+	 */
+	calculate_x: function(o) {
+//console.log(o);
+		var x = (o.attributes.hasBegin - this.window.start)*this.element.clientWidth/this.window.get_width();
+//console.log(x);
+		return x;
+	},
+
+	refresh_x: function() {
 		this.d3Obsels()
-			.on('click',this.obsel_selector.select.bind(this.obsel_selector));
+			.attr('x1',this.calculate_x.bind(this))
+			.attr('x2',this.calculate_x.bind(this));
+	},
+/*	translate_x: function() {
+		this.time
+		var delta_x = this.timer.time - 
+var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
+		this.current_offset = this.current_offset + offset;
+		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
+	},*/
+
+	draw: function(e) {
+		if(e) {
+			this.data = this.trace.traceSet;
+		}
+		this.d3Obsels()
+			.enter()
+			.append('line')
+			.attr('x1',this.calculate_x.bind(this))
+			.attr('y1','0%')
+			.attr('x2',this.calculate_x.bind(this))
+			.attr('y2','100%')
+			.attr('stroke-width','1px')
+			.attr('stroke','black');
+	},
+	drawObsel: function(obs) {
+		this.draw();	
+	},
+
+	addObsel: function(e) {
+		var obs = e.data;
+//console.log('addObsel '+obs.id);
+//console.log(obs);
+		this.data.push(obs);
+		this.drawObsel(obs);
+	},
+	d3Obsels: function() {
+		return this.svg_gp
+					.selectAll('line')
+					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
+					.data(this.data); //,function(d) { return d.id;});
 	},
 
 
@@ -2021,6 +2442,62 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 
 
 
+
+
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
+
+/**
+ * @summary Widget for visualising the current time as a number.
+ * @class Widget for visualising the current time as a number.
+ * @author Benoît Mathern
+ * @constructor
+ * @mixes Samotraces.Widgets.Widget
+ * @see Samotraces.Widgets.ReadableTimeForm
+ * @description
+ * Samotraces.Widgets.TimeForm is a generic
+ * Widget to visualise the current time.
+ *
+ * The time is displayed as a number. See
+ * {@link Samotraces.Widgets.TimeForm} to convert
+ * raw time (in ms from the 01/01/1970) to a human readable
+ * format.
+ * 
+ * This widget observes a Samotraces.Lib.Timer object.
+ * When the timer changes the new time is displayed.
+ * This widget also allow to change the time of the timer.
+ * 
+ * @param {String}	html_id
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Lib.Timer} timer
+ *     Timer object to observe.
+ */
+Samotraces.Widgets.VideoSynchroniser = function(html_id,video_id,timer,master) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,html_id);
+
+	this.timer = timer;	
+	this.video = Popcorn('#'+video_id);
+//console.log(this.video.play());
+	if(master=='timer') {
+		this.timer.addEventListener('updateTime',this.updateVideoTime.bind(this));
+	} else {
+		this.video.on('timeupdate',this.updateTimerTime.bind(this));
+	}
+};
+
+Samotraces.Widgets.VideoSynchroniser.prototype = {
+
+	updateVideoTime: function(e) {
+		this.video.currentTime(e.data);
+	},
+	updateTimerTime: function() {
+		this.timer.set(this.video.currentTime());
+	},
+
+};
 
 
 // Check if relevant namespaces exist - or create them.
@@ -2039,7 +2516,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * <code>
  * </code>
  *
- * @property {String} id Id of the HTML element the
+ * @property {string} id Id of the HTML element the
  * Widget is attached to.
  * @property {HTMLElement} element HTML element the
  * Widget is attached to.
@@ -2051,10 +2528,31 @@ Samotraces.Widgets.Widget = (function() {
 	 * @memberof Samotraces.Widgets.Widget.prototype
 	 * @public
 	 * @method
-	 * @param {String} class_name Name of the class to add
+	 * @param {string} class_name Name of the class to add
 	 */
 	function add_class(class_name) {
 		this.element.className += ' '+class_name;
+	}
+
+	function parse_events(events) {
+		/**
+		 * The EventConfig object is used for configurating the
+		 * functions to call events are triggered by a Widget.
+		 * Each attribute name of the EventConfig corresponds
+		 * to a type of event listened to, and each
+		 * value is the function to trigger on this event.
+		 * @typedef Samotraces.Widgets.EventConfig
+		 * @type {Object.<string, function>}
+		 * @property {function} eventName - Function to trigger on this event.
+		 */
+		for(var event_name in events) {
+			var fun = events[event_name];
+			this.addEventListener(event_name,function(e) { fun(e.data); });
+		}
+	}
+	function unload() {
+		this.element.className = '';
+//		this.element.
 	}
 	/**
 	 * Creates a new behaviour (interaction possibility)
@@ -2147,7 +2645,6 @@ Samotraces.Widgets.Widget = (function() {
 			default:
 				break;
 		}
-
 	}
 	return function(id) {
 		// DOCUMENTED ABOVE
@@ -2155,6 +2652,7 @@ Samotraces.Widgets.Widget = (function() {
 		this.element = document.getElementById(this.id);
 		this.add_class = add_class;
 		this.add_behaviour = add_behaviour;
+		this.parse_events = parse_events;
 
 		// call method
 		this.add_class('Widget');
@@ -2168,7 +2666,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising a temporal scale.
+ * @summary Widget for visualising a time scale.
+ * @class Widget for visualising a time scale.
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
@@ -2189,8 +2688,8 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     instantiated
  * @param {} time_window
  *     TimeWindowCenteredOnTime object
- * @param {Boolean} is_javascript_date
- *     (Optional) Boolean that describes if the scale represents a JavaScript Date object.
+ * @param {Boolean} [is_javascript_date]
+ *     Boolean that describes if the scale represents a JavaScript Date object.
  *     If set to true, the widget will display years, months, days, hours, minutes...
  *     as if the time given was the number of milliseconds ellapsed since 1 January 1970 UTC.
  *     If set to false, the widget will display the numbers without attempting
@@ -2265,7 +2764,8 @@ var Samotraces = Samotraces || {};
 Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
- * @class Generic Widget for visualising a temporal slider.
+ * @summary Widget for visualising a window slider.
+ * @class Widget for visualising a window slider.
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
@@ -2360,19 +2860,21 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
 Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.Lib.EventHandler.call(this);
 	this.add_class('WidgetListBases');
 
 	this.ktbs = ktbs;
-	ktbs.addObserver(this);
+	ktbs.addEventListener('updated',this.refresh.bind(this));
 
 	this.init_DOM();
 };
 
 Samotraces.Widgets.ktbs.ListBases.prototype = {
 	init_DOM: function() {
+		this.element.innerHTML = "";
 
 		var title = document.createElement('h2');
-		var title_text = document.createTextNode(this.ktbs.url);
+		var title_text = document.createTextNode('Ktbs root: '+this.ktbs.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
 
@@ -2380,22 +2882,14 @@ Samotraces.Widgets.ktbs.ListBases.prototype = {
 		this.element.appendChild(this.datalist_element);
 
 	},
-	update: function(message,object) {
-		switch(message) {
-			case 'BasesListChanged':
-				this.refresh(object);
-				break;
-			default:
-				break;
-		}
-	},
-	refresh: function(bases) {
+	refresh: function() {
 		// clear
 		this.datalist_element.innerHTML = '';
 		var li_element;
-		bases.forEach(function(el) {
+		this.ktbs.list_bases().forEach(function(b) {
 				li_element = document.createElement('li');
-				li_element.appendChild(document.createTextNode(el));
+				li_element.appendChild(document.createTextNode(b));
+				li_element.addEventListener('click',(function() {this.trigger('selected_base',b)}).bind(this));
 				this.datalist_element.appendChild(li_element);
 			},this);
 
@@ -2427,19 +2921,21 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
 Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.Lib.EventHandler.call(this);
 	this.add_class('WidgetListBases');
 
-	this.ktbs_base = ktbs_base;
-	ktbs_base.addObserver(this);
+	this.base = ktbs_base;
+	this.base.addEventListener('updated',this.refresh.bind(this));
 
 	this.init_DOM();
 };
 
 Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 	init_DOM: function() {
+		this.element.innerHTML = "";
 
 		var title = document.createElement('h2');
-		var title_text = document.createTextNode(this.ktbs_base.url);
+		var title_text = document.createTextNode('Base: '+this.base.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
 
@@ -2447,23 +2943,15 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 		this.element.appendChild(this.datalist_element);
 
 	},
-	update: function(message,object) {
-		switch(message) {
-			case 'TracesListChanged':
-				this.refresh(object);
-				break;
-			default:
-				break;
-		}
-	},
-	refresh: function(bases) {
+	refresh: function() {
 		// clear
 console.log('refresh');
 		this.datalist_element.innerHTML = '';
 		var li_element;
-		bases.forEach(function(el) {
+		this.base.list_traces().forEach(function(t) {
 				li_element = document.createElement('li');
-				li_element.appendChild(document.createTextNode(el));
+				li_element.appendChild(document.createTextNode(t['@id']));
+				li_element.addEventListener('click',(function() {this.trigger('selected_trace',t['@id'])}).bind(this));
 				this.datalist_element.appendChild(li_element);
 			},this);
 

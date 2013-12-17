@@ -33,7 +33,6 @@ Let's start with the code obtained at the end of the previous part of the tutori
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 
 			// Add obsels to the trace
@@ -42,7 +41,7 @@ Let's start with the code obtained at the end of the previous part of the tutori
 			trace.newObsel('click',12);
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -208,11 +207,10 @@ The resulting code should be the following:
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 			new Samotraces.Widgets.WindowScale('scale',tw);
 			new Samotraces.Widgets.ImportTrace('importer',trace);
 		}
@@ -263,12 +261,9 @@ that it requires two parameters:
 </p>
 
 <p>
-In the first part of the tutorial ({@tutorial tuto1.1_trace_visualisation}), 
-an {@link Samotraces.Lib.ObselSelector|ObselSelector} object
-was required to initialise the 
-{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
-At the time we didn't explain what it was used for.
-Anyway, let's try to make the 
+The obsel selector object stores the currently selected obsel
+and informs relevant plugins of the evolution of the selection.
+Let's try to make the 
 {@link Samotraces.Widgets.ObselInspector|ObselInspector} widget
 work by adding a new HTML DIV element, and instanciating it
 with the previously defined 
@@ -276,6 +271,9 @@ with the previously defined
 </p>
 
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Lib.ObselSelector();
 </pre>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
@@ -292,32 +290,6 @@ It displays the content of a <strong>selected</strong> obsel.
 </p>
 
 <p>
-Hang on, what is a <strong>selected</strong> obsel? 
-How do I select an obsel? What if there are NO selected
-obsel?
-</p>
-
-<p>
-In order to answer these questions,
-let's go back to the documentation of the
-{@link Samotraces.Widgets.ObselInspector|ObselInspector} widget.
-The second argument that is used, is an 
-{@link Samotraces.Lib.ObselSelector|ObselSelector} object.
-An {@link Samotraces.Lib.ObselSelector|ObselSelector} object stores 
-the currently selected object. This object also informs widgets when 
-an obsel is selected, when the selected obsel changes or when the
-obsel has been unselected.
-</p>
-
-<p>
-Now, we have the elements to understand the mistery.
-The {@link Samotraces.Lib.ObselSelector|ObselSelector} object
-is used by the {@link Samotraces.Widgets.ObselInspector|ObselInspector} 
-widget to know when an obsel is selected, or when the selected
-obsel changes.
-</p>
-
-<p>
 Initially, there are no selected obsels. Therefore, there are
 no obsels to visualise. When there are no obsels to visualise,
 the default behaviour of the ObselInspector widget is to stay
@@ -325,22 +297,76 @@ hidden. That is why there are nothing displayed.
 </p>
 
 <p>
-How do I select an obsel then? This is done with the 
-{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
-When you click on an obsel displayed with the 
-{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget,
-it will select this obsel in the 
-{@link Samotraces.Lib.ObselSelector|ObselSelector} object.
-This is why the {@link Samotraces.Lib.ObselSelector|ObselSelector} object
-was required when instanciating the 
+You can select an obsel by using the
+{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+method, with the obsel as a parameter.
+However, we would like something more user friendly. For instance, 
+we would like to be able to select an obsel by clicking
+on it on the visualisation.
+For this, we need to link the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} visualisation
+widget to the 
+{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+method.
+</p>
+
+<p>
+If you look more closely to the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+documentation, you will find that the widget triggers an event
+of type 
+{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+when the user click on an Obsel.
+This means, we need to bind the 
+{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+event to the 
+{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+method.
+This can be done with the optional parameters of the 
 {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
 </p>
 
 <p>
-So, selecting an obsel is easy: If you click on an obsel that is displayed, the
-ObselInspector widget should appear and display the relevant information.
-Now, you can try clicking on obsels on the trace and you should be able
-to understand what is happening.
+Looking back to the
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget documentation,
+we see that we need to create an object <code>options</code>
+that contains a field <code>events</code> of type 
+{@link Samotraces.Widgets.EventConfig|EventConfig}
+in which the behaviour
+on the {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+event will be defined.
+The documentation gives an example of the option paramater, that we can
+simplify for the purpose of this tutorial:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	events: { "ui:click:obsel": obsel_selector.select.bind(obsel_selector) }
+}
+
+// Create widgets
+new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+</pre>
+
+<p>
+For those who want to understand more precisely the technical aspect,
+you might wonder what is the use of the "<code>.bind(obsel_selector)</code>"
+code.
+It turns out that with Javascript, if you use the reference to a method
+this way: <code>obsel_selector.select</code>, the 
+{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()} method
+will be called, but the <code>this</code> parameter will not be bound to
+any instance.
+The <code>.bind(obsel_selector)</code> code ensures that the
+method will be called on the <code>obsel_selector</code> instance.
+</p>
+
+<p>
+So, now that we have bound the 
+{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel} event 
+with the selection of an obsel, 
+selecting an obsel is easy.
+Now, you can try clicking on obsels on the trace and the ObselInspector
+widget should display the information related to the relevant obsel.
 When you click on an obsel, you should see something like this:
 </p>
 <img src="tutorials/tuto1.2_adding_widgets_3.png"></img>
@@ -366,11 +392,15 @@ Here is the final code that you should have obtained:
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+
+			var options = {
+				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
+			}
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 			new Samotraces.Widgets.WindowScale('scale',tw);
 			new Samotraces.Widgets.ImportTrace('importer',trace);
 			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);

@@ -78,11 +78,15 @@ Let's start with the code obtained at the end of the previous part of the tutori
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+
+			var options = {
+				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
+			}
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 			new Samotraces.Widgets.WindowScale('scale',tw);
 			new Samotraces.Widgets.ImportTrace('importer',trace);
 			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
@@ -167,9 +171,12 @@ we will go back to the documentation of the
 <p>
 When you initialise the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
 widget the last parameter is an optional parameter.
-It is actually this parameter that contains the information to setup
-your own visualisation parameters.
-More precisely, it defines how each obsel will be displayed:
+This parameter will determine the default behaviour when some
+events are triggered by the widget (like clicking on an obsel),
+and the visualisation parameters.
+More precisely, the <code>options.visu</code> parameter is a
+{@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig|VisuConfig}
+object, which defines how each obsel will be displayed:
 the image name (url), its height, width, and its coordinates x and y.
 Let's have a look at each parameters more precisely:
 </p>
@@ -199,9 +206,19 @@ my_object.my_field2 = "value of field 2";
 </pre>
 
 <p>
-Note that the value of the field can be a String, a Number or any type of JavaScript object.
-It can even be a function!
-But we will come back to this later.
+For instance, the <code>options</code> Object that we created in the previous
+part of the tutorial could also be initialised this way:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {};
+options.events = {
+	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+};
+</pre>
+
+<p>
+Note that the value of a field can be a String, a Number or any type of JavaScript object.
+It can even be a function, as in the <code>options.events</code> example.
 </p>
 
 <p>
@@ -217,25 +234,27 @@ of a music note should be something like "images/noire.png".
 Let's try this code:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: "images/noire.png"
 };
 </pre>
 
 <p>
-Of course, you need to update the initialisation of the 
-{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget to 
-pass this new object as a parameter.
-Your code should look like this:
+Both <code>options.visu</code> and <code>options.events</code>, 
+therefore your code should look like this:
 </p>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">// Visualisation options
-var options = {
+var options = {};
+options.events = {
+	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+};
+options.visu = {
 	url: "images/noire.png"
 };
 
 // Create widgets
-new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 </pre>
 
 <p>
@@ -257,7 +276,7 @@ So, now, you want to edit the visualisation to change de default width
 and default height. This is pretty easy (don't forget the commas to separate the attributes!):
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60
@@ -268,7 +287,7 @@ and default height. This is pretty easy (don't forget the commas to separate the
 Uh Oh... The image doesn't fit. Let's try to change the y coordinate at which it is diplayed (default value is 17px from the top of the widget): 
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -442,7 +461,7 @@ that is used by {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons}
 widget to adapt the visualisation of each obsel:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -469,7 +488,7 @@ Based on that, we need to write a function that will calculate the
 Here is what it might look like (I have calculated the values for you):
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -520,7 +539,7 @@ obsels are crotchet. Some are minims. Let's write a function that
 does that:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
 	url: function(obsel) {
 		switch(obsel.attributes.duration) {
 			case "noire":	// crotchet
@@ -696,11 +715,15 @@ Enjoy the result!</p>
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 
 			// Visualisation options
-			var options = {
+			var options = {};
+			options.events = {
+				"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+			};
+			options.visu = {
 				url: function(o) {
 					return 'images/'+o.attributes.duration+'.png';
 				},
@@ -713,7 +736,7 @@ Enjoy the result!</p>
 			};
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw,options);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 			new Samotraces.Widgets.WindowScale('scale',tw);
 			new Samotraces.Widgets.ImportTrace('importer',trace);
 			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);

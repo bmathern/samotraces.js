@@ -10,6 +10,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
  * @mixes Samotraces.Widgets.Widget
+ * @fires Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
  * @description
  * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
  * is a generic
@@ -36,7 +37,8 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     being currently displayed.
  *
  * @param {Object} [options]
- *     Object with two fields: visu and events.
+ *     Parameter that specifies the visualisation options and
+ *     default event handling.
  * @param {Samotraces.Widgets.TraceDisplayIcons.VisuConfig} [options.visu]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
@@ -77,7 +79,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *         }
  *     },
  *     events: {
- *         'clickOnObsel': obsel_selector.select.bind(obsel_selector)
+ *         'ui:click:obsel': obsel_selector.select.bind(obsel_selector)
  *     }
  * };
  */
@@ -247,7 +249,14 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			this.data = this.trace.traceSet;
 		}
 		function clickOnObsel(obs) {
-			this.trigger('clickOnObsel',obs);
+			/**
+			 * @event Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
+			 * @type {object}
+			 * @property {String} type - The type of the event (= "ui:click:obsel").
+			 * @property {Samotraces.Lib.Obsel} data - The obsel that
+			 *     has been the target of the click.
+			 */
+			this.trigger('ui:click:obsel',obs);
 		}
 		this.d3Obsels()
 			.enter()
@@ -279,16 +288,7 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
 					.data(this.data); //,function(d) { return d.id;});
 	},
-/*
-	// TODO: is it relevant to keep this function? Or merged into build_callback?
-	updateEventListener: function() {
-		function clickOnObsel(obs) {
-			this.trigger('clickOnObsel',obs);
-		}
-		this.d3Obsels()
-			.on('click',clickOnObsel.bind(this));
-	},
-*/
+
 
 };
 

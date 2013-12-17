@@ -12,7 +12,6 @@
 		function init() {
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 
 			// Add obsels to the trace
@@ -21,7 +20,7 @@
 			trace.newObsel('click',12);
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,obsel_selector,tw);
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 // calling the init function when the DOM has been loaded
