@@ -20,11 +20,12 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * icons. If no url is defined (see options), a questionmark 
  * icon will be displayed by default for each obsel.
  *
- * Note that clicking on an obsel will result in this obsel
- * being selected in the 
- * {@link Samotraces.Lib.ObselSelector|ObselSelector}.
+ * Note that clicking on an obsel will trigger a 
+ * {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+ * event.
  *
- * Tutorials {@tutorial tuto1.1_trace_visualisation} and 
+ * Tutorials {@tutorial tuto1.1_trace_visualisation},
+ * {@tutorial tuto1.2_adding_widgets}, and 
  * {@tutorial tuto1.3_visualisation_personalisation} illustrates
  * in more details how to use this class.
  * @param {String}	divId
@@ -88,7 +89,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
 
-	this.add_class('WidgetTraceDisplayIcons');
+	this.add_class('Widget-TraceDisplayIcons');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;

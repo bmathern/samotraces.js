@@ -30,7 +30,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
 Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
-	this.add_class('WidgetObselInspector');
+	this.add_class('Widget-ObselInspector');
 
 	this.obsel = obsel_selector;
 	this.obsel.addEventListener('obselSelected',this.inspect.bind(this));

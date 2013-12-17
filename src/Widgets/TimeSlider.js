@@ -26,7 +26,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetBasicTimeSlider');
+	this.add_class('Widget-TimeSlider');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.timer = timer;

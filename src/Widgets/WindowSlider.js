@@ -27,7 +27,7 @@ Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetBasicWindowSlider');
+	this.add_class('Widget-WindowSlider');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.wide_window = wide_window;

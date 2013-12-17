@@ -41,7 +41,7 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetWindowScale');
+	this.add_class('Widget-WindowScale');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.window = time_window;

@@ -1506,7 +1506,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
 Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
-	this.add_class('WidgetObselInspector');
+	this.add_class('Widget-ObselInspector');
 
 	this.obsel = obsel_selector;
 	this.obsel.addEventListener('obselSelected',this.inspect.bind(this));
@@ -1953,7 +1953,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetBasicTimeSlider');
+	this.add_class('Widget-TimeSlider');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.timer = timer;
@@ -2022,11 +2022,12 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * icons. If no url is defined (see options), a questionmark 
  * icon will be displayed by default for each obsel.
  *
- * Note that clicking on an obsel will result in this obsel
- * being selected in the 
- * {@link Samotraces.Lib.ObselSelector|ObselSelector}.
+ * Note that clicking on an obsel will trigger a 
+ * {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+ * event.
  *
- * Tutorials {@tutorial tuto1.1_trace_visualisation} and 
+ * Tutorials {@tutorial tuto1.1_trace_visualisation},
+ * {@tutorial tuto1.2_adding_widgets}, and 
  * {@tutorial tuto1.3_visualisation_personalisation} illustrates
  * in more details how to use this class.
  * @param {String}	divId
@@ -2081,7 +2082,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *         }
  *     },
  *     events: {
- *         'clickOnObsel': obsel_selector.select.bind(obsel_selector)
+ *         'ui:click:obsel': obsel_selector.select.bind(obsel_selector)
  *     }
  * };
  */
@@ -2090,7 +2091,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
 
-	this.add_class('WidgetTraceDisplayIcons');
+	this.add_class('Widget-TraceDisplayIcons');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
@@ -2254,7 +2255,7 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			/**
 			 * @event Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
 			 * @type {object}
-			 * @property {String} type - The type of the event (= "clickOnObsel").
+			 * @property {String} type - The type of the event (= "ui:click:obsel").
 			 * @property {Samotraces.Lib.Obsel} data - The obsel that
 			 *     has been the target of the click.
 			 */
@@ -2703,7 +2704,7 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetWindowScale');
+	this.add_class('Widget-WindowScale');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.window = time_window;
@@ -2787,7 +2788,7 @@ Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
-	this.add_class('WidgetBasicWindowSlider');
+	this.add_class('Widget-WindowSlider');
 	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
 
 	this.wide_window = wide_window;
