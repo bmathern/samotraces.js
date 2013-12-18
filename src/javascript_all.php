@@ -11,7 +11,7 @@ do {
 } while($dirs = glob($dir, GLOB_ONLYDIR));
 } 
 
-
+/*
 echo(file_get_contents('Lib/EventHandler.js'));
 echo(file_get_contents('Lib/Collecteur.js'));
 echo(file_get_contents('Lib/addBehaviour.js'));
@@ -27,7 +27,8 @@ echo(file_get_contents('Lib/Timer.js'));
 echo(file_get_contents('Lib/SelfUpdatingTimer.js'));
 echo(file_get_contents('Lib/TimeWindow.js'));
 echo(file_get_contents('Lib/WindowState.js'));
-
+*/
+export_all_js('Lib/');
 export_all_js('Widgets/');
 
 

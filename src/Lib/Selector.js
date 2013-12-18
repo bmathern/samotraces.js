@@ -4,6 +4,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * Selector is a shortname for the 
+ * {@link Samotraces.Lib.Selector}
+ * object.
+ * @typedef Selector
+ * @see Samotraces.Lib.Selector
+ */
+/**
  * @summary Object that stores a selection of objects
  * @class Object that stores a selection of objects
  * @author Benoît Mathern
@@ -38,10 +45,12 @@ Samotraces.Lib = Samotraces.Lib || {};
  *     will replace the previously selected object with the new one.
  *     In 'multiple' mode, the selection can be extended and objects
  *     can be individually added or removed.
+ * @param {EventConfig}	[events]
+ *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Lib.Selector = function(type,selection_mode) {
+Samotraces.Lib.Selector = function(type,selection_mode,events) {
 	// Adding the Observable trait
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.Lib.EventHandler.call(this,events);
 	this.mode = selection_mode || 'single'; // other option is 'multiple'
 	this.type = type;
 	this.selection = [];
@@ -100,6 +109,22 @@ Samotraces.Lib.Selector.prototype = {
 		 * @property {String} type - The type of the event (= "selection:remove").
 		 */
 		this.trigger('selection:remove',object);
+	},
+	/**
+     * Method to call to toggle the selection of an Object.
+	 * If the Object was previously unselected, it becomes selected.
+	 * If the Object was previously selected, it becomes unselected.
+     */
+	toggle: function(object) {
+		if(this.mode === 'multiple') {
+			console.log('Selector:toggle() fonction not implemented yet...');
+		} else {
+			if(selection.length == 0 || selection[0] !== object) {
+				this.select(object);
+			} else {
+				this.unselect(object);
+			}
+		}
 	}
 };
 

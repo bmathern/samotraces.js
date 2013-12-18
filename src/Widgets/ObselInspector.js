@@ -13,7 +13,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * Samotraces.Widgets.ObselInspector is a generic
  * Widget to visualise Obsels.
  * 
- * This widget observes a {@link Samotraces.Lib.ObselSelector|ObselSelector}
+ * This widget observes a {@link Samotraces.Lib.Selector|Selector}
  * object. When an obsel is selected, the information about
  * this obsel is displayed in the widget. When an obsel is
  * unselected, the widget closes. Clicking on the red cross
@@ -24,7 +24,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Selector<Obsel>} obsel_selector
+ * @param {Selector.<Obsel>} obsel_selector
  *     ObselSelector object to observe.
  */
 Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {

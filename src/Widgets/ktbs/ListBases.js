@@ -17,16 +17,14 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  *     instantiated
  * @param {Samotraces.Lib.Ktbs} ktbs
  *     Ktbs to bind to.
- * @param {Samotraces.Widgets.EventConfig} [events]
+ * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
 Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.Lib.EventHandler.call(this,events);
 	this.add_class('Widget-ListBases');
-	
-	this.parse_events(events);
 
 	this.ktbs = ktbs;
 	ktbs.addEventListener('ktbs:update',this.refresh.bind(this));

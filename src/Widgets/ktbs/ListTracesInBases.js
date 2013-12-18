@@ -17,16 +17,14 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  *     instantiated
  * @param {Samotraces.Lib.Ktbs.Base} ktbs_base
  *     Ktbs Base to bind to.
- * @param {Samotraces.Widgets.EventConfig} [events]
+ * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
 Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.Lib.EventHandler.call(this,events);
 	this.add_class('Widget-ListTraces');
-
-	this.parse_events(events);
 
 	this.base = ktbs_base;
 	this.base.addEventListener('base:update',this.refresh.bind(this));
@@ -59,6 +57,8 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 			},this);
 
 	},
+	select: function() {
+	}
 };
 
 

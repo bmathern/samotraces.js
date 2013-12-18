@@ -4,6 +4,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * TimeWindow is a shortname for the 
+ * {@link Samotraces.Lib.TimeWindow}
+ * object.
+ * @typedef TimeWindow
+ * @see Samotraces.Lib.TimeWindow
+ */
+/**
  * @summary Object that stores the current time window
  * @class Object that stores the current time window
  * @author Benoît Mathern

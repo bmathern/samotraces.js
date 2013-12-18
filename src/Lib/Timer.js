@@ -7,7 +7,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  * @class Object that stores the current time
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventBuilder
+ * @augments Samotraces.Lib.EventHandler
  * @fires Samotraces.Lib.Timer#timer:update
  * @description
  * Samotraces.Lib.Timer is a Javascript object that stores

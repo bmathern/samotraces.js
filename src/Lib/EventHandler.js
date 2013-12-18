@@ -24,6 +24,7 @@ Samotraces.Lib = Samotraces.Lib || {};
  *     Hash matching callbacks to event_types.
  */
 Samotraces.Lib.EventHandler = (function() {
+	var debug = false;
 	/**
 	 * Triggers all the registred callbacks.
 	 * @memberof Samotraces.Lib.EventBuilder.prototype
@@ -34,6 +35,8 @@ Samotraces.Lib.EventHandler = (function() {
 	 *     {@link Samotraces.Lib.EventBuilder#addEventListener}).
 	 */
 	function trigger(event_type,object) {
+		if(debug) { console.log("debug: EventHandler#"+event_type+" triggered"); }
+		//if(debug) { console.log(this); }
 		var e = { type: event_type, data: object };
 		if(this.callbacks[event_type]) {
 			this.callbacks[event_type].map(function(f) { f(e); });
@@ -66,11 +69,33 @@ Samotraces.Lib.EventHandler = (function() {
 		this.callbacks[event_type] = this.callbacks[event_type] || [];
 		this.callbacks[event_type].push(callback);
 	}
-	return function() {
+
+	return function(events) {
 		// DOCUMENTED ABOVE
 		this.callbacks = this.callbacks || {};
 		this.trigger = trigger;
-		this.addEventListener = addEventListener;
+		this.addEventListener = addEventListener;	
+		/**
+		 * EventConfig is a shortname for the 
+		 * {@link Samotraces.Lib.EventHandler.EventConfig}
+		 * object.
+		 * @typedef EventConfig
+		 * @see Samotraces.Lib.EventHandler.EventConfig
+		 */
+		/**
+		 * The EventConfig object is used for configurating the
+		 * functions to call events are triggered by an EventHandler Object.
+		 * Each attribute name of the EventConfig corresponds
+		 * to a type of event listened to, and each
+		 * value is the function to trigger on this event.
+		 * @typedef Samotraces.Lib.EventHandler.EventConfig
+		 * @type {Object.<string, function>}
+		 * @property {function} eventName - Function to trigger on this event.
+		 */
+		for(var event_name in events) {
+			var fun = events[event_name];
+			this.addEventListener(event_name,function(e) { fun(e.data); });
+		}
 		return this;
 	};
 })();

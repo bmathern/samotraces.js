@@ -4,6 +4,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * Trace is a shortname for the 
+ * {@link Samotraces.Lib.Trace}
+ * object.
+ * @typedef Trace
+ * @see Samotraces.Lib.Trace
+ */
+/**
  * @summary JavaScript (abstract) Trace class.
  * @class JavaScript (abstract) Trace class.
  * @author Benoît Mathern

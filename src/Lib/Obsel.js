@@ -3,6 +3,13 @@ var Samotraces = Samotraces || {};
 Samotraces.Lib = Samotraces.Lib || {};
 
 /**
+ * Obsel is a shortname for the 
+ * {@link Samotraces.Lib.Obsel}
+ * object.
+ * @typedef Obsel
+ * @see Samotraces.Lib.Obsel
+ */
+/**
  * @summary JavaScript Obsel class
  * @class JavaScript Obsel class
  * @param {String} id Identifier of the obsel.

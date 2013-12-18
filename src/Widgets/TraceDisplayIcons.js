@@ -31,16 +31,16 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @param {String}	divId
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Trace}	trace
+ * @param {Trace}	trace
  *     Trace object to display
- * @param {Samotraces.Lib.TimeWindow} time_window
+ * @param {TimeWindow} time_window
  *     TimeWindow object that defines the time frame
  *     being currently displayed.
  *
  * @param {Object} [options]
  *     Parameter that specifies the visualisation options and
  *     default event handling.
- * @param {Samotraces.Widgets.TraceDisplayIcons.VisuConfig} [options.visu]
+ * @param {VisuConfig} [options.visu]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
  *     a value or a function that will be called by 
@@ -58,7 +58,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
- * @param {Samotraces.Widgets.EventConfig}	[options.events]
+ * @param {EventConfig}	[options.events]
  *     Events to listen to and their corresponding callbacks.
  *
  * @example
@@ -85,9 +85,13 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  */
 Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
+	options = options || {};
+	options.visu = options.visu || {};
+	options.events = options.events || {};
+
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.Lib.EventHandler.call(this,options.events);
 
 	this.add_class('Widget-TraceDisplayIcons');
 	Samotraces.Lib.WindowState.addEventListener('window:resize',this.refresh_x.bind(this));
@@ -106,12 +110,13 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	this.data = this.trace.traceSet;
 
 	this.options = {};
-	options = options || {};
-	options.visu = options.visu || {};
-	options.events = options.events || {};
-
-	this.parse_events(options.events);
-
+	/**
+	 * VisuConfig is a shortname for the 
+	 * {@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig}
+	 * object.
+	 * @typedef VisuConfig
+	 * @see Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 */
 	/**
 	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
 	 * @property {(number|function)}	[x]		

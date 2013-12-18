@@ -33,22 +33,6 @@ Samotraces.Widgets.Widget = (function() {
 		this.element.className += ' '+class_name;
 	}
 
-	function parse_events(events) {
-		/**
-		 * The EventConfig object is used for configurating the
-		 * functions to call events are triggered by a Widget.
-		 * Each attribute name of the EventConfig corresponds
-		 * to a type of event listened to, and each
-		 * value is the function to trigger on this event.
-		 * @typedef Samotraces.Widgets.EventConfig
-		 * @type {Object.<string, function>}
-		 * @property {function} eventName - Function to trigger on this event.
-		 */
-		for(var event_name in events) {
-			var fun = events[event_name];
-			this.addEventListener(event_name,function(e) { fun(e.data); });
-		}
-	}
 	function unload() {
 		this.element.className = '';
 //		this.element.
@@ -151,7 +135,6 @@ Samotraces.Widgets.Widget = (function() {
 		this.element = document.getElementById(this.id);
 		this.add_class = add_class;
 		this.add_behaviour = add_behaviour;
-		this.parse_events = parse_events;
 
 		// call method
 		this.add_class('Widget');
