@@ -1,10 +1,3 @@
-
-// REQUIRES JQUERY
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
 /**
  * @summary Javascript Trace Object that is bound to a KTBS trace. 
  * @class Javascript Trace Object that is bound to a KTBS trace. 

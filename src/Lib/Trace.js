@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
 /**
  * Trace is a shortname for the 
  * {@link Samotraces.Lib.Trace}

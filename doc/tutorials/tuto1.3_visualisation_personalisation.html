@@ -79,7 +79,7 @@ Let's start with the code obtained at the end of the previous part of the tutori
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
 
 			var options = {
 				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
@@ -720,7 +720,7 @@ Enjoy the result!</p>
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
 
 			// Visualisation options
 			var options = {};

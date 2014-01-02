@@ -1,7 +1,3 @@
-
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
 /**
  * @summary Object that stores the current time
  * @class Object that stores the current time

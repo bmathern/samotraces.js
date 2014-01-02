@@ -1,7 +1,3 @@
-
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
 /**
  * Obsel is a shortname for the 
  * {@link Samotraces.Lib.Obsel}

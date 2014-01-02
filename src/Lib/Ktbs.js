@@ -1,11 +1,3 @@
-
-// REQUIRES JQUERY
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
-
 /**
  * @summary Javascript Ktbs Object that is bound to a KTBS. 
  * @class Javascript Ktbs Object that is bound to a KTBS. 

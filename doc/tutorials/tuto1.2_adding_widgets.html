@@ -256,24 +256,24 @@ that it requires two parameters:
 <ol>
 	<li>A String, which is the ID of the HTML DIV element 
 	where we want to instanciate the widget.</li>
-	<li>An {@link Samotraces.Lib.ObselSelector|ObselSelector} object.</li>
+	<li>A {@link Samotraces.Lib.Selector|Selector} of Obsel object.</li>
 </ol>
 </p>
 
 <p>
-The obsel selector object stores the currently selected obsel
+The obsel Selector object stores the currently selected obsel
 and informs relevant plugins of the evolution of the selection.
 Let's try to make the 
 {@link Samotraces.Widgets.ObselInspector|ObselInspector} widget
 work by adding a new HTML DIV element, and instanciating it
 with the previously defined 
-{@link Samotraces.Lib.ObselSelector|ObselSelector} object:
+{@link Samotraces.Lib.Selector|Selector} object:
 </p>
 
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Lib.ObselSelector();
+<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
 </pre>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
@@ -298,7 +298,7 @@ hidden. That is why there are nothing displayed.
 
 <p>
 You can select an obsel by using the
-{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+{@link Samotraces.Lib.Selector#select|Selector.select()}
 method, with the obsel as a parameter.
 However, we would like something more user friendly. For instance, 
 we would like to be able to select an obsel by clicking
@@ -306,7 +306,7 @@ on it on the visualisation.
 For this, we need to link the 
 {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} visualisation
 widget to the 
-{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+{@link Samotraces.Lib.Selector#select|Selector.select()}
 method.
 </p>
 
@@ -320,7 +320,7 @@ when the user click on an Obsel.
 This means, we need to bind the 
 {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
 event to the 
-{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()}
+{@link Samotraces.Lib.Selector#select|Selector.select()}
 method.
 This can be done with the optional parameters of the 
 {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget.
@@ -333,7 +333,8 @@ we see that we need to create an object <code>options</code>
 that contains a field <code>events</code> of type 
 {@link Samotraces.Widgets.EventConfig|EventConfig}
 in which the behaviour
-on the {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+on the 
+{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
 event will be defined.
 The documentation gives an example of the option paramater, that we can
 simplify for the purpose of this tutorial:
@@ -353,7 +354,7 @@ you might wonder what is the use of the "<code>.bind(obsel_selector)</code>"
 code.
 It turns out that with Javascript, if you use the reference to a method
 this way: <code>obsel_selector.select</code>, the 
-{@link Samotraces.Lib.ObselSelector#select|ObselSelector.select()} method
+{@link Samotraces.Lib.Selector#select|Selector.select()} method
 will be called, but the <code>this</code> parameter will not be bound to
 any instance.
 The <code>.bind(obsel_selector)</code> code ensures that the
@@ -361,10 +362,6 @@ method will be called on the <code>obsel_selector</code> instance.
 </p>
 
 <p>
-So, now that we have bound the 
-{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel} event 
-with the selection of an obsel, 
-selecting an obsel is easy.
 Now, you can try clicking on obsels on the trace and the ObselInspector
 widget should display the information related to the relevant obsel.
 When you click on an obsel, you should see something like this:
@@ -393,7 +390,7 @@ Here is the final code that you should have obtained:
 			// Create logical objects
 			var trace 		= new Samotraces.Lib.DemoTrace();
 			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.ObselSelector();
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
 
 			var options = {
 				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}

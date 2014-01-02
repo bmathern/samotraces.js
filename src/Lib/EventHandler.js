@@ -1,10 +1,3 @@
-
-// THIS FILE MUST BE INCLUDED FIRST!!!
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Lib = Samotraces.Lib || {};
-
 /**
  * @mixin
  * @description

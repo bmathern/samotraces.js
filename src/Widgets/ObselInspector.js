@@ -25,7 +25,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     Id of the DIV element where the widget will be
  *     instantiated
  * @param {Selector.<Obsel>} obsel_selector
- *     ObselSelector object to observe.
+ *     A Selector of Obsel to observe.
  */
 Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
