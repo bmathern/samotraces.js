@@ -10,6 +10,28 @@ Samotraces.js is a framework for the development of trace-based applications.
 supervising, apprehending, analysing, manipulating, managing and organizing
 observed traces". TODO -> update
 
+How to use Samotraces.js?
+-------------------------
+
+In order to use Samotraces.js, you must include the 
+Samotraces.js script into the HTML page you are developping.
+The latest Samotraces.js file can be found in the lib/ 
+directory of Samotraces.js repository.
+
+```
+<script type="text/javascript" src="Samotraces.js"></script>
+```
+
+For developpers, you can call the src/generate_samtraces.php
+script to re-generate a Samotraces.js file that include the
+changes that have been made in the src folder.
+
+As Samotraces.js uses some UTF-8 characters, the HTML 
+document must explicitly use the UTF-8 charser. The following
+code must be included in the HTML header of the document:
+```
+<meta charset="utf-8">
+```
 
 How to read this documentation?
 -------------------------------
