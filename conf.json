@@ -1,0 +1,30 @@
+{
+    "opts": {
+        "recurse": true,
+        "destination": "./doc/",
+        "tutorials": "./doc/tutorials/"
+    },
+    "tags" : {
+            "allowUnknownTags" : true
+    },
+    "plugins" : ["plugins/markdown"],
+    "templates" : {
+            "cleverLinks" : false,
+            "monospaceLinks" : false,
+            "default" : {
+                    "outputSourceFiles" : true
+            },
+            "systemName" : "Samotraces.js",
+            "footer" : "",
+            "copyright" : "",
+            "navType" : "vertical",
+            "theme" : "cerulean",
+            "linenums" : true,
+            "collapseSymbols" : false,
+            "inverseNav" : true
+    },
+    "markdown" : {
+            "parser" : "gfm",
+            "hardwrap" : true
+    }
+}
