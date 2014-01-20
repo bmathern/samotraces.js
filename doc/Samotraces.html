@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Samotraces.js Class: WindowScale</title>
+	<title>Samotraces.js Namespace: Samotraces</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -265,17 +265,13 @@
 					
 
 
-	<h1 class="page-title">Class: WindowScale</h1>
+	<h1 class="page-title">Namespace: Samotraces</h1>
 <section>
 
 <header>
     <h2>
-        <span class="ancestors"><a href="Samotraces.html">Samotraces</a><a href="Samotraces.Widgets.html">.Widgets</a>.</span>
-    
-    WindowScale
+    Samotraces
     </h2>
-    
-        <div class="class-description"><p>Widget for visualising a time scale.</p></div>
     
 </header>
 
@@ -285,163 +281,8 @@
 
     
         
-<dt>
-    <h4 class="name" id="WindowScale"><span class="type-signature"></span>new WindowScale<span class="signature">(divId, time_window, <span class="optional">is_javascript_date</span>)</span><span class="type-signature"></span></h4>
-    
-    
-    <p class="summary">Widget for visualising a time scale.</p>
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Samotraces.Widgets.WindowScale is a generic
-Widget to visualise the temporal scale of a 
-<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a>. This
-widget uses d3.js to calculate and display the scale.</p>
-<p>Note: unless the optional argument is_javascript_date is defined,
-the widget will try to guess if time is displayed as numbers,
-or if time is displayed in year/month/day/hours/etc.
-This second option assumes that the time is represented in
-milliseconds since 1 January 1970 UTC.</p>
-    </div>
-    
 
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
         
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-		<th>Argument</th>
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>divId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Id of the DIV element where the widget will be
-    instantiated</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>time_window</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>TimeWindowCenteredOnTime object</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>is_javascript_date</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Boolean that describes if the scale represents a JavaScript Date object.
-    If set to true, the widget will display years, months, days, hours, minutes...
-    as if the time given was the number of milliseconds ellapsed since 1 January 1970 UTC.
-    If set to false, the widget will display the numbers without attempting
-    any conversion.
-    This argument is optional. If not set, the widget will try to guess:
-    If the number of the start of the given TimeWindow is above a billion, then
-    it is assumed that the JavaScript Date object has been used to represent time.
-    Otherwise, the numerical value of time will be displayed.</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
-    
-    
-    
 <dl class="details">
     
 
@@ -454,13 +295,6 @@ milliseconds since 1 January 1970 UTC.</p>
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Benoît Mathern</li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -471,7 +305,7 @@ milliseconds since 1 January 1970 UTC.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="WindowScale.js.html">Widgets/WindowScale.js</a>, <a href="WindowScale.js.html#sunlight-1-line-40">line 40</a>
+        <a href="generate_samotraces.js.html">generate_samotraces.js</a>, <a href="generate_samotraces.js.html#sunlight-1-line-8">line 8</a>
     </li></ul></dd>
     
 
@@ -482,43 +316,29 @@ milliseconds since 1 January 1970 UTC.</p>
     
 </dl>
 
-    
-    
 
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
+        
     
     </div>
 
     
 
     
-        <h3 class="subsection-title">Mixes In</h3>
 
-        <ul>
-            <li><a href="Samotraces.Widgets.Widget.html">Samotraces.Widgets.Widget</a></li>
-        </ul>
-    
-
-    
-        <h3 class="subsection-title">Requires</h3>
-
-        <ul>
-            <li>module:d3.js</li>
-        </ul>
     
 
     
 
+    
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="namespaces.html#Samotraces.Lib"><a href="Samotraces.Lib.html">Lib</a></a></dt>
+            <dd></dd>
+        
+            <dt><a href="namespaces.html#Samotraces.Widgets"><a href="Samotraces.Widgets.html">Widgets</a></a></dt>
+            <dd></dd>
+        </dl>
     
 
     
@@ -543,7 +363,7 @@ milliseconds since 1 January 1970 UTC.</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Mon Jan 20 2014 11:46:23 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Mon Jan 20 2014 11:46:21 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
