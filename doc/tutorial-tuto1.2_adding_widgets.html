@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js tutorialTutorial 1 – part 2: Adding widgets to an application</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html">DemoTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs.html">Ktbs</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html">WindowState</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					<section>
+    
+<header>
+    
+
+    <h2>Tutorial 1 – part 2: Adding widgets to an application</h2>
+</header>  
+
+<article>
+    <h2>Introduction</h2>
+
+<p>
+In the first part of this tutorial, you have seen how to
+create a first basic visualisation of a trace with the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+widget.
+In this second part of the tutorial, you will learn how to 
+use other widgets. 
+First, you will add a time scale to the trace.
+Then you will use a widget that import CSV files in the trace.
+And finally, you will learn how to use a widget that displays
+detailed informations about a selected Obsel.
+</p>
+
+<h2>Reminder from part 1 of the tutorial.</h2>
+
+<p>
+Let's start with the code obtained at the end of the previous part of the tutorial:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="my-widget"&gt;&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+			// Add obsels to the trace
+			trace.newObsel('click',1);
+			trace.newObsel('click',5);
+			trace.newObsel('click',12);
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h3>Reminders</h3>
+<p>
+<ul>
+	<li>Files "Samotraces.js" and "d3.js" must be placed in a folder called 
+	"javascript" and "samotraces.css" in a folder called "css".
+	</li>
+	<li>This code contains a <code>&lt;div&gt;</code> HTML tag element with 
+	an attribute <code>id</code> set to <code>"my-widget"</code>. 
+	This HTML DIV element is where the widget will be instanciated.
+	</li>
+	<li>The Javascript <code>init()</code> function is run when the page is 
+	loaded. This function will:
+	<ul>
+		<li>Create a trace object, an obsel selector object and a time window
+		object.
+		</li>
+		<li>Add obsels to the trace.</li>
+		<li>Create a widget that visualise the trace.</li>
+	</ul>
+	</li>
+</ul>
+</p>
+
+<h2>More about widgets</h2>
+
+<p>
+As you have seen during the first tutorial, when you want to create a 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget, 
+the first argument that will be provided is the ID of the HTML DIV
+element where the plugin will be instanciated.
+This will <strong>always</strong> be the case for 
+<strong>all the widgets</strong>. Every widget will require a unique ID.
+The other parameters are specific to each widget, as we will see in
+this tutorial.
+</p>
+
+<p>
+Now, you might wonder what would happen if you try to instanciate two
+widgets with the same ID. The answer is that it will likely not work.
+The two widgets might interfere with each other.
+</p>
+
+<p>
+In summary, each widget require a unique HTML DIV element with a unique ID.
+This implies that the first thing to do when adding a widget is to create
+a new HTML DIV element and create an attribute ID for this element.
+Then you can update your JavaScript source code to create the new widget.
+</p>
+
+<h2>Adding a time scale</h2>
+
+<p>
+First, we will add a time scale to the trace. This will be done with 
+the <a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> widget.
+</p>
+
+<p>
+The documentation of the <a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> widget
+tells us that the 
+<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> widget requires two parameters:
+<ol>
+	<li>A String, which is the ID of the HTML DIV element 
+	where we want to instanciate the widget.</li>
+	<li>A <a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a> which delimitates
+	the current time window.</li>
+</ol>
+</p>
+
+<p>
+As we want the time scale to match what is displayed on the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+we will use the same <a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a> object 
+(<code>tw</code>).
+All we need to do is to create a HTML DIV element for the widget 
+(with the id <code>"scale"</code> for instance) and then instanciate the 
+<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> widget with this id and the
+<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a> object <code>tw</code> that
+have already been instanciated:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="scale"&gt;&lt;/div&gt;
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.WindowScale('scale',tw);
+</pre>
+
+<p>
+Now you should see something like this:
+</p>
+<img src="tutorials/tuto1.2_adding_widgets_1.png"></img>
+<p>
+When zooming in or out on the trace, you should see that the scale updates itself.
+The same happens if you move the trace to the left of to the right.
+This is the magic of using the same 
+<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a> object in the two widgets.
+</p>
+
+
+<h2>Importing a trace</h2>
+
+<p>
+In the previous tutorial, we had added manually three obsels to an empty trace.
+In this section, we will import obsels from a CSV file with the 
+<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a> widget.
+</p>
+
+<p>
+First thing to do, we have to remove the code that was adding obsels to the trace.
+Then, we need to instanciate the ImportTrace widget.
+</p>
+
+<p>
+Reading the <a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a> widget
+documentation tells us that the 
+<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a> widget requires two parameters:
+<ol>
+	<li>A String, which is the ID of the HTML DIV element 
+	where we want to instanciate the widget.</li>
+	<li>A <a href="Samotraces.Lib.Trace.html">Trace</a> object in which the CSV file(s) will be imported.</li>
+</ol>
+</p>
+
+<p>
+As we want to import the CSV file in the current trace, we only need to create
+a HTML DIV element for the widget (with the id <code>"importer"</code> 
+for instance) and then instanciate the 
+<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a> widget with this id and the
+trace object already instanciated in parameter:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="importer"&gt;&lt;/div&gt;
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ImportTrace('importer',trace);
+</pre>
+
+<p>
+The resulting code should be the following:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="my-widget"&gt;&lt;/div&gt;
+		&lt;div id="scale"&gt;&lt;/div&gt;
+		&lt;div id="importer"&gt;&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+Now, when you load the page, you see a new button appearing asking you to browse
+for a CSV file. Let's try this out.
+You will find a CSV file ready to use <a href="../examples/tutorials/tuto1.2_adding_widgets/trace.csv">here</a>.
+</p>
+
+<p>
+When you import the file trace.csv, something like this should be displayed:
+</p>
+<img src="tutorials/tuto1.2_adding_widgets_2.png"></img>
+<p>
+If you click on "toggle console" you can display or hide a log of the files that have
+been imported in the trace.
+Note that it is possible to import several CSV files in a row.
+It is even possible to select multiple CSV files to import at once.
+</p>
+
+
+<h2>Inspecting an obsel</h2>
+
+<p>
+Now let's visualise the details of an obsel with the <a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a> widget.
+The <a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a> widget makes
+it possible to visualise the content of a selected obsel.
+It offers a simple list of all the attributes of the selected obsel.
+</p>
+
+<p>
+The documentation of the 
+<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a> widget says
+that it requires two parameters:
+<ol>
+	<li>A String, which is the ID of the HTML DIV element 
+	where we want to instanciate the widget.</li>
+	<li>A <a href="Samotraces.Lib.Selector.html">Selector</a> of Obsel object.</li>
+</ol>
+</p>
+
+<p>
+The obsel Selector object stores the currently selected obsel
+and informs relevant plugins of the evolution of the selection.
+Let's try to make the 
+<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a> widget
+work by adding a new HTML DIV element, and instanciating it
+with the previously defined 
+<a href="Samotraces.Lib.Selector.html">Selector</a> object:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+</pre>
+
+<p>
+Now, let's see what happens!
+</p>
+
+<p>
+Oh! it seems like nothing new happened...
+Well, what is this widget supposed to do again?
+It displays the content of a <strong>selected</strong> obsel.
+</p>
+
+<p>
+Initially, there are no selected obsels. Therefore, there are
+no obsels to visualise. When there are no obsels to visualise,
+the default behaviour of the ObselInspector widget is to stay
+hidden. That is why there are nothing displayed.
+</p>
+
+<p>
+You can select an obsel by using the
+<a href="Samotraces.Lib.Selector.html#select">Selector.select()</a>
+method, with the obsel as a parameter.
+However, we would like something more user friendly. For instance, 
+we would like to be able to select an obsel by clicking
+on it on the visualisation.
+For this, we need to link the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> visualisation
+widget to the 
+<a href="Samotraces.Lib.Selector.html#select">Selector.select()</a>
+method.
+</p>
+
+<p>
+If you look more closely to the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
+documentation, you will find that the widget triggers an event
+of type 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+when the user click on an Obsel.
+This means, we need to bind the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+event to the 
+<a href="Samotraces.Lib.Selector.html#select">Selector.select()</a>
+method.
+This can be done with the optional parameters of the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+</p>
+
+<p>
+Looking back to the
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget documentation,
+we see that we need to create an object <code>options</code>
+that contains a field <code>events</code> of type 
+EventConfig
+in which the behaviour
+on the 
+{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+event will be defined.
+The documentation gives an example of the option paramater, that we can
+simplify for the purpose of this tutorial:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {
+	events: { "ui:click:obsel": obsel_selector.select.bind(obsel_selector) }
+}
+
+// Create widgets
+new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+</pre>
+
+<p>
+For those who want to understand more precisely the technical aspect,
+you might wonder what is the use of the "<code>.bind(obsel_selector)</code>"
+code.
+It turns out that with Javascript, if you use the reference to a method
+this way: <code>obsel_selector.select</code>, the 
+<a href="Samotraces.Lib.Selector.html#select">Selector.select()</a> method
+will be called, but the <code>this</code> parameter will not be bound to
+any instance.
+The <code>.bind(obsel_selector)</code> code ensures that the
+method will be called on the <code>obsel_selector</code> instance.
+</p>
+
+<p>
+Now, you can try clicking on obsels on the trace and the ObselInspector
+widget should display the information related to the relevant obsel.
+When you click on an obsel, you should see something like this:
+</p>
+<img src="tutorials/tuto1.2_adding_widgets_3.png"></img>
+
+<p>
+Here is the final code that you should have obtained:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="my-widget"&gt;&lt;/div&gt;
+		&lt;div id="scale"&gt;&lt;/div&gt;
+		&lt;div id="importer"&gt;&lt;/div&gt;
+		&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+
+			var options = {
+				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
+			}
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+You can try out the final result of this tutorial
+<a href="../examples/tutorials/tuto1.2_adding_widgets/index.html">here</a>.
+</p>
+
+
+<h2>Going further</h2>
+
+<p>
+As you have seen in this second part of the tutorial, adding widgets is pretty easy.
+You can easily add functionnalities to your application and add/remove widgets.
+</p>
+
+<p>
+You might wonder if the order in which you add the widgets makes a difference
+on the order in which widgets are displayed.
+Well, the answer is: the order of the HTML DIV elements makes a difference.
+The order of the JavaScript code do not make any difference.
+The reason why is that the positionning of the widgets depends on the HTML flow.
+If you want to alter the way widget are displayed or the order in which they appear,
+you will have to edit the HTML code and/or the CSS style-sheets.
+</p>
+
+<p>
+In the next tutorial (<a href="tutorial-tuto1.3_visualisation_personalisation.html">Tutorial 1 – part 3: Putting it all together and personalising the visualisation</a>), 
+we will dwell deeper in the use of some widgets.
+You will learn how to make your own trace visualisation.
+</p>
+
+
+</article>
+
+</section>  
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Mon Jan 20 2014 11:37:35 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js tutorialTutorial 1 – part 3: Putting it all together and personalising the visualisation</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html">DemoTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs.html">Ktbs</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html">WindowState</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					<section>
+    
+<header>
+    
+
+    <h2>Tutorial 1 – part 3: Putting it all together and personalising the visualisation</h2>
+</header>  
+
+<article>
+    <h2>Introduction</h2>
+
+<p>
+In the first part of the tutorial, you have seen how to
+create a first basic visualisation of a trace with the 
+TraceDisplayIcons
+widget.
+In the second part of the tutorial, you have learnt how to 
+add other widgets.
+In this third and last part of the tutorial, you will learn how
+to tune the visualisation of a trace to more specific needs.
+</p>
+
+<p>
+In the previous part of the tutorial, when clicking on the different obsels,
+you might have noticed that the trace you have loaded
+looks very similar to music notes (with french notation!).
+If you have a closer look at the <a href="../examples/tutorials/tuto1.3_visualisation_personalisation/trace.csv">trace.csv</a>
+file, you will see that the obsels type correspond to the note's height (do, re, mi, etc.)
+and each obsel has an attribute "duration" which correspond
+to the note's duration ("blanche", "noire", etc.).
+</p>
+
+<p>
+For non-french musicians: a "blanche" is a "minim" (amercian: "half note")
+and a "noire" is a "crotchet" (american: "quarter note") and the note's heights are:
+</p>
+<ul>
+	<li>C for "do"</li>
+	<li>D for "re"</li>
+	<li>E for "mi"</li>
+	<li>F for "fa"</li>
+	<li>G for "sol"</li>
+	<li>A for "la"</li>
+	<li>B for "si"</li>
+</ul>
+<!-- sources:
+http://en.wikipedia.org/wiki/Modern_musical_symbols#Notes_and_rests
+http://en.wikipedia.org/wiki/Music_note#12-tone_chromatic_scale
+-->
+
+<p>
+In this tutorial, you will display these notes on a music sheet.
+For this purpose, you will setup the
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+and tweak the HTML and CSS files.
+</p>
+
+<!--
+<p>
+In this part of the tutorial, you will visualise a trace that
+represents music notes. The goal is to setup the visualisation
+so that notes are displayed in a way that is similar to music sheets.
+For this, you will need to 
+</p>
+-->
+
+<h2>Reminder from part 2 of the tutorial.</h2>
+
+<p>
+Let's start with the code obtained at the end of the previous part of the tutorial:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;div id="my-widget"&gt;&lt;/div&gt;
+		&lt;div id="scale"&gt;&lt;/div&gt;
+		&lt;div id="importer"&gt;&lt;/div&gt;
+		&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+
+			var options = {
+				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
+			}
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h3>Reminders</h3>
+<p>
+<ul>
+	<li>Files "Samotraces.js" and "d3.js" must be placed in a folder called 
+	"javascript" and "samotraces.css" in a folder called "css".
+	</li>
+	<li>This code contains <code>&lt;div&gt;</code> HTML tag elements, each 
+	having an unique <code>id</code> attribute. Each widget will be 
+	instanciated in the corresponding HTML DIV element.
+	</li>
+	<li>The Javascript <code>init()</code> function is run when the page is 
+	loaded. This function will:
+	<ul>
+		<li>Create a trace object, an obsel selector object and a time window
+		object.
+		</li>
+		<li>Create the following widgets:
+			<ul>
+				<li><a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>: 
+				a trace visualisation widget</li>
+				<li><a href="Samotraces.Widgets.WindowScale.html">WindowScale</a>: 
+				a time scale widget</li>
+				<li><a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a>: 
+				a widget to import CSV files in the current trace</li>
+				<li><a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a>: 
+				a widget that inspect obsels</li>
+			</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+</p>
+
+<h2>Setting up the visualisation: displaying the image you want</h2>
+
+<p>
+First, you will have to download the (four) following images that
+will be used in our visualisation (Right click -> save image as) and place
+them to a new "images" folder of your project:
+</p>
+
+<!-- Quick'n dirty style for the tutorial -->
+<style>
+ul.tuto_floating_images {list-style-type:none;}
+ul.tuto_floating_images li {float:left;width: 100px;height:100px;border:1px solid gray;text-align:center;}
+</style>
+
+<ul class="tuto_floating_images">
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/noire.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/blanche.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/portee.png"></img></a>
+	</li>
+	<li><a href="../examples/tutorials/tuto1.3_visualisation_personalisation/images/clef.png"><img src="../examples/tutorials/tuto1.3_visualisation_personalisation/images/clef.png"></img></a>
+	</li>
+</ul>
+
+<p style="clear: both;">
+Now, that you have the relevant images ready, we will use what has already been done in the previous parts of the tutorial
+and change the visualisation so that music notes are displayed instead of the default question-mark symbol.
+</p>
+
+<p>
+In order to change the default visualisation symbol of the displayed trace,
+we will go back to the documentation of the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+</p>
+
+<p>
+When you initialise the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+widget the last parameter is an optional parameter.
+This parameter will determine the default behaviour when some
+events are triggered by the widget (like clicking on an obsel),
+and the visualisation parameters.
+More precisely, the <code>options.visu</code> parameter is a
+<a href="Samotraces.Widgets.TraceDisplayIcons.html#VisuConfig">VisuConfig</a>
+object, which defines how each obsel will be displayed:
+the image name (url), its height, width, and its coordinates x and y.
+Let's have a look at each parameters more precisely:
+</p>
+<ul>
+	<li>x: the X coordinates of the top-left corner of the image</li>
+	<li>y: the Y coordinates of the top-left corner of the image</li>
+	<li>width: the width (in pixels) of the image</li>
+	<li>height: the height (in pixels) of the image</li>
+	<li>url: the URL of the image to display (default: a question-mark symbol)</li>
+</ul>
+
+<p>
+For those who don't know much about JavaScript, a JavaScript object can
+be described in several different ways.
+For instance, both of the following codes are equivalent.
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {
+	my_field1: "value of field 1",
+	my_field2: "value of field 2"
+};
+</pre>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {};
+my_object.my_field1 = "value of field 1";
+my_object.my_field2 = "value of field 2";
+</pre>
+
+<p>
+For instance, the <code>options</code> Object that we created in the previous
+part of the tutorial could also be initialised this way:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {};
+options.events = {
+	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+};
+</pre>
+
+<p>
+Note that the value of a field can be a String, a Number or any type of JavaScript object.
+It can even be a function, as in the <code>options.events</code> example.
+</p>
+
+<p>
+The first think we want to do is to edit the image that will be displayed
+for each obsel. Instead of displaying a question-mark symbol, it would
+be nicer to display a music note. This is done by editing the url field
+of the optional object.
+</p>
+
+<p>
+As you have copied the images in the "images" folder, the URL of the image
+of a music note should be something like "images/noire.png".
+Let's try this code:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: "images/noire.png"
+};
+</pre>
+
+<p>
+Both <code>options.visu</code> and <code>options.events</code>, 
+therefore your code should look like this:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">// Visualisation options
+var options = {};
+options.events = {
+	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+};
+options.visu = {
+	url: "images/noire.png"
+};
+
+// Create widgets
+new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+</pre>
+
+<p>
+Now, you should see something like this:
+</p>
+<img src="tutorials/tuto1.3_visualisation_personalisation_1.png"></img>
+
+<p>
+This is good. This is more music like.
+It is a bit too small though.
+</p>
+
+<p>
+The original image file is 34 pixel in width by 60 pixels in height.
+So, why is it so small?
+Well, this is because the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
+displays images of 16px by 16px by default.
+So, now, you want to edit the visualisation to change de default width
+and default height. This is pretty easy (don't forget the commas to separate the attributes!):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60
+};
+</pre>
+
+<p>
+Uh Oh... The image doesn't fit. Let's try to change the y coordinate at which it is diplayed (default value is 17px from the top of the widget): 
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60,
+	y: 2
+};
+</pre>
+
+<p>
+Ok, this doesn't work. The widget is too narrow.
+Well, don't worry, there is a way to make the widget wider.
+Good news: for this, you don't need to write any JavaScript!
+You'll have to edit the CSS properties of the widget.
+</p>
+
+<h2>CSS and Samotraces.js</h2>
+
+<h3>A short introduction to CSS</h3>
+
+<p>
+If you don't know what CSS are, here is a very short introduction.
+CSS stands for Cascading Style Sheets.
+CSS is a language used to define styles that you can apply to HTML content.
+With CSS, you can typically define the height of an element, 
+or its background colour, etc.
+</p>
+
+<p>
+The goal of this tutorial it not to teach you about CSS.
+However, there are two concepts that you need to understand: the concept of ID
+and the concept of class.
+</p>
+
+<p>
+Each ID is unique in one HTML page. You have already defined IDs in the HTML
+content you have writtend so far. An ID is stored in the "id" attribute of any
+HTML element. One HTML element can have at most one ID. The ID will identify
+this particular HTML element.
+</p>
+
+<p>
+A class, on the other hand, can be shared by several HTML elements.
+One HTML element can have one or several classes.
+Classes are stored in the "class" attribute of any HTML element.
+If an HTML element has several classes, they are separated in the HTML code by spaces
+</p>
+
+<p>
+In CSS language, IDs are represented with the prefix "#" and
+classes are represented by the prefix ".".
+</p>
+
+<h3>What you should know about CSS in Samotraces.js</h3>
+
+<p>
+Samotraces.js uses CSS to correctly display the widgets.
+That is why, from the very begining of the tutorial you had to include
+a CSS file (samotraces.css).
+If you were to try to remove this file, you would see that the
+display is arbitrary and doesn't work the way you want.
+</p>
+
+<p>
+The samotraces.css file is just a default template to display
+Samotraces.js widgets.
+But... How does it work?
+How does the CSS file know which style is applied to which HTML element?
+So far, the HTML element containing the widgets only have (arbitrary) IDs.
+(Note that if you change the IDs in the HTML file and update the JavaScript
+code, the visualisation will still work).
+Does the CSS file communicate with the JavaScript code to know
+which style to apply to which plugin?
+</p>
+
+<p>
+Well, the solution is simple and based on the concept of classes.
+Whenever a widget of Samotraces.js is instanciated, the corresponding
+HTML element will be given two classes.
+The classes are generated by the Javascript code of each Widget.
+The first class is the class "Widget". The second class is the class
+corresponding to the specific widget you have been instanciating
+(for instance "Widget-TraceDisplayIcons").
+Then, if you look at the CSS file samotraces.css, you will see that
+styles are defined for each widget.
+The common class "Widget" is shared by all widgets and is used to define
+common set of attributes that are shared by all Widgets.
+</p>
+
+<p>
+Of course, the samotraces.css file is just a default template to display
+Samotraces.js widgets. Feel free to edit it to make your own templates!
+</p>
+
+
+<h3>Editing the CSS of a widget</h3>
+
+<p>
+Now that we know how it works, let's go back to our initial problem.
+We want to change the height
+of the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+For this, we must edit the CSS style of the "Widget-TraceDisplayIcons" class.
+</p>
+
+<p>
+There are several ways to edit the CSS styles.
+You can either edit your own template and use the samotraces.css file as a basis.
+You can also create your own css file which will complement the currently existing
+samotraces.css file.
+Or you can add the style directly in the HTML code with a <code>&lt;style&gt;</code> tag.
+In real life example, the first two options are highly recommanded as they 
+make the code far more maintanable and easy to read.
+However, for the purpose of the tutorial, we will use the last method,
+which will be easier to follow if you are not used to CSS:
+we will keep editing the same file that contains the HTML and the Javascript
+code. (Note that if you are willing to write your own CSS file or edit the
+existing CSS file, you will have to update the paths to the background images.)
+</p>
+
+<p>
+If you look at the samotraces.css file, you will see that
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget's
+height is setup to 50px. This explains why our 60px image wouldn't fit.
+Now, we will write some CSS code in the HTML page that will override this
+property to make the widget 150px in height:
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;style type="text/css"&gt;
+div.Widget-TraceDisplayIcons {
+	height: 150px;
+}
+&lt;/style&gt;
+</pre>
+
+<p>
+Now, if you try again. The notes will actually fit in the widget. Pheeew!
+</p>
+
+<p>
+So, why not going further now and add a little background representing
+the music staff ("portée" in french)?
+For instance, we could put the staff as a background image of the widget.
+You can do it this way:
+</p>
+
+<pre class="prettyprint sunlight-highlight-css linenums">div.Widget-TraceDisplayIcons {
+	height: 150px;
+	background: url("./images/portee.png") repeat-x 0px 40px;
+}
+</pre>
+
+<p>
+Note that the "repeat-x" argument means that the image of the staff
+is repeated horizontaly, and "0px 40px" means that an offset of 0px horizonaly
+and 40px vertically is applied to display the image.
+The offset is used to display the staff somewhat in the middle of the
+widget, instead of the very top.
+</p>
+
+<p>
+So, now, you have a staff and notes, but notes doesn't really match the staff.
+Ideally, we would like to have each note (A, B, C, D, etc.) at their correct
+spot on the staff.
+</p>
+
+<p>
+But hang on, how do I know if a note is A, B, C, etc.?
+Well, this information is stored on the <a href="Samotraces.Lib.Obsel.html">Obsel</a> object.
+<a href="Samotraces.Lib.Obsel.html">Obsel</a> objects each have a type, a timestamp and
+optional attributes. In our example, the note's height (A, B, C, etc.) 
+is stored in the type of the obsel.
+</p>
+
+<p>
+So now, we have to go back to the <code>options</code> JavaScript object
+that is used by <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+widget to adapt the visualisation of each obsel:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60,
+	y: 2
+};
+</pre>
+
+<p>
+But hang on, we don't want all obsels to be displayed at the same y.
+We want each obsel to be displayed to it's own <code>y</code>,
+corresponding to its own type. How do we do that?
+Well, if you go back to the documentation of the
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+you will see that each option argument can be either a value
+(like what we have done so far), or a function.
+If it is a function, the function will be passed as argument the 
+specific <a href="Samotraces.Lib.Obsel.html">Obsel</a> object to display
+and should return the calculated value for this obsel.
+</p>
+
+<p>
+Based on that, we need to write a function that will calculate the
+<code>y</code> value depending on the obsel type.
+Here is what it might look like (I have calculated the values for you):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: "images/noire.png",
+	width: 34,
+	height: 60,
+	y: function(obsel) {
+		switch(obsel.type) {
+			case "do":
+				return 74;
+			case "re":
+				return 66.5;
+			case "mi":
+				return 59;
+			case "fa":
+				return 51.5;
+			case "sol":
+				return 44;
+			case "la":
+				return 36.5;
+			case "si":
+				return 29;
+			default:
+				return 0;
+		}
+	}
+};
+</pre>
+
+<p>
+So, the <code>y</code> field is now a function that takes an obsel as an
+argument. It looks at the obsel type (<code>obsel.type</code>) to define
+the <code>y</code> parameter and returns it.
+For those who like more compact formulas, you could write it this way
+(which returns the very same result and is easier to maintain):
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">
+	y: function(o) {
+		var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+		return 74-note_height[o.type]*7.5;
+	}
+</pre>
+
+<p>
+The same way you calculated the <code>y</code> field, you can also
+calculate the <code>url</code> field.
+You don't want all the obsels to be displayed with the same image.
+For instance, in the trace you are currently visualising, not all
+obsels are crotchet. Some are minims. Let's write a function that
+does that:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+	url: function(obsel) {
+		switch(obsel.attributes.duration) {
+			case "noire":	// crotchet
+				return "images/noire.png";
+			case "blanche":	// minims
+				return "images/blanche.png";
+			default:
+				return "";
+		}
+	},
+	width: 34,
+	height: 60,
+	y: function(o) {
+		var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+		return 74-note_height[o.type]*7.5;
+	}
+};
+</pre>
+
+<p>
+The duration of the obsel-note is stored in the duration attribute.
+As duration is an optional attribute (the non-optional attributes are
+the id, the type and the timestamp), its value is stored in the
+"attributes" field of the <a href="Samotraces.Lib.Obsel.html">Obsel</a> object.
+That explains why it is accessed with the code
+<code>obsel.attributes.duration</code>.
+</p>
+
+<p>
+Now, you should have a much nicer visualisation (like the image below), 
+that actually matches the note's heights and durations! Congratulation!
+</p>
+
+<img src="tutorials/tuto1.3_visualisation_personalisation_2.png"></img>
+
+<p>
+Again, a more compact function can be used to calculate the URL of the image:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">	url: function(o) {
+		return 'images/'+o.attributes.duration+'.png';
+	},
+</pre>
+
+
+
+<h2>Polishing the result</h2>
+
+<p>
+This section is for the more advanced users and do not teach anything
+about Samotraces that have not been already stated.
+Feel free to skip and go directly to the final code.
+</p>
+
+<p>
+In order to make it look a bit nicer, you might want to add the C clef.
+This will require to work only with the CSS and HTML content.
+Here is the code HTML code followed by the CSS code.
+The explanations comes along.
+</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="clef"&gt;&lt;/div&gt;
+&lt;div id="widgets"&gt;
+    &lt;div id="my-widget"&gt;&lt;/div&gt;
+    &lt;div id="scale"&gt;&lt;/div&gt;
+	&lt;div id="importer"&gt;&lt;/div&gt;
+	&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>
+Two new HTML <code>&lt;div&gt;</code> have been created.
+One with the ID "clef", which will contain the image of the C clef,
+one with the ID "widgets" that acts like a container of all the widgets
+(note that this DIV element literally contains all the DIV elements of
+the widgets).
+The reason why all the widgets are encapsulated into a "widgets" DIV is
+to make it possible for all the widget to have the same width.
+Without doing so, the width of the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
+<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> widget might be different,
+and therefore, the time representation would not match.
+</p>
+
+
+<pre class="prettyprint sunlight-highlight-css linenums">div.Widget-WindowScale {
+	width: auto;
+}
+
+div.Widget-TraceDisplayIcons {
+	height: 150px;
+	background: url("./images/portee.png") repeat-x 0px 40px;
+	width: auto;
+}
+
+#clef {
+	width: 62px;
+	background: url("./images/clef.png") no-repeat 0px 41px;
+	float: left;
+	height: 300px;
+}
+
+#widgets {
+	width: auto;
+	height: 100%;
+}
+</pre>
+
+<p>
+On the CSS side, the "clef" DIV element is setup to display the "clef.png"
+image as a background image.
+The width of the "widget" DIV element is setup to <code>auto</code> so
+that it adapts itself to the available space.
+</p>
+
+<p>
+the attribute <code>width</code> of the widgets
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
+<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a> had to be overridden.
+The default value in samotraces.css file is <code>width: 100%;</code>,
+which corresponds to the width of the HTML page, not to the width
+of the available space on the left.
+</p>
+
+
+<h2>Final result</h2>
+
+<p>Here is the final code.
+You can try it out 
+<a href="../examples/tutorials/tuto1.3_visualisation_personalisation/index.html">here</a>.
+Enjoy the result!</p>
+
+<pre class="prettyprint sunlight-highlight-xml linenums">&lt;!doctype html&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;meta charset="utf-8"&gt;
+		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
+		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;style type="text/css"&gt;
+		div.Widget-WindowScale {
+			width: auto;
+		}
+
+		div.Widget-TraceDisplayIcons {
+			height: 150px;
+			background: url("./images/portee.png") repeat-x 0px 40px;
+			width: auto;
+		}
+
+		#clef {
+			width: 62px;
+			background: url("./images/clef.png") no-repeat 0px 41px;
+			float: left;
+			height: 300px;
+		}
+
+		#widgets {
+			width: auto;
+			height: 100%;
+		}
+		&lt;/style&gt;
+		&lt;div id="clef"&gt;&lt;/div&gt;
+		&lt;div id="widgets"&gt;
+			&lt;div id="my-widget"&gt;&lt;/div&gt;
+			&lt;div id="scale"&gt;&lt;/div&gt;
+			&lt;div id="importer"&gt;&lt;/div&gt;
+			&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
+		&lt;/div&gt;
+		&lt;script type="text/javascript"&gt;
+		function init() {
+			// Create logical objects
+			var trace 		= new Samotraces.Lib.DemoTrace();
+			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+
+			// Visualisation options
+			var options = {};
+			options.events = {
+				"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
+			};
+			options.visu = {
+				url: function(o) {
+					return 'images/'+o.attributes.duration+'.png';
+				},
+				width: 34,
+				height: 60,
+				y: function(o) {
+					var note_height = {'do':0, 're':1, 'mi':2, 'fa':3, 'sol':4, 'la':5, 'si':6};
+					return 74-note_height[o.type]*7.5;
+				}
+			};
+
+			// Create widgets
+			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.Widgets.WindowScale('scale',tw);
+			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+		}
+
+// calling the init function when the DOM has been loaded
+window.addEventListener('DOMContentLoaded', init );
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>You shoud be able to see something like this:</p>
+
+<img src="tutorials/tuto1.3_visualisation_personalisation_3.png"></img>
+
+<h2>Conclusion</h2>
+
+<p>
+Congratulations! Now you have learnt the basic principles that
+are necessary to use Samotraces.js.
+Of course, there is a lot more to learn.
+Now, you should know enough to better understand the documentation
+if you need to go any further (<a href="index.html">start here</a>).
+Now, feel free to enjoy Samotraces.js and to use it in your own applications!
+</p>
+
+
+</article>
+
+</section>  
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Mon Jan 20 2014 11:37:35 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>

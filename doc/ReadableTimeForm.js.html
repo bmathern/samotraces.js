@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js Source: Widgets/ReadableTimeForm.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html">DemoTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs.html">Ktbs</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html">WindowState</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: Widgets/ReadableTimeForm.js</h1>
+    
+    <section>
+        <article>
+            <pre class="sunlight-highlight-javascript linenums">
+// Check if relevant namespaces exist - or create them.
+var Samotraces = Samotraces || {};
+Samotraces.Widgets = Samotraces.Widgets || {};
+
+/**
+ * @summary Widget for visualising the current time as a date/time.
+ * @class Widget for visualising the current time as a date/tim.
+ * @author Benoît Mathern
+ * @constructor
+ * @mixes Samotraces.Widgets.Widget
+ * @see Samotraces.Widgets.TimeForm
+ * @description
+ * Samotraces.Widgets.ReadableTimeForm is a generic
+ * Widget to visualise the current time.
+ *
+ * The time (in ms from the 01/01/1970) is converted in a
+ * human readable format (as opposed to
+ * {@link Samotraces.Widgets.TimeForm} widget
+ * which display raw time).
+ * 
+ * This widget observes a Samotraces.Lib.Timer object.
+ * When the timer changes the new time is displayed.
+ * This widget also allow to change the time of the timer.
+ * 
+ * @param {String}	html_id
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Lib.Timer} timer
+ *     Timer object to observe.
+ */
+Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.Widgets.Widget.call(this,html_id);
+
+	this.add_class('Widget-ReadableTimeForm');
+
+	this.timer = timer;
+	this.timer.addEventListener('timer:update',this.refresh.bind(this));
+	this.timer.addEventListener('timer:play:update',this.refresh.bind(this));
+
+	this.init_DOM();
+	this.refresh({data: this.timer.time});
+};
+
+Samotraces.Widgets.ReadableTimeForm.prototype = {
+	init_DOM: function() {
+
+		var p_element = document.createElement('p');
+
+		var text_node = document.createTextNode('Current time: ');
+		p_element.appendChild(text_node);
+
+
+		this.year_element = document.createElement('input');
+		this.year_element.setAttribute('type','text');
+		this.year_element.setAttribute('name','year');
+		this.year_element.setAttribute('size',4);
+		this.year_element.setAttribute('value','');
+		p_element.appendChild(this.year_element);
+		p_element.appendChild(document.createTextNode('/'));
+
+		this.month_element = document.createElement('input');
+		this.month_element.setAttribute('type','text');
+		this.month_element.setAttribute('name','month');
+		this.month_element.setAttribute('size',2);
+		this.month_element.setAttribute('value','');
+		p_element.appendChild(this.month_element);
+		p_element.appendChild(document.createTextNode('/'));
+
+		this.day_element = document.createElement('input');
+		this.day_element.setAttribute('type','text');
+		this.day_element.setAttribute('name','day');
+		this.day_element.setAttribute('size',2);
+		this.day_element.setAttribute('value','');
+		p_element.appendChild(this.day_element);
+		p_element.appendChild(document.createTextNode(' - '));
+
+		this.hour_element = document.createElement('input');
+		this.hour_element.setAttribute('type','text');
+		this.hour_element.setAttribute('name','hour');
+		this.hour_element.setAttribute('size',2);
+		this.hour_element.setAttribute('value','');
+		p_element.appendChild(this.hour_element);
+		p_element.appendChild(document.createTextNode(':'));
+
+		this.minute_element = document.createElement('input');
+		this.minute_element.setAttribute('type','text');
+		this.minute_element.setAttribute('name','minute');
+		this.minute_element.setAttribute('size',2);
+		this.minute_element.setAttribute('value','');
+		p_element.appendChild(this.minute_element);
+		p_element.appendChild(document.createTextNode(':'));
+
+		this.second_element = document.createElement('input');
+		this.second_element.setAttribute('type','text');
+		this.second_element.setAttribute('name','second');
+		this.second_element.setAttribute('size',8);
+		this.second_element.setAttribute('value','');
+		p_element.appendChild(this.second_element);
+/*
+		this.input_element = document.createElement('input');
+		this.input_element.setAttribute('type','text');
+		this.input_element.setAttribute('name','');
+		this.input_element.setAttribute('size',15);
+		this.input_element.setAttribute('value',this.timer.time);
+		p_element.appendChild(this.input_element);
+*/
+		var submit_element = document.createElement('input');
+		submit_element.setAttribute('type','submit');
+		submit_element.setAttribute('value','Update time');
+		p_element.appendChild(submit_element);
+
+		this.form_element = document.createElement('form');
+		this.form_element.addEventListener('submit', this.build_callback('submit'));
+
+		this.form_element.appendChild(p_element);
+
+		this.element.appendChild(this.form_element);
+	},
+
+	refresh: function(e) {
+		time = e.data
+		var date = new Date();
+		date.setTime(time);
+		this.year_element.value   = date.getFullYear();
+		this.month_element.value  = date.getMonth()+1;
+		this.day_element.value    = date.getDate();
+		this.hour_element.value   = date.getHours();
+		this.minute_element.value = date.getMinutes();
+		this.second_element.value = date.getSeconds()+date.getMilliseconds()/1000;
+	},
+
+	build_callback: function(event) {
+		var timer = this.timer;
+		var time_form = this;
+		switch(event) {
+			case 'submit':
+				return function(e) {
+					//console.log('WidgetBasicTimeForm.submit');
+					e.preventDefault();
+
+
+		var date = new Date();
+		date.setFullYear(time_form.year_element.value);
+		date.setMonth(time_form.month_element.value-1);
+		date.setDate(time_form.day_element.value);
+		date.setHours(time_form.hour_element.value);
+		date.setMinutes(time_form.minute_element.value);
+		date.setSeconds(time_form.second_element.value);
+
+					timer.set(date.getTime());
+					return false;
+				};
+			default:
+				return function() {};
+		}
+	}
+
+};
+
+
+</pre>
+        </article>
+    </section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Mon Jan 20 2014 11:37:33 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>
