@@ -88,12 +88,36 @@ Samotraces.Lib.Selector.prototype = {
 		this.trigger('selection:empty');
 	},
 	/**
+	 * Method that checks if the selection is empty
+	 * @returns {Boolean} Returns true if the selection and empty 
+	 *     and false if the selection is not empty.
+     */
+	is_empty: function() {
+		return (this.selection.length === 0);
+	},
+	/**
+	 * Gets the current selection
+	 * @returns {Array} Array of selected objects
+	 */
+	get_selection: function() {
+		return this.selection;
+	},
+	/**
      * Method to call to remove an Object from the selection.
 	 * @fires Samotraces.Lib.Selector#selection:remove
      */
 	unselect: function(object) {
 		if(this.mode === 'multiple') {
-			console.log('Selector:unselect() fonction not implemented yet...');
+			var found = false;
+			this.selection = this.selection.filter(function(el) {
+				if(el === object) {
+					found = true;	
+					return false;
+				} else {
+					return true;
+				}
+			});
+			if(!found) { return false; }
 		} else {
 			this.selection = [];
 		}
@@ -104,6 +128,7 @@ Samotraces.Lib.Selector.prototype = {
 		 * @property {String} type - The type of the event (= "selection:remove").
 		 */
 		this.trigger('selection:remove',object);
+		return true;
 	},
 	/**
      * Method to call to toggle the selection of an Object.
@@ -112,9 +137,11 @@ Samotraces.Lib.Selector.prototype = {
      */
 	toggle: function(object) {
 		if(this.mode === 'multiple') {
-			console.log('Selector:toggle() fonction not implemented yet...');
+			if(!this.unselect(object)) {
+				this.select(object);
+			}
 		} else {
-			if(selection.length == 0 || selection[0] !== object) {
+			if(this.selection.length == 0 || this.selection[0] !== object) {
 				this.select(object);
 			} else {
 				this.unselect(object);
