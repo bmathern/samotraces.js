@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising a trace where obsels are displayed as images.
  * @class Widget for visualising a trace where obsels are displayed as images
@@ -10,7 +5,6 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @fires Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
  * @description
  * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
  * is a generic
@@ -37,10 +31,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     TimeWindow object that defines the time frame
  *     being currently displayed.
  *
- * @param {Object} [options]
- *     Parameter that specifies the visualisation options and
- *     default event handling.
- * @param {VisuConfig} [options.visu]
+ * @param {VisuConfig} [options]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
  *     a value or a function that will be called by 
@@ -58,46 +49,38 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
- * @param {EventConfig}	[options.events]
- *     Events to listen to and their corresponding callbacks.
  *
  * @example
  * var options = {
- *     visu: {
- *         y: 20,
- *         width: 32,
- *         height: 32,
- *         url: function(obsel) {
- *             switch(obsel.type) {
- *                 case 'click':
- *                     return 'images/click.png';
- *                 case 'focus':
- *                     return 'images/focus.png';
- *                 default:
- *                     return 'images/default.png';
- *             }
+ *     y: 20,
+ *     width: 32,
+ *     height: 32,
+ *     url: function(obsel) {
+ *         switch(obsel.type) {
+ *             case 'click':
+ *                 return 'images/click.png';
+ *             case 'focus':
+ *                 return 'images/focus.png';
+ *             default:
+ *                 return 'images/default.png';
  *         }
- *     },
- *     events: {
- *         'ui:click:obsel': obsel_selector.select.bind(obsel_selector)
  *     }
  * };
  */
 Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
 	options = options || {};
-	options.visu = options.visu || {};
-	options.events = options.events || {};
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
-	Samotraces.Lib.EventHandler.call(this,options.events);
 
 	this.add_class('Widget-TraceDisplayIcons');
 	Samotraces.Lib.WindowState.addEventListener('window:resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
+	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
+	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
 	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
@@ -161,13 +144,13 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 				return val_or_fun;
 			}
 		};
-	this.options.x = bind_function(options.visu.x || function(o) {
+	this.options.x = bind_function(options.x || function(o) {
 			return this.calculate_x(o.timestamp) - 8;
 		});
-	this.options.y = bind_function(options.visu.y || 17);
-	this.options.width = bind_function(options.visu.width || 16);
-	this.options.height = bind_function(options.visu.height || 16);
-	this.options.url = bind_function(options.visu.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
+	this.options.y = bind_function(options.y || 17);
+	this.options.width = bind_function(options.width || 16);
+	this.options.height = bind_function(options.height || 16);
+	this.options.url = bind_function(options.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
 
 	this.draw();
 };
@@ -252,26 +235,23 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		if(e) {
 			this.data = this.trace.traceSet;
 		}
-		function clickOnObsel(obs) {
-			/**
-			 * @event Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
-			 * @type {object}
-			 * @property {String} type - The type of the event (= "ui:click:obsel").
-			 * @property {Samotraces.Lib.Obsel} data - The obsel that
-			 *     has been the target of the click.
-			 */
-			this.trigger('ui:click:obsel',obs);
-		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
+			.attr('class','Σ-obsel')
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
-			.attr('xlink:href',this.options.url)
-			// why not direcly here !?
-			.on('click',clickOnObsel.bind(this));
+			.attr('xlink:href',this.options.url);
+		// Storing obsel data with jQuery for accessibility from 
+		// events defined by users with jQuery
+		$('image',this.element).each(function(i,el) {
+			$.data(el,{
+				'Σ-type': 'obsel',
+				'Σ-data': d3.select(el).datum()
+			});
+		});
 //		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
