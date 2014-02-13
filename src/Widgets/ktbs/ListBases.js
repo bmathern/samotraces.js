@@ -35,15 +35,57 @@ Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 Samotraces.Widgets.ktbs.ListBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
-
+		$(this.element).append('<h2>Ktbs root: '+this.ktbs.get_uri()+'</h2>');
+/*
 		var title = document.createElement('h2');
 		var title_text = document.createTextNode('Ktbs root: '+this.ktbs.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
-
+*/
 		this.datalist_element = document.createElement('ul');
 		this.element.appendChild(this.datalist_element);
 
+		this.add_button = document.createElement('button');
+		$(this.add_button).append('New base');
+		this.element.appendChild(this.add_button);
+		$(this.add_button).click(this.open_form.bind(this));
+	},
+	open_form: function() {
+
+		this.add_button.disabled = true;
+
+		this.form = {};
+
+		this.form.input_id = document.createElement('input');
+		this.form.input_id.size = 20;
+		this.form.text1 = document.createTextNode(' Base ID: ');
+		this.form.input_label = document.createElement('input');
+		this.form.input_label.size = 20;
+		this.form.text2 = document.createTextNode(' label: ');
+		this.form.button = document.createElement('button');
+		$(this.form.button).append('create');
+
+		$(this.element).append(this.form.text1);
+		$(this.element).append(this.form.input_id);
+		$(this.element).append(this.form.text2);
+		$(this.element).append(this.form.input_label);
+		$(this.element).append(this.form.button);
+
+		$(this.form.button).click(this.create_base.bind(this));
+
+	},
+	create_base: function(e) {
+		if($(this.form.input_id).val() !== "") {
+			console.log("Creating a new base...");
+			this.ktbs.create_base($(this.form.input_id).val(),$(this.form.input_label).val());
+		} else {
+			console.log("Empty base name... No base created");
+		}
+		
+		for( var k in this.form ) {
+			$(this.form[k]).remove();
+		}
+		this.add_button.disabled = false;
 	},
 	refresh: function() {
 		// clear
