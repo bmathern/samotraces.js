@@ -34,12 +34,13 @@ Samotraces.Lib.Ktbs = function(uri) {
 		function get_uri() { return this.uri; }
 		function force_state_refresh() {
 			$.ajax({
-				url: this.uri+'.json',
+				url: (this.traces)?this.uri+'.json':this.uri, // tweek to make it work with KTBS on bases with .json
 				type: 'GET',
 				dataType: 'json',
 				success: this._on_state_refresh_.bind(this),
 				error: function(jqXHR,textStatus,error) {
 					console.log("Error in force_state_refresh():");
+					console.log([jqXHR,textStatus,error]);
 					if(textStatus == "parsererror") {
 						console.log("--> parsererror -->");
 						console.log(jqXHR.responseText);
@@ -49,7 +50,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 		}
 		function start_auto_refresh(period) {
 			this.auto_refresh_id?this.stop_auto_refresh():null;
-			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period/1000);
+			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period*1000);
 		}
 		function stop_auto_refresh() {
 			if(this.auto_refresh_id) {
@@ -59,7 +60,24 @@ Samotraces.Lib.Ktbs = function(uri) {
 		}
 //		function _on_state_refresh_(data) { this.data = data; console.log("here"); }
 		function get_read_only() {}
-		function remove() {}
+		function remove() {
+			function refresh_parent() {
+				//TROUVER UN MOYEN MALIN DE RAFRAICHIR LA LISTE DES BASES DU KTBS...
+			}
+			$.ajax({
+				url: this.uri,
+				type: 'DELETE',
+				success: refresh_parent.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log("Error in force_state_refresh():");
+					console.log([jqXHR,textStatus,error]);
+					if(textStatus == "parsererror") {
+						console.log("--> parsererror -->");
+						console.log(jqXHR.responseText);
+					}
+				}
+			});
+		}
 		function get_label() {}
 		function set_label() {}
 		function reset_label() {}
@@ -141,7 +159,33 @@ Samotraces.Lib.Ktbs = function(uri) {
 			return this.traces;
 		},
 		list_models: function() {},
-		create_stored_trace: function(id,model,origin,default_subject,label) {},
+		create_stored_trace: function(id,model,origin,default_subject,label) {
+			var new_trace = {
+				"@context":	"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
+				"@type":	"StoredTrace",
+				"@id":		id+"/"
+			};
+			new_trace.hasModel = (model==undefined)?"http://liris.cnrs.fr/silex/2011/simple-trace-model/":model;
+			new_trace.origin = (origin==undefined)?"1970-01-01T00:00:00Z":origin;
+//			if(origin==undefined) new_trace.origin = origin;
+			if(default_subject==undefined) new_trace.default_subject = default_subject;
+			if(label==undefined) new_trace.label = label;
+			$.ajax({
+				url: this.uri,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(new_trace),
+				success: this.force_state_refresh.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log('query error');
+					console.log([jqXHR,textStatus,error]);
+				}
+			});
+		},
+
+	create_base: function(id, label) {
+	},
+
 		create_computed_trace: function(id,method,parameters,sources,label) {},
 		create_model: function(id,parents,label) {},
 		create_method: function(id,parent,parameters,label) {},
@@ -212,7 +256,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 				return false;
 			}
 			$.ajax({
-				url: this.obsel_list_uri+'.json',
+				url: this.obsel_list_uri,//+'.json',
 				type: 'GET',
 				dataType: 'json',
 				data: {begin: begin, end: end, reverse: reverse},
@@ -224,6 +268,18 @@ Samotraces.Lib.Ktbs = function(uri) {
 				return true;
 			});
 		},
+		
+		start_auto_refresh_obsel_list: function(period) {
+			this.auto_refresh_obsel_list_id?this.stop_auto_refresh_obsel_list():null;
+			this.auto_refresh_obsel_list_id = window.setInterval(this.list_obsels.bind(this), period*1000);
+		},
+		stop_auto_refresh_obsel_list: function() {
+			if(this.auto_refresh_obsel_list_id) {
+				window.clearInterval(this.auto_refresh_id);
+				delete(this.auto_refresh_id);
+			}
+		},
+
 		get_obsel: function(id) {},
 ///////////
 		_on_state_refresh_: function(data) {
@@ -327,18 +383,27 @@ Samotraces.Lib.Ktbs.prototype = {
 	 * @param label {String} Label of the base (optional)
 	 */
 	create_base: function(id, label) {
-/*
+		var new_base = {
+    		"@context":	"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
+			"@type":	"Base",
+			"@id":		id+"/",
+			"label":	label
+		};
 		$.ajax({
 			url: this.uri,
-			type: 'GET',
-			dataType: 'json',
-			success: this._on_state_refresh_.bind(this)
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(new_base),
+			success: this.force_state_refresh.bind(this),
+			error: function(jqXHR,textStatus,error) {
+				console.log('query error');
+				console.log([jqXHR,textStatus,error]);
+			}
 		});
-*/
 	},
 ///////////
 	_on_state_refresh_: function(data) {
-	//	console.log(data);
+	console.log(data);
 		this._check_change_('bases', data.hasBase, 'ktbs:update');
 		this._check_change_('builtin_methods', data.hasBuildinMethod, 'ktbs:update');
 	},
