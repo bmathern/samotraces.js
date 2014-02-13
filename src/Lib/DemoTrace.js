@@ -36,31 +36,61 @@ Samotraces.Lib.DemoTrace.prototype = {
 	 * object from which each trace object must inherit.
 	 * This way, all traces have the same documentation.
 	 * @fires Samotraces.Lib.Trace#trace:update
+	 * @fires Samotraces.Lib.Trace#trace:create:obsel
 	 * @todo use KTBS abstract API.
 	 */
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
-		this.traceSet.push(new Samotraces.Lib.Obsel(id,timeStamp,type,attributes));
+		var obs = new Samotraces.Lib.Obsel(id,timeStamp,type,attributes)
+		this.traceSet.push(obs);
 		this.trigger('trace:update',this.traceSet);
+		this.trigger('trace:create:obsel',obs);
 	},
 
+	/**
+	 * Updates an obsel.
+	 * @param {Obsel} old_obs Obsel to be updated
+	 * @param {Obsel} new_obs Updated version of the obsel
+	 * @fires Samotraces.Lib.Trace#trace:update:obsel
+	 * @todo use KTBS abstract API.
+	 */	
 	updateObsel: function(old_obs,new_obs) {
-		console.log('Method KtbsTrace:updateObsel() not implemented yet...');
-//		this.traceSet.erase(old_obs);
-//		new_obs.id = old_obs.id; // check that id stay consistent
-//		this.traceSet.push(new_obs);
-//		this.notify('updateObsel',{old_obs: old_obs, new_obs: new_obs});
-//		return new_obs;
+		this.removeObsel(old_obs);
+		this.traceSet.push(new_obs);
+		//this.trigger()
+		this.traceSet = this.traceSet.map(function(o) {
+			if(o===old_obs) {
+				return new_obs;
+			} else {
+				return o;
+			}
+		});
+		this.trigger('trace:update:obsel',new_obs);
 	},
-	
+
+	/**
+	 * Remove an obsel from the trace.
+	 * @param {Obsel} obs Obsel to remove from the trace
+	 * @fires Samotraces.Lib.Trace#trace:remove:obsel
+	 * @todo use KTBS abstract API.
+	 */	
 	removeObsel: function(obs) {
-		console.log('Method KtbsTrace:removeObsel() not implemented yet...');
-//		this.traceSet.erase(old_obs);
-//		this.notify('removeObsel',obs);
+		this.traceSet = this.traceSet.filter(function(o) {
+			return (o===obs)?false:true;
+		});
+		this.trigger('trace:remove:obsel',obs);
 	},
 	
+	/**
+	 * Retrieve an obsel in the trace from its ID.
+	 * @param {String} id ID of the Obsel to retrieve
+	 * @returns {Obsel} Obsel that corresponds to this ID
+	 *     or undefined if the obsel was not found.
+	 * @todo use KTBS abstract API.
+	 */	
 	getObsel: function(id) {
+		return this.traceSet.find(function(o) { return (o.id == id); });
 		console.log('Method KtbsTrace:getObsel() not implemented yet...');
 	},
 
