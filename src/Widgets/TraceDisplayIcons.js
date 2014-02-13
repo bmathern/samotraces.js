@@ -81,6 +81,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
 	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
 	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
+	this.trace.addEventListener('trace:update:obsel',this.draw.bind(this));
 	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
@@ -236,6 +237,9 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 			this.data = this.trace.traceSet;
 		}
 		this.d3Obsels()
+			.exit()
+			.remove();
+		this.d3Obsels()
 			.enter()
 			.append('image')
 			.attr('class','Σ-obsel')
@@ -270,7 +274,8 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		return this.svg_gp
 					.selectAll('circle,image,rect')
 					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
-					.data(this.data); //,function(d) { return d.id;});
+					//.data(this.data); //,function(d) { return d.id;});
+					.data(this.data, function(d) { return d.id;}); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
 	},
 
 
