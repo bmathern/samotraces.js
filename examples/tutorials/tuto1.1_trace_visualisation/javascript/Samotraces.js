@@ -1,5 +1,13 @@
 
-var Samotraces = (function() {
+(function(factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define('samotraces',['jquery'], factory);
+    } else {
+        // Browser globals
+        window.Samotraces = factory(jQuery);
+    }
+}(function ($) {
 	/**
 	 * @namespace Samotraces
 	 */
@@ -15,6 +23,10 @@ var Samotraces = (function() {
 	 * @namespace Samotraces.Lib
 	 */
 	Σ.Lib = {};
+	/**
+	 * Library of UI components for Samotraces
+	 * @namespace Samotraces.UIComponents
+	 */
 	Σ.UIComponents = {};
 	/**
 	 * Set of Widgets of Samotraces
@@ -311,12 +323,13 @@ Samotraces.Lib.Ktbs = function(uri) {
 		function get_uri() { return this.uri; }
 		function force_state_refresh() {
 			$.ajax({
-				url: this.uri+'.json',
+				url: (this.traces)?this.uri+'.json':this.uri, // tweek to make it work with KTBS on bases with .json
 				type: 'GET',
 				dataType: 'json',
 				success: this._on_state_refresh_.bind(this),
 				error: function(jqXHR,textStatus,error) {
 					console.log("Error in force_state_refresh():");
+					console.log([jqXHR,textStatus,error]);
 					if(textStatus == "parsererror") {
 						console.log("--> parsererror -->");
 						console.log(jqXHR.responseText);
@@ -326,7 +339,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 		}
 		function start_auto_refresh(period) {
 			this.auto_refresh_id?this.stop_auto_refresh():null;
-			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period/1000);
+			this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period*1000);
 		}
 		function stop_auto_refresh() {
 			if(this.auto_refresh_id) {
@@ -336,7 +349,24 @@ Samotraces.Lib.Ktbs = function(uri) {
 		}
 //		function _on_state_refresh_(data) { this.data = data; console.log("here"); }
 		function get_read_only() {}
-		function remove() {}
+		function remove() {
+			function refresh_parent() {
+				//TROUVER UN MOYEN MALIN DE RAFRAICHIR LA LISTE DES BASES DU KTBS...
+			}
+			$.ajax({
+				url: this.uri,
+				type: 'DELETE',
+				success: refresh_parent.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log("Error in force_state_refresh():");
+					console.log([jqXHR,textStatus,error]);
+					if(textStatus == "parsererror") {
+						console.log("--> parsererror -->");
+						console.log(jqXHR.responseText);
+					}
+				}
+			});
+		}
 		function get_label() {}
 		function set_label() {}
 		function reset_label() {}
@@ -418,7 +448,33 @@ Samotraces.Lib.Ktbs = function(uri) {
 			return this.traces;
 		},
 		list_models: function() {},
-		create_stored_trace: function(id,model,origin,default_subject,label) {},
+		create_stored_trace: function(id,model,origin,default_subject,label) {
+			var new_trace = {
+				"@context":	"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
+				"@type":	"StoredTrace",
+				"@id":		id+"/"
+			};
+			new_trace.hasModel = (model==undefined)?"http://liris.cnrs.fr/silex/2011/simple-trace-model/":model;
+			new_trace.origin = (origin==undefined)?"1970-01-01T00:00:00Z":origin;
+//			if(origin==undefined) new_trace.origin = origin;
+			if(default_subject==undefined) new_trace.default_subject = default_subject;
+			if(label==undefined) new_trace.label = label;
+			$.ajax({
+				url: this.uri,
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(new_trace),
+				success: this.force_state_refresh.bind(this),
+				error: function(jqXHR,textStatus,error) {
+					console.log('query error');
+					console.log([jqXHR,textStatus,error]);
+				}
+			});
+		},
+
+	create_base: function(id, label) {
+	},
+
 		create_computed_trace: function(id,method,parameters,sources,label) {},
 		create_model: function(id,parents,label) {},
 		create_method: function(id,parent,parameters,label) {},
@@ -489,7 +545,7 @@ Samotraces.Lib.Ktbs = function(uri) {
 				return false;
 			}
 			$.ajax({
-				url: this.obsel_list_uri+'.json',
+				url: this.obsel_list_uri,//+'.json',
 				type: 'GET',
 				dataType: 'json',
 				data: {begin: begin, end: end, reverse: reverse},
@@ -501,6 +557,18 @@ Samotraces.Lib.Ktbs = function(uri) {
 				return true;
 			});
 		},
+		
+		start_auto_refresh_obsel_list: function(period) {
+			this.auto_refresh_obsel_list_id?this.stop_auto_refresh_obsel_list():null;
+			this.auto_refresh_obsel_list_id = window.setInterval(this.list_obsels.bind(this), period*1000);
+		},
+		stop_auto_refresh_obsel_list: function() {
+			if(this.auto_refresh_obsel_list_id) {
+				window.clearInterval(this.auto_refresh_id);
+				delete(this.auto_refresh_id);
+			}
+		},
+
 		get_obsel: function(id) {},
 ///////////
 		_on_state_refresh_: function(data) {
@@ -604,18 +672,27 @@ Samotraces.Lib.Ktbs.prototype = {
 	 * @param label {String} Label of the base (optional)
 	 */
 	create_base: function(id, label) {
-/*
+		var new_base = {
+    		"@context":	"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
+			"@type":	"Base",
+			"@id":		id+"/",
+			"label":	label
+		};
 		$.ajax({
 			url: this.uri,
-			type: 'GET',
-			dataType: 'json',
-			success: this._on_state_refresh_.bind(this)
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(new_base),
+			success: this.force_state_refresh.bind(this),
+			error: function(jqXHR,textStatus,error) {
+				console.log('query error');
+				console.log([jqXHR,textStatus,error]);
+			}
 		});
-*/
 	},
 ///////////
 	_on_state_refresh_: function(data) {
-	//	console.log(data);
+	console.log(data);
 		this._check_change_('bases', data.hasBase, 'ktbs:update');
 		this._check_change_('builtin_methods', data.hasBuildinMethod, 'ktbs:update');
 	},
@@ -917,12 +994,36 @@ Samotraces.Lib.Selector.prototype = {
 		this.trigger('selection:empty');
 	},
 	/**
+	 * Method that checks if the selection is empty
+	 * @returns {Boolean} Returns true if the selection and empty 
+	 *     and false if the selection is not empty.
+     */
+	is_empty: function() {
+		return (this.selection.length === 0);
+	},
+	/**
+	 * Gets the current selection
+	 * @returns {Array} Array of selected objects
+	 */
+	get_selection: function() {
+		return this.selection;
+	},
+	/**
      * Method to call to remove an Object from the selection.
 	 * @fires Samotraces.Lib.Selector#selection:remove
      */
 	unselect: function(object) {
 		if(this.mode === 'multiple') {
-			console.log('Selector:unselect() fonction not implemented yet...');
+			var found = false;
+			this.selection = this.selection.filter(function(el) {
+				if(el === object) {
+					found = true;	
+					return false;
+				} else {
+					return true;
+				}
+			});
+			if(!found) { return false; }
 		} else {
 			this.selection = [];
 		}
@@ -933,6 +1034,7 @@ Samotraces.Lib.Selector.prototype = {
 		 * @property {String} type - The type of the event (= "selection:remove").
 		 */
 		this.trigger('selection:remove',object);
+		return true;
 	},
 	/**
      * Method to call to toggle the selection of an Object.
@@ -941,9 +1043,11 @@ Samotraces.Lib.Selector.prototype = {
      */
 	toggle: function(object) {
 		if(this.mode === 'multiple') {
-			console.log('Selector:toggle() fonction not implemented yet...');
+			if(!this.unselect(object)) {
+				this.select(object);
+			}
 		} else {
-			if(selection.length == 0 || selection[0] !== object) {
+			if(this.selection.length == 0 || this.selection[0] !== object) {
 				this.select(object);
 			} else {
 				this.unselect(object);
@@ -1290,11 +1394,6 @@ Samotraces.Lib.WindowState = (function() {
 	return new WS();
 })();
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for importing a trace from a CSV file.
  * @class Widget for importing a trace from a CSV file.
@@ -1532,11 +1631,6 @@ Samotraces.Widgets.ImportTrace.prototype = {
 
 };
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising an Obsel as an HTML list.
  * @class Widget for visualising an Obsel as an HTML list.
@@ -1598,15 +1692,15 @@ Samotraces.Widgets.ObselInspector.prototype = {
 		var attributes = obs.attributes;
 		
 		var li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('Id: '+ obs.id));
+		li_element.appendChild(document.createTextNode('id: '+ obs.id));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('TimeStamp: '+ obs.timestamp));
+		li_element.appendChild(document.createTextNode('begin: '+ Date(obs.get_begin()).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('Type: '+ obs.type));
+		li_element.appendChild(document.createTextNode('end: '+ Date(obs.get_end()).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		for(var key in obs.attributes) {
@@ -1626,11 +1720,6 @@ Samotraces.Widgets.ObselInspector.prototype = {
 };
 
 
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @summary Widget for visualising the current time as a date/time.
@@ -1789,11 +1878,6 @@ Samotraces.Widgets.ReadableTimeForm.prototype = {
 };
 
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising the current time as a number.
  * @class Widget for visualising the current time as a number.
@@ -1881,11 +1965,6 @@ Samotraces.Widgets.TimeForm.prototype = {
 	}
 
 };
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @summary Widget for playing/pausing a timer and controlling videos.
@@ -1991,11 +2070,6 @@ Samotraces.Widgets.TimePlayer.prototype = {
 	},
 };
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising a time slider.
  * @class Widget for visualising a time slider.
@@ -2066,11 +2140,6 @@ Samotraces.Widgets.TimeSlider.prototype = {
 };
 
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising a trace where obsels are displayed as images.
  * @class Widget for visualising a trace where obsels are displayed as images
@@ -2078,7 +2147,6 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @fires Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
  * @description
  * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
  * is a generic
@@ -2105,10 +2173,7 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     TimeWindow object that defines the time frame
  *     being currently displayed.
  *
- * @param {Object} [options]
- *     Parameter that specifies the visualisation options and
- *     default event handling.
- * @param {VisuConfig} [options.visu]
+ * @param {VisuConfig} [options]
  *     Object determining how to display the icons
  *     (Optional). All the options field can be either 
  *     a value or a function that will be called by 
@@ -2126,46 +2191,38 @@ Samotraces.Widgets = Samotraces.Widgets || {};
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
- * @param {EventConfig}	[options.events]
- *     Events to listen to and their corresponding callbacks.
  *
  * @example
  * var options = {
- *     visu: {
- *         y: 20,
- *         width: 32,
- *         height: 32,
- *         url: function(obsel) {
- *             switch(obsel.type) {
- *                 case 'click':
- *                     return 'images/click.png';
- *                 case 'focus':
- *                     return 'images/focus.png';
- *                 default:
- *                     return 'images/default.png';
- *             }
+ *     y: 20,
+ *     width: 32,
+ *     height: 32,
+ *     url: function(obsel) {
+ *         switch(obsel.type) {
+ *             case 'click':
+ *                 return 'images/click.png';
+ *             case 'focus':
+ *                 return 'images/focus.png';
+ *             default:
+ *                 return 'images/default.png';
  *         }
- *     },
- *     events: {
- *         'ui:click:obsel': obsel_selector.select.bind(obsel_selector)
  *     }
  * };
  */
 Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
 	options = options || {};
-	options.visu = options.visu || {};
-	options.events = options.events || {};
 
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,divId);
-	Samotraces.Lib.EventHandler.call(this,options.events);
 
 	this.add_class('Widget-TraceDisplayIcons');
 	Samotraces.Lib.WindowState.addEventListener('window:resize',this.refresh_x.bind(this));
 
 	this.trace = trace;
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
+	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
+	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
 	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
 
 	this.window = time_window;
@@ -2229,13 +2286,13 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 				return val_or_fun;
 			}
 		};
-	this.options.x = bind_function(options.visu.x || function(o) {
+	this.options.x = bind_function(options.x || function(o) {
 			return this.calculate_x(o.timestamp) - 8;
 		});
-	this.options.y = bind_function(options.visu.y || 17);
-	this.options.width = bind_function(options.visu.width || 16);
-	this.options.height = bind_function(options.visu.height || 16);
-	this.options.url = bind_function(options.visu.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
+	this.options.y = bind_function(options.y || 17);
+	this.options.width = bind_function(options.width || 16);
+	this.options.height = bind_function(options.height || 16);
+	this.options.url = bind_function(options.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
 
 	this.draw();
 };
@@ -2320,26 +2377,23 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 		if(e) {
 			this.data = this.trace.traceSet;
 		}
-		function clickOnObsel(obs) {
-			/**
-			 * @event Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel
-			 * @type {object}
-			 * @property {String} type - The type of the event (= "ui:click:obsel").
-			 * @property {Samotraces.Lib.Obsel} data - The obsel that
-			 *     has been the target of the click.
-			 */
-			this.trigger('ui:click:obsel',obs);
-		}
 		this.d3Obsels()
 			.enter()
 			.append('image')
+			.attr('class','Σ-obsel')
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
-			.attr('xlink:href',this.options.url)
-			// why not direcly here !?
-			.on('click',clickOnObsel.bind(this));
+			.attr('xlink:href',this.options.url);
+		// Storing obsel data with jQuery for accessibility from 
+		// events defined by users with jQuery
+		$('image',this.element).each(function(i,el) {
+			$.data(el,{
+				'Σ-type': 'obsel',
+				'Σ-data': d3.select(el).datum()
+			});
+		});
 //		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
@@ -2368,11 +2422,6 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 
 
 
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @summary Widget for visualising a trace.
@@ -2513,14 +2562,10 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 
 
 
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
-
 /**
  * @mixin
+ * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
+ * @requires jQuery Mouse Wheel plugin (see <a href="https://github.com/brandonaaron/jquery-mousewheel">Mouse Wheel plugin</a>)
  * @description
  * All widgets should inherit from this Samotraces.Widgets.Widget.
  * 
@@ -2632,13 +2677,13 @@ Samotraces.Widgets.Widget = (function() {
 				break;	
 			case 'zommOnScroll':
 				wheel = function(e) {
-					var coef = Math.pow(0.8,-e.deltaY/3);
+					var coef = Math.pow(0.8,e.deltaY);
 					opt.timeWindow.zoom(coef);
 	//				opt.onWheelCallback.call(opt.bind,coef);
 					e.preventDefault();
 					return false;
 				};
-				eventTargetElement.addEventListener('wheel',wheel);
+				$(eventTargetElement).mousewheel(wheel);
 				break;
 			default:
 				break;
@@ -2656,11 +2701,6 @@ Samotraces.Widgets.Widget = (function() {
 		return this;
 	};
 })();
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @summary Widget for visualising a time scale.
@@ -2754,11 +2794,6 @@ Samotraces.Widgets.WindowScale.prototype = {
 	},
 };
 
-
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
 
 /**
  * @summary Widget for visualising a window slider.
@@ -2871,15 +2906,57 @@ Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 Samotraces.Widgets.ktbs.ListBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
-
+		$(this.element).append('<h2>Ktbs root: '+this.ktbs.get_uri()+'</h2>');
+/*
 		var title = document.createElement('h2');
 		var title_text = document.createTextNode('Ktbs root: '+this.ktbs.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
-
+*/
 		this.datalist_element = document.createElement('ul');
 		this.element.appendChild(this.datalist_element);
 
+		this.add_button = document.createElement('button');
+		$(this.add_button).append('New base');
+		this.element.appendChild(this.add_button);
+		$(this.add_button).click(this.open_form.bind(this));
+	},
+	open_form: function() {
+
+		this.add_button.disabled = true;
+
+		this.form = {};
+
+		this.form.input_id = document.createElement('input');
+		this.form.input_id.size = 20;
+		this.form.text1 = document.createTextNode(' Base ID: ');
+		this.form.input_label = document.createElement('input');
+		this.form.input_label.size = 20;
+		this.form.text2 = document.createTextNode(' label: ');
+		this.form.button = document.createElement('button');
+		$(this.form.button).append('create');
+
+		$(this.element).append(this.form.text1);
+		$(this.element).append(this.form.input_id);
+		$(this.element).append(this.form.text2);
+		$(this.element).append(this.form.input_label);
+		$(this.element).append(this.form.button);
+
+		$(this.form.button).click(this.create_base.bind(this));
+
+	},
+	create_base: function(e) {
+		if($(this.form.input_id).val() !== "") {
+			console.log("Creating a new base...");
+			this.ktbs.create_base($(this.form.input_id).val(),$(this.form.input_label).val());
+		} else {
+			console.log("Empty base name... No base created");
+		}
+		
+		for( var k in this.form ) {
+			$(this.form[k]).remove();
+		}
+		this.add_button.disabled = false;
 	},
 	refresh: function() {
 		// clear
@@ -2943,6 +3020,56 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 		this.datalist_element = document.createElement('ul');
 		this.element.appendChild(this.datalist_element);
 
+		this.remove_button = document.createElement('button');
+		$(this.remove_button).append('Delete base');
+		this.element.appendChild(this.remove_button);
+		$(this.remove_button).click(this.remove_base.bind(this));
+
+		this.add_button = document.createElement('button');
+		$(this.add_button).append('New trace');
+		this.element.appendChild(this.add_button);
+		$(this.add_button).click(this.open_form.bind(this));
+
+	},
+	open_form: function() {
+
+		this.add_button.disabled = true;
+
+		this.form = {};
+
+		this.form.input_id = document.createElement('input');
+		this.form.input_id.size = 20;
+		this.form.text1 = document.createTextNode(' Trace ID: ');
+		this.form.input_label = document.createElement('input');
+		this.form.input_label.size = 20;
+		this.form.text2 = document.createTextNode(' label: ');
+		this.form.button = document.createElement('button');
+		$(this.form.button).append('create');
+
+		$(this.element).append(this.form.text1);
+		$(this.element).append(this.form.input_id);
+		$(this.element).append(this.form.text2);
+		$(this.element).append(this.form.input_label);
+		$(this.element).append(this.form.button);
+
+		$(this.form.button).click(this.create_trace.bind(this));
+
+	},
+	create_trace: function(e) {
+		if($(this.form.input_id).val() !== "") {
+			console.log("Creating a new trace...");
+			this.base.create_stored_trace($(this.form.input_id).val(),null,null,null,$(this.form.input_label).val());
+		} else {
+			console.log("Empty trace name... No trace created");
+		}
+		
+		for( var k in this.form ) {
+			$(this.form[k]).remove();
+		}
+		this.add_button.disabled = false;
+	},
+	remove_base: function() {
+		this.base.remove();
 	},
 	refresh: function() {
 		// clear
@@ -2963,11 +3090,46 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 
 
 
+Samotraces.UIComponents.Button = function(DOM_parent,text) {
+	this.parent = DOM_parent;
+	this.text = text;
+	this.load;
+};
+
+Samotraces.UIComponents.Button.prototype = {
+	set_text: function(text) {
+		this.text = text;
+		this.el.innerHTML = text;
+	},
+	get_text: function(text) {
+		return this.text;
+	},
+	load: function() {
+		this.unload();
+		this.el = document.createElement('button');
+		this.parent.appendChild(this.el);
+		this.set_text(this.text);
+	},
+	disable: function() {
+		this.el.diabled = true;
+	},
+	enable: function() {
+		this.el.diabled = false;
+	},
+	unload: function() {
+		$(this.el).remove();
+		delete(this.el);
+	},
+	get_element: function() {
+		return this.el;
+	},
+};
+
 Σ.UIComponents.Select = function() {
 
 };
 
 Σ.UIComponents.Select.prototype = {
 };
-	return Σ;
-})();
+	return Samotraces;
+}));

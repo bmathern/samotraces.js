@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <script type="text/javascript" src="javascript/d3.js"></script>
+        <script type="text/javascript" src="../../../lib/jquery.js"></script>
+        <script type="text/javascript" src="../../../lib/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="javascript/Samotraces.js"></script>
         <link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
     </head>
@@ -45,11 +47,7 @@
             var obsel_selector    = new Samotraces.Lib.Selector('Obsel');
 
             // Visualisation options
-            var options = {};
-            options.events = {
-                "ui:click:obsel": obsel_selector.select.bind(obsel_selector)
-            };
-            options.visu = {
+            var options = {
                 url: function(o) {
                     return 'images/'+o.attributes.duration+'.png';
                 },
@@ -66,6 +64,12 @@
             new Samotraces.Widgets.WindowScale('scale',tw);
             new Samotraces.Widgets.ImportTrace('importer',trace);
             new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+
+			// Adding behaviour when clicking on obsels using jQuery
+			$('body').on('click','.Σ-obsel',function(e) {
+				var obs = $.data(e.target,'Σ-data');
+				obsel_selector.select(obs);
+			});
         }
 
 // calling the init function when the DOM has been loaded

@@ -1,30 +1,33 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<script type="text/javascript" src="javascript/d3.js"></script>
-		<script type="text/javascript" src="javascript/Samotraces.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
-	</head>
-	<body>
-		<div id="my-widget"></div>
-		<script type="text/javascript">
-		function init() {
-			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="javascript/d3.js"></script>
+        <script type="text/javascript" src="javascript/jquery.js"></script>
+        <script type="text/javascript" src="javascript/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="javascript/Samotraces.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
+    </head>
+    <body>
+        <div id="my-widget"></div>
+        <script type="text/javascript">
+        function init() {
+            // Create logical objects
+            var trace        = new Samotraces.Lib.DemoTrace();
+            var tw            = new Samotraces.Lib.TimeWindow({start: 0,end: 20});
 
-			// Add obsels to the trace
-			trace.newObsel('click',1);
-			trace.newObsel('click',5);
-			trace.newObsel('click',12);
+            // Add obsels to the trace
+            trace.newObsel('click',1);
+            trace.newObsel('click',5);
+            trace.newObsel('click',12);
 
-			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
-		}
+            // Create widgets
+            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+        }
 
 // calling the init function when the DOM has been loaded
 window.addEventListener('DOMContentLoaded', init );
-		</script>
-	</body>
+        </script>
+    </body>
 </html>
+
