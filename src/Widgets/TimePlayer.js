@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for playing/pausing a timer and controlling videos.
  * @class Widget for playing/pausing a timer and controlling videos.

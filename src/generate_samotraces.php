@@ -23,6 +23,10 @@
 	 * @namespace Samotraces.Lib
 	 */
 	Σ.Lib = {};
+	/**
+	 * Library of UI components for Samotraces
+	 * @namespace Samotraces.UIComponents
+	 */
 	Σ.UIComponents = {};
 	/**
 	 * Set of Widgets of Samotraces

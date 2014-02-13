@@ -2,7 +2,8 @@
     "opts": {
         "recurse": true,
         "destination": "./doc/",
-        "tutorials": "./doc/tutorials/"
+        "tutorials": "./doc/tutorials/",
+		"verbose": true
     },
     "tags" : {
             "allowUnknownTags" : true

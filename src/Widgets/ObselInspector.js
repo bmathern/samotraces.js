@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising an Obsel as an HTML list.
  * @class Widget for visualising an Obsel as an HTML list.
@@ -64,15 +59,15 @@ Samotraces.Widgets.ObselInspector.prototype = {
 		var attributes = obs.attributes;
 		
 		var li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('Id: '+ obs.id));
+		li_element.appendChild(document.createTextNode('id: '+ obs.id));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('TimeStamp: '+ obs.timestamp));
+		li_element.appendChild(document.createTextNode('begin: '+ Date(obs.get_begin()).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('Type: '+ obs.type));
+		li_element.appendChild(document.createTextNode('end: '+ Date(obs.get_end()).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		for(var key in obs.attributes) {

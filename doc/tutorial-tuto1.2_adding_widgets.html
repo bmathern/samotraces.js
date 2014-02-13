@@ -10,6 +10,7 @@
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
 	
 	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 	
@@ -72,6 +73,10 @@
 						
 						<li>
 							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html">MemoryTrace</a>
 						</li>
 						
 						<li>
@@ -191,6 +196,14 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
 						</li>
 						
@@ -226,10 +239,6 @@
 							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -239,6 +248,10 @@
 						class="caret"></b></a>
 
 					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
 						
 						<li>
 							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
@@ -297,6 +310,8 @@ Let's start with the code obtained at the end of the previous part of the tutori
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -469,6 +484,8 @@ The resulting code should be the following:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -576,22 +593,97 @@ method, with the obsel as a parameter.
 However, we would like something more user friendly. For instance, 
 we would like to be able to select an obsel by clicking
 on it on the visualisation.
-For this, we need to link the 
+For this, we need to link the click event on obsels displayed with the
 <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> visualisation
 widget to the 
 <a href="Samotraces.Lib.Selector.html#select">Selector.select()</a>
 method.
 </p>
 
+<p> -- ICI A MODIFIER... --
+If you know jQuery, you know it is quite easy to add listen to events
+and trigger a JavaScript function when an event triggers.
+Samotraces.js is designed so that is makes it easy for you to use
+jQuery event functions.
+</p>
+
 <p>
+So, how does it work?
+We will use jQuery to handle the events.
+With jQuery, you can easily select elements from your page with the 
+<a href="http://api.jquery.com/jQuery/">jQuery $()</a> function.
+For instance, you can select the <code>body</code> of the HTML document this way:
+<code>$('body')</code>.
+Then, we will add an event listener to the body of the document. This is done with
+the <a href="http://api.jquery.com/on/">jQuery .on()</a> method.
+We will have to write something like this:
+<code>$('body').on(EVENT_TYPE, SELECTION, CALLBACK)</code>,
+where <code>EVENT_TYPE</code> will be the type of event we are listening to,
+<code>SELECTION</code> is a 
+<a href="http://api.jquery.com/category/selectors/">jQuery selector</a> that will
+filter the elements that will be actually listened to,
+and <code>CALLBACK</code> is a function called when the event is triggered.
+</p>
+
+<p>
+<strong>Note for jQuery users:</strong>
+When you listen to events with jQuery, you can either listen to events
+directly triggered on a predefined selection
+(for instance with <code>$(selection).click()</code>)
+or add a filter to the selection to trigger the event on that more specific subselection.
+While the first method is more intuitive and straightforward, it can't be applied
+in Samotraces, because the elements you want to listen to may not be already existing
+when you try to create the event listener. Instead, the filtering option allow you 
+to define a behaviour even before everything has been loaded, or even if the content
+has changed.
+</p>
+
+<p>
+Here, the <code>EVENT_TYPE</code> will have to be the <code>"click"</code> event.
+The <code>SELECTION</code> will be the images corresponding to each obsel.
+And the <code>CALLBACK</code> is the function that we will call to inspect the obsel.
+Now, let's define the <code>SELECTION</code> and the <code>CALLBACK</code>.
+</p>
+
+<p>
+In Samotraces.js, classes are attached to HTML elements.
+Inside a Widget, such as the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+each obsel representation will be attached to the <code>"Σ-obsel"</code>
+class. Note that "Σ" stands for "samotraces".
+With jQuery, it is easy to define a class selector (the CSS notation is
+used: adding a dot before the name of the class).
+Therefore, our <code>SELECTION</code> argument will be 
+<code>".Σ-obsel</code>
+</p>
+
+<p>
+The <code>CALLBACK</code> function called when an event is triggered
+requires one argument, which is the event itself.
+The event contains data, for instance, <code>event.target</code> is
+the HTML element that has be the target of the event.
+When clicking on the images that represent an obsel, we would like
+to get this obsel and to display it.
+The obsel is not directly accessible from the <code>event</code>.
+The Obsel object can be obtained with this code:
+<code>$.data(event.target,'Σ-data')</code>
+The obsel information is bound to the HTML element that
+has the <code>"Σ-obsel"</code> class (therefore, the one that is
+the target of the click event).
+</p>
+
+
+
+<p>
+
 If you look more closely to the 
 <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
 documentation, you will find that the widget triggers an event
 of type 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+ui:click:obsel
 when the user click on an Obsel.
 This means, we need to bind the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+ui:click:obsel
 event to the 
 <a href="Samotraces.Lib.Selector.html#select">Selector.select()</a>
 method.
@@ -627,7 +719,7 @@ you might wonder what is the use of the "<code>.bind(obsel_selector)</code>"
 code.
 It turns out that with Javascript, if you use the reference to a method
 this way: <code>obsel_selector.select</code>, the 
-<a href="Samotraces.Lib.Selector.html#select">Selector.select()</a> method
+{@link Samotraces.Lib.Selector#select|Selector.select()} method
 will be called, but the <code>this</code> parameter will not be bound to
 any instance.
 The <code>.bind(obsel_selector)</code> code ensures that the
@@ -650,6 +742,8 @@ Here is the final code that you should have obtained:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -725,7 +819,7 @@ You will learn how to make your own trace visualisation.
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Mon Jan 20 2014 11:46:23 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Thu Feb 13 2014 14:40:07 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

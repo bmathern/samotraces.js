@@ -95,8 +95,10 @@ First, create two folders, one named "javascript", one named
 Then download the relevant files and move them to the 
 appropriate folder:
 <ul>
-	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
-	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../dist/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/jquery.js">jquery.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/jquery.mousewheel.js">jquery.mousewheel.js</a> and copy it in the "javascript" folder</li>
 	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/css/samotraces.css">samotraces.css</a> and copy it in the "css" folder</li>
 </ul>
 Then, update the HTML code to link the files you have just 
@@ -109,6 +111,8 @@ The code should look like this now:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -135,7 +139,7 @@ initialised with 5 parameters:
 	<li>An HTML id</li>
 	<li>A trace {@link Samotraces.Lib.DemoTrace|Trace}</li>
 	<li>A time window {@link Samotraces.Lib.TimeWindow|TimeWindow}</li>
-	<li>Optional parameters for specifying the visualisation and handling events</li>
+	<li>Optional parameters for specifying the visualisation settings</li>
 </ol>
 As the last parameter is optional, let's put it aside for 
 the moment. In order to initialise the widget, we need to
@@ -222,6 +226,8 @@ window.addEventListener('DOMContentLoaded', init );
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -284,6 +290,8 @@ Now, your source code should look as follows.
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;

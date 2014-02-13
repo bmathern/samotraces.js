@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for importing a trace from a CSV file.
  * @class Widget for importing a trace from a CSV file.

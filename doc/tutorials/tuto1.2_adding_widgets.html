@@ -24,6 +24,8 @@ Let's start with the code obtained at the end of the previous part of the tutori
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -196,6 +198,8 @@ The resulting code should be the following:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -303,14 +307,89 @@ method, with the obsel as a parameter.
 However, we would like something more user friendly. For instance, 
 we would like to be able to select an obsel by clicking
 on it on the visualisation.
-For this, we need to link the 
+For this, we need to link the click event on obsels displayed with the
 {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} visualisation
 widget to the 
 {@link Samotraces.Lib.Selector#select|Selector.select()}
 method.
 </p>
 
+<p> -- ICI A MODIFIER... --
+If you know jQuery, you know it is quite easy to add listen to events
+and trigger a JavaScript function when an event triggers.
+Samotraces.js is designed so that is makes it easy for you to use
+jQuery event functions.
+</p>
+
 <p>
+So, how does it work?
+We will use jQuery to handle the events.
+With jQuery, you can easily select elements from your page with the 
+<a href="http://api.jquery.com/jQuery/">jQuery $()</a> function.
+For instance, you can select the <code>body</code> of the HTML document this way:
+<code>$('body')</code>.
+Then, we will add an event listener to the body of the document. This is done with
+the <a href="http://api.jquery.com/on/">jQuery .on()</a> method.
+We will have to write something like this:
+<code>$('body').on(EVENT_TYPE, SELECTION, CALLBACK)</code>,
+where <code>EVENT_TYPE</code> will be the type of event we are listening to,
+<code>SELECTION</code> is a 
+<a href="http://api.jquery.com/category/selectors/">jQuery selector</a> that will
+filter the elements that will be actually listened to,
+and <code>CALLBACK</code> is a function called when the event is triggered.
+</p>
+
+<p>
+<strong>Note for jQuery users:</strong>
+When you listen to events with jQuery, you can either listen to events
+directly triggered on a predefined selection
+(for instance with <code>$(selection).click()</code>)
+or add a filter to the selection to trigger the event on that more specific subselection.
+While the first method is more intuitive and straightforward, it can't be applied
+in Samotraces, because the elements you want to listen to may not be already existing
+when you try to create the event listener. Instead, the filtering option allow you 
+to define a behaviour even before everything has been loaded, or even if the content
+has changed.
+</p>
+
+<p>
+Here, the <code>EVENT_TYPE</code> will have to be the <code>"click"</code> event.
+The <code>SELECTION</code> will be the images corresponding to each obsel.
+And the <code>CALLBACK</code> is the function that we will call to inspect the obsel.
+Now, let's define the <code>SELECTION</code> and the <code>CALLBACK</code>.
+</p>
+
+<p>
+In Samotraces.js, classes are attached to HTML elements.
+Inside a Widget, such as the 
+{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget,
+each obsel representation will be attached to the <code>"Σ-obsel"</code>
+class. Note that "Σ" stands for "samotraces".
+With jQuery, it is easy to define a class selector (the CSS notation is
+used: adding a dot before the name of the class).
+Therefore, our <code>SELECTION</code> argument will be 
+<code>".Σ-obsel</code>
+</p>
+
+<p>
+The <code>CALLBACK</code> function called when an event is triggered
+requires one argument, which is the event itself.
+The event contains data, for instance, <code>event.target</code> is
+the HTML element that has be the target of the event.
+When clicking on the images that represent an obsel, we would like
+to get this obsel and to display it.
+The obsel is not directly accessible from the <code>event</code>.
+The Obsel object can be obtained with this code:
+<code>$.data(event.target,'Σ-data')</code>
+The obsel information is bound to the HTML element that
+has the <code>"Σ-obsel"</code> class (therefore, the one that is
+the target of the click event).
+</p>
+
+
+
+<p>
+
 If you look more closely to the 
 {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
 documentation, you will find that the widget triggers an event
@@ -377,6 +456,8 @@ Here is the final code that you should have obtained:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;

@@ -10,6 +10,7 @@
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
 	
 	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 	
@@ -72,6 +73,10 @@
 						
 						<li>
 							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html">MemoryTrace</a>
 						</li>
 						
 						<li>
@@ -191,6 +196,14 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
 						</li>
 						
@@ -226,10 +239,6 @@
 							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -239,6 +248,10 @@
 						class="caret"></b></a>
 
 					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
 						
 						<li>
 							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
@@ -304,7 +317,7 @@ The default settings are set up to visualise 16x16 pixels
 icons. If no url is defined (see options), a questionmark 
 icon will be displayed by default for each obsel.</p>
 <p>Note that clicking on an obsel will trigger a 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
+ui:click:obsel
 event.</p>
 <p>Tutorials <a href="tutorial-tuto1.1_trace_visualisation.html">Tutorial 1 – part 1: Creating a trace visualisation in 10 minutes</a>,
 <a href="tutorial-tuto1.2_adding_widgets.html">Tutorial 1 – part 2: Adding widgets to an application</a>, and 
@@ -446,61 +459,6 @@ in more details how to use this class.</p>
             <td class="type">
             
                 
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Parameter that specifies the visualisation options and
-    default event handling.</p>
-                <h6>Properties</h6>
-                
-
-<table class="params table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-		<th>Argument</th>
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>visu</code></td>
-            
-
-            <td class="type">
-            
-                
 <span class="param-type"><a href="global.html#VisuConfig">VisuConfig</a></span>
 
 
@@ -541,46 +499,6 @@ in more details how to use this class.</p>
         </tr>
 
 	
-
-        <tr>
-            
-                <td class="name"><code>events</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#EventConfig">EventConfig</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Events to listen to and their corresponding callbacks.</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-
-            </td>
-        </tr>
-
-	
 	</tbody>
 </table>
 
@@ -616,7 +534,7 @@ in more details how to use this class.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-86">line 86</a>
+        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-70">line 70</a>
     </li></ul></dd>
     
 
@@ -628,11 +546,6 @@ in more details how to use this class.</p>
 </dl>
 
     
-    
-    <h5>Fires:</h5>
-    <ul>
-        <li><a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel</a></li>
-    </ul>
     
 
     
@@ -647,23 +560,18 @@ in more details how to use this class.</p>
         <h5>Example</h5>
         
     <pre class="sunlight-highlight-javascript">var options = {
-    visu: {
-        y: 20,
-        width: 32,
-        height: 32,
-        url: function(obsel) {
-            switch(obsel.type) {
-                case 'click':
-                    return 'images/click.png';
-                case 'focus':
-                    return 'images/focus.png';
-                default:
-                    return 'images/default.png';
-            }
+    y: 20,
+    width: 32,
+    height: 32,
+    url: function(obsel) {
+        switch(obsel.type) {
+            case 'click':
+                return 'images/click.png';
+            case 'focus':
+                return 'images/focus.png';
+            default:
+                return 'images/default.png';
         }
-    },
-    events: {
-        'ui:click:obsel': obsel_selector.select.bind(obsel_selector)
     }
 };</pre>
 
@@ -795,7 +703,7 @@ the time given in parameter.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-231">line 231</a>
+        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-215">line 215</a>
     </li></ul></dd>
     
 
@@ -1116,7 +1024,7 @@ for more details and examples.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-120">line 120</a>
+        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-104">line 104</a>
     </li></ul></dd>
     
 
@@ -1135,161 +1043,6 @@ for more details and examples.</p>
     
 
     
-        <h3 class="subsection-title">Events</h3>
-
-        <dl>
-            
-<dt>
-    <h4 class="name" id="event:ui:click:obsel">ui:click:obsel</h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">object</span>
-
-
-            </li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-
-        <h5 class="subsection-title">Properties:</h5>
-
-        <dl>
-
-<table class="props table table-striped">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		
-
-		
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The type of the event (= &quot;ui:click:obsel&quot;).</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Samotraces.Lib.Obsel.html">Samotraces.Lib.Obsel</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The obsel that
-    has been the target of the click.</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-</dl>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TraceDisplayIcons.js.html">Widgets/TraceDisplayIcons.js</a>, <a href="TraceDisplayIcons.js.html#sunlight-1-line-256">line 256</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        </dl>
-    
 </article>
 
 </section>
@@ -1305,7 +1058,7 @@ for more details and examples.</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Mon Jan 20 2014 11:46:23 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Thu Feb 13 2014 14:40:07 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

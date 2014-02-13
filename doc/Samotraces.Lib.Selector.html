@@ -10,6 +10,7 @@
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
 	
 	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 	
@@ -72,6 +73,10 @@
 						
 						<li>
 							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html">MemoryTrace</a>
 						</li>
 						
 						<li>
@@ -191,6 +196,14 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
 						</li>
 						
@@ -226,10 +239,6 @@
 							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -239,6 +248,10 @@
 						class="caret"></b></a>
 
 					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
 						
 						<li>
 							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
@@ -631,6 +644,191 @@ method.</p>
         
             
 <dt>
+    <h4 class="name" id="get_selection"><span class="type-signature"></span>get_selection<span class="signature">()</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the current selection</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-102">line 102</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Array of selected objects</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="is_empty"><span class="type-signature"></span>is_empty<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Method that checks if the selection is empty</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Returns true if the selection and empty 
+    and false if the selection is not empty.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Boolean</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="select"><span class="type-signature"></span>select<span class="signature">(object)</span><span class="type-signature"></span></h4>
     
     
@@ -797,7 +995,7 @@ If the Object was previously selected, it becomes unselected.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-113">line 113</a>
+        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-138">line 138</a>
     </li></ul></dd>
     
 
@@ -866,7 +1064,7 @@ If the Object was previously selected, it becomes unselected.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-94">line 94</a>
+        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-109">line 109</a>
     </li></ul></dd>
     
 
@@ -1295,7 +1493,7 @@ If the Object was previously selected, it becomes unselected.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-100">line 100</a>
+        <a href="Selector.js.html">Lib/Selector.js</a>, <a href="Selector.js.html#sunlight-1-line-124">line 124</a>
     </li></ul></dd>
     
 
@@ -1337,7 +1535,7 @@ If the Object was previously selected, it becomes unselected.</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Mon Jan 20 2014 11:46:22 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Thu Feb 13 2014 14:40:06 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

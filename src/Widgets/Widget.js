@@ -1,11 +1,7 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
-
 /**
  * @mixin
+ * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
+ * @requires jQuery Mouse Wheel plugin (see <a href="https://github.com/brandonaaron/jquery-mousewheel">Mouse Wheel plugin</a>)
  * @description
  * All widgets should inherit from this Samotraces.Widgets.Widget.
  * 
@@ -117,13 +113,13 @@ Samotraces.Widgets.Widget = (function() {
 				break;	
 			case 'zommOnScroll':
 				wheel = function(e) {
-					var coef = Math.pow(0.8,-e.deltaY/3);
+					var coef = Math.pow(0.8,e.deltaY);
 					opt.timeWindow.zoom(coef);
 	//				opt.onWheelCallback.call(opt.bind,coef);
 					e.preventDefault();
 					return false;
 				};
-				eventTargetElement.addEventListener('wheel',wheel);
+				$(eventTargetElement).mousewheel(wheel);
 				break;
 			default:
 				break;

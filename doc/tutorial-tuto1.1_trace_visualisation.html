@@ -10,6 +10,7 @@
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
 	
 	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
 	
@@ -72,6 +73,10 @@
 						
 						<li>
 							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html">MemoryTrace</a>
 						</li>
 						
 						<li>
@@ -191,6 +196,14 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
 						</li>
 						
@@ -226,10 +239,6 @@
 							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.TraceDisplayIcons.html#event:ui:click:obsel">ui:click:obsel</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -239,6 +248,10 @@
 						class="caret"></b></a>
 
 					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
 						
 						<li>
 							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
@@ -368,8 +381,10 @@ First, create two folders, one named "javascript", one named
 Then download the relevant files and move them to the 
 appropriate folder:
 <ul>
-	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
-	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/javascript/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../dist/Samotraces.js">Samotraces.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/d3.js">d3.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/jquery.js">jquery.js</a> and copy it in the "javascript" folder</li>
+	<li>Download <a href="../lib/jquery.mousewheel.js">jquery.mousewheel.js</a> and copy it in the "javascript" folder</li>
 	<li>Download <a href="../examples/tutorials/tuto1.1_trace_visualisation/css/samotraces.css">samotraces.css</a> and copy it in the "css" folder</li>
 </ul>
 Then, update the HTML code to link the files you have just 
@@ -382,6 +397,8 @@ The code should look like this now:
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -408,7 +425,7 @@ initialised with 5 parameters:
 	<li>An HTML id</li>
 	<li>A trace <a href="Samotraces.Lib.DemoTrace.html">Trace</a></li>
 	<li>A time window <a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a></li>
-	<li>Optional parameters for specifying the visualisation and handling events</li>
+	<li>Optional parameters for specifying the visualisation settings</li>
 </ol>
 As the last parameter is optional, let's put it aside for 
 the moment. In order to initialise the widget, we need to
@@ -495,6 +512,8 @@ window.addEventListener('DOMContentLoaded', init );
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -557,6 +576,8 @@ Now, your source code should look as follows.
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -597,8 +618,8 @@ You can try out the final result of this tutorial
 <p>
 Now, enjoy and play with the trace visualisation widget!
 You can zoom in or out by scrolling vertically on the widget.
-You can also move the time by clicking on the widget and
-maintening the click while moving your pointer right or left.
+You can also move the time by dragging the widget's background 
+to the right or the left.
 </p>
 
 <p>
@@ -620,7 +641,7 @@ more complex application.
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Mon Jan 20 2014 11:46:23 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Thu Feb 13 2014 14:40:07 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

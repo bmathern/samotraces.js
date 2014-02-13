@@ -1,8 +1,3 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-
 /**
  * @summary Widget for visualising the current time as a number.
  * @class Widget for visualising the current time as a number.
