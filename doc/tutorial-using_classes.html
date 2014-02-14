@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js tutorialUsing classes in Samotraces.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.html">Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.html">Lib</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.html">Widgets</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html">DemoTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs.html">Ktbs</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Ktbs-Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html">MemoryTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html">WindowState</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.DemoTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.MemoryTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Lib.WindowState.html#event:window:resize">window:resize</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					<section>
+    
+<header>
+    
+
+    <h2>Using classes in Samotraces.js</h2>
+</header>  
+
+<article>
+    <h1>Classes in Samotraces.js</h1>
+<p>Samotraces.js uses HTML classes to make it easier to define CSS styles
+and to program the UI (User Interface) behaviours.</p>
+<p>Classes are used in two main ways:</p>
+<ul>
+<li>each Widget instance has a class corresponding to the Widget name.</li>
+<li>each logical object with a graphical representation on the UI has a class 
+corresponding to the logical object type.</li>
+</ul>
+<h3>Classes for widgets</h3>
+<p>Each Widget is instanciated in a div. This div will be given at least two classes:
+the <code>Widget</code> class and the class name corresponding to the Widget's name.
+For instance, the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
+has the class <code>Widget</code> and the class <code>TraceDisplayIcons</code>.</p>
+<p>This can be used by the application developper to customise the CSS style of each widget.
+The <code>Widget</code> class can be used to define CSS properties that are shared by all widgets.</p>
+<h3>Classes for objects visual representation</h3>
+<p>While, the classes associated with objects' visual representation can also be used 
+in combination with CSS to customise the style, the main reason of their development
+was to offer an easy way to define UI behaviours in combination with jQuery.</p>
+<p>The class names are defined by the lowercase name of the object prefixed by the
+&quot;Σ-&quot; characters (&quot;Σ&quot; standing for &quot;samotraces&quot;).
+For instance, the visual representation of an Obsel will be associated to the
+<code>Σ-obsel</code> class. With jQuery, the following code will therefore allow to capture
+any click on any obsel on the page:</p>
+<pre class="prettyprint sunlight-highlight-javascript linenums">$('body').on('click','.Σ-obsel',callback);
+</pre>
+
+<h2>Data binding</h2>
+<p>In addition to the class, each HTML object representation is associated to the actual
+Object it represent. For instance, an HTML image element representing an obsel would
+have the <code>Σ-obsel</code> class and also contain the data of the actual 
+<a href="Samotraces.Lib.Obsel.html">Obsel</a> it represents.</p>
+<p>This data can be retrieved by using the 
+<a link="http://api.jquery.com/jQuery.data/">jQuery $.data()</a> method.</p>
+<p>Here is how you retrieve the information:</p>
+<pre class="prettyprint sunlight-highlight-javascript linenums">$.data(ELEMENT,DATA_KEY);
+</pre>
+
+<p>Each Samotraces.js object is associated with two <code>DATA_KEY</code>:</p>
+<ul>
+<li><code>Σ-type</code>, which contains the Samotraces type of the object, and</li>
+<li><code>Σ-data</code>, which contains the actual Samotraces object.</li>
+</ul>
+<h2>Full example</h2>
+<p>Now, we can write a full example of how to define a behaviour of the UI using the
+classes and the data binding. As a simple example, a click on an obsel will display
+the id of that obsel in the JavaScript console.</p>
+<p>Above, in the &quot;Classes for objects visual representation&quot; section we have already
+define how to listen to the click event on obsels.
+Now, let's define the callback function.
+The callback function must have one argument corresponding to the event object.
+The event.target object refers to the target of the event, which is the HTML element
+that has been clicked on. And as we have seen above, this HTML element is bound
+to the actual corresponding Obsel. Putting it all in practice, the following
+callback should do the job:</p>
+<pre class="prettyprint sunlight-highlight-javascript linenums">var callback = function(event) {
+
+    // The "obsel" variable will store the Obsel object
+    var obsel = $.data(event.target,'Σ-data');
+
+    // Note that this callback is only called on 'Σ-obsel' class,
+    // therefore we know an obsel was the target of the event.
+    // Otherwise, we would have to check if it is an obsel.
+
+    // Now let's display the id of the Obsel
+    console.log(obsel.get_id());
+};
+</pre>
+</article>
+
+</section>  
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Thu Feb 13 2014 14:40:07 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>
