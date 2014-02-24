@@ -58,7 +58,8 @@ Samotraces.Lib.TimeWindow.prototype = {
 	},
 	updateTime: function(e) {
 		var time = e.data;
-		this.set_width(this.width,time);
+		this.translate(time - this.start + this.width/2);
+//		this.set_width(this.width,time);
 	},
 	/** 
 	 * @fires Samotraces.Lib.TimeWindow#tw:update
@@ -105,7 +106,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		this.trigger('tw:update');
 	},
 	/**
-	 * @fires Samotraces.Lib.TimeWindow#tw:update
+	 * @fires Samotraces.Lib.TimeWindow#tw:translate
 	 */
 	translate: function(delta) {
 		if(this.timer) {
@@ -113,7 +114,7 @@ Samotraces.Lib.TimeWindow.prototype = {
 		} else {
 			this.start = this.start + delta;
 			this.end = this.end + delta;
-			this.trigger('tw:update');
+			this.trigger('tw:translate',delta);
 		}
 	},
 	/** @todo Handle correctly the bind to the timer (if this.timer) */

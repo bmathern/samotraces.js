@@ -42,6 +42,7 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 	this.window = time_window;
 //	time_window.addObserver(this);
 	this.window.addEventListener('tw:update',this.draw.bind(this));
+	this.window.addEventListener('tw:translate',this.draw.bind(this));
 
 	// trying to guess if time_window is related to a Date() object
 	if(this.window.start > 1000000000) { // 1o^9 > 11 Jan 1970 if a Date object

@@ -86,6 +86,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 
 	this.window = time_window;
 	this.window.addEventListener('tw:update',this.refresh_x.bind(this));
+	this.window.addEventListener('tw:translate',this.translate_x.bind(this));
 
 //	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));
@@ -146,7 +147,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 			}
 		};
 	this.options.x = bind_function(options.x || function(o) {
-			return this.calculate_x(o.timestamp) - 8;
+			return this.calculate_x(o.get_begin()) - 8;
 		});
 	this.options.y = bind_function(options.y || 17);
 	this.options.width = bind_function(options.width || 16);
@@ -158,18 +159,26 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 
 Samotraces.Widgets.TraceDisplayIcons.prototype = {
 	init_DOM: function() {
+
+
 		var div_elmt = d3.select('#'+this.id);
 		this.svg = div_elmt.append('svg');
 
 		// create the (red) line representing current time
-		this.svg.append('line')
-			.attr('x1','50%')
-			.attr('y1','0%')
-			.attr('x2','50%')
-			.attr('y2','100%')
-			.attr('stroke-width','1px')
-			.attr('stroke','red')
-			.attr('opacity','0.3');
+		if(typeof(this.window.timer) !== "undefined") {
+			this.svg.append('line')
+				.attr('x1','50%')
+				.attr('y1','0%')
+				.attr('x2','50%')
+				.attr('y2','100%')
+				.attr('stroke-width','1px')
+				.attr('stroke','red')
+				.attr('opacity','0.3');
+		}
+
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
+
 		this.svg_gp = this.svg.append('g')
 						.attr('transform', 'translate(0,0)');
 		this.svg_selected_obsel = this.svg.append('line')
@@ -188,20 +197,14 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 		this.add_behaviour('changeTimeOnDrag',this.element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
-					widget.window.translate(time_delta);	
-				//	var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
-					// replace element.getSize() by element.clientWidth?
-					widget.svg_gp.attr('transform','translate(0,0)');
-				//	widget.timer.set(new_time);
-					
+					widget.svg_gp.attr('transform','translate('+(-widget.translate_offset)+',0)');
+					widget.window.translate(time_delta);
 				},
 				onMoveCallback: function(offset) {
-					widget.svg_gp.attr('transform','translate('+offset+',0)');
+					widget.svg_gp.attr('transform','translate('+(offset-widget.translate_offset)+',0)');
 				},
 			});
 		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
-//		this.element.addEventListener('wheel',this.build_callback('wheel'));
-//		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
 
 
@@ -213,29 +216,30 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 	 * @param {Number} time Time for which to seek the corresponding x parameter
 	 */
 	calculate_x: function(time) {
-//console.log(time);
-		var x = (time - this.window.start)*this.element.clientWidth/this.window.get_width();
-//console.log(x);
-		return x;
+		return x = (time - this.window.start)*this.scale_x + this.translate_offset;
+	},
+	translate_x: function(e) {
+		var time_delta = e.data;
+		this.translate_offset += time_delta*this.scale_x;
+		this.svg_gp
+			.attr('transform', 'translate('+(-this.translate_offset)+',0)');
 	},
 
 	refresh_x: function() {
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
+		this.svg_gp
+			.attr('transform', 'translate(0,0)');
 		this.d3Obsels()
 			.attr('x',this.options.x)
 			.attr('y',this.options.y);
 	},
-/*	translate_x: function() {
-		this.time
-		var delta_x = this.timer.time - 
-var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
-		this.current_offset = this.current_offset + offset;
-		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
-	},*/
 
 	draw: function(e) {
 		if(e) {
 			this.data = this.trace.traceSet;
 		}
+
 		this.d3Obsels()
 			.exit()
 			.remove();
@@ -256,7 +260,6 @@ var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.elem
 				'Σ-data': d3.select(el).datum()
 			});
 		});
-//		this.updateEventListener();
 	},
 	drawObsel: function(obs) {
 		this.draw();	
