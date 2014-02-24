@@ -343,18 +343,20 @@ Samotraces.Lib.Ktbs.Trace.prototype = {
 		var id, label, type, begin, end, attributes, obs;
 		var new_obsel_loaded = false;
 		data.obsels.forEach(function(el,key) {
-			id = el['@id'];
-			label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
-			type = el['@type'];
-			begin = el['begin'];
-			end = el['end'];
-			attributes = el;
-			delete(attributes['@id']);
-			delete(attributes['http://www.w3.org/2000/01/rdf-schema#label']);
-			delete(attributes['@type']);
-			delete(attributes['begin']);
-			delete(attributes['end']);
-			obs = new Samotraces.Lib.Ktbs.Obsel(id,this.uri+id,label,this.id,type,begin,end,attributes);
+			var attr = {};
+			attr.id = el['@id'];
+			attr.trace = this;
+			attr.label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
+			attr.type = el['@type'];
+			attr.begin = el['begin'];
+			attr.end = el['end'];
+			attr.attributes = el;
+			delete(attr.attributes['@id']);
+			delete(attr.attributes['http://www.w3.org/2000/01/rdf-schema#label']);
+			delete(attr.attributes['@type']);
+			delete(attr.attributes['begin']);
+			delete(attr.attributes['end']);
+			obs = new Samotraces.Lib.Ktbs.Obsel(attr);
 			
 			if(! this._check_obsel_loaded_(obs)) {
 				new_obsel_loaded = true;
@@ -400,33 +402,23 @@ Samotraces.Lib.Ktbs.ComputedTrace = function() {
 }
 */
 
-Samotraces.Lib.Ktbs.Obsel = function Obsel(id,uri,label,trace,type,begin,end,attributes,relations) {
+Samotraces.Lib.Ktbs.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
-	Samotraces.Lib.Ktbs.Resource.call(this,id,uri,label || "");
-	this.trace = trace;
-	this.type = type;
-	this.begin = begin;
-	this.end = end;
-	this.attributes = attributes || {};
-	this.relations = relations || {};
+	Samotraces.Lib.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
+
+//	this._private_check_error(param,'id');
+	this._private_check_error(param,'trace');
+	this._private_check_error(param,'type');
+	this._private_check_default(param,'begin',	Date.now());
+	this._private_check_default(param,'end',		this.begin);
+	this._private_check_default(param,'attributes',	{});
+	this._private_check_undef(param,'relations',	[]); // TODO ajouter rel à l'autre obsel
+	this._private_check_undef(param,'inverse_relations',	[]); // TODO ajouter rel à l'autre obsel
+	this._private_check_undef(param,'source_obsels',		[]);
+//	this._private_check_undef(param,'label',		"");
 }
 
-Samotraces.Lib.Ktbs.Obsel.prototype = {
-	get_trace: function() { return this.trace; },
-	get_obsel_type: function() { return this.type; },
-	get_begin: function() { return this.begin; },
-	get_end: function() { return this.end; },
-	list_source_obsels: function() {},
-	list_attribute_types: function() {},
-	list_relation_types: function() {},
-	list_related_obsels: function() {},
-	list_inverse_relation_types: function() {},
-	get_attribute_value: function() {},
-	set_attribute_value: function() {},
-	gel_attribute_value: function() {},
-	add_related_obsel: function() {},
-	del_related_obsel: function() {}
-};
+Samotraces.Lib.Ktbs.Obsel.prototype = Samotraces.Lib.Obsel.prototype;
 
 
 

@@ -14,35 +14,18 @@
  * @param {Object} attributes Optional attributes of the obsel.
  */
 // *
-Samotraces.Lib.Obsel = (function() {
-	function check_default(param,attr,value) {
-		this[attr] = (param[attr] !== undefined)?param[attr]:value;
-	}
-	function check_undef(param,attr) {
-		if(param[attr] !== undefined) {
-			this[attr] = param[attr];
-		}
-	}
-	function check_error(param,attr) {
-		if(param[attr] !== undefined) {
-			this[attr] = param[attr];
-		} else {
-			throw "Parameter "+attr+" required.";
-		}
-	}
-	return function Obsel(param) {
-		check_error.call(this,param,'id');
-		check_error.call(this,param,'trace');
-		check_error.call(this,param,'type');
-		check_default.call(this,param,'begin',	Date.now());
-		check_default.call(this,param,'end',		this.begin);
-		check_default.call(this,param,'attributes',	{});
-		check_undef.call(this,param,'relations',	[]); // TODO ajouter rel à l'autre obsel
-		check_undef.call(this,param,'inverse_relations',	[]); // TODO ajouter rel à l'autre obsel
-		check_undef.call(this,param,'source_obsels',		[]);
-		check_undef.call(this,param,'label',		[]);
-	}
-})(); 
+Samotraces.Lib.Obsel = function Obsel(param) {
+	this._private_check_error(param,'id');
+	this._private_check_error(param,'trace');
+	this._private_check_error(param,'type');
+	this._private_check_default(param,'begin',	Date.now());
+	this._private_check_default(param,'end',		this.begin);
+	this._private_check_default(param,'attributes',	{});
+	this._private_check_undef(param,'relations',	[]); // TODO ajouter rel à l'autre obsel
+	this._private_check_undef(param,'inverse_relations',	[]); // TODO ajouter rel à l'autre obsel
+	this._private_check_undef(param,'source_obsels',		[]);
+	this._private_check_undef(param,'label',		"");
+};
 //*/
 /*
 Samotraces.Lib.Obsel = function Obsel(param) {
@@ -75,6 +58,21 @@ Samotraces.Lib.Obsel = function Obsel(param) {
 };*/
 
 Samotraces.Lib.Obsel.prototype = {
+	_private_check_default: function (param,attr,value) {
+		this[attr] = (param[attr] !== undefined)?param[attr]:value;
+	},
+	_private_check_undef: function (param,attr) {
+		if(param[attr] !== undefined) {
+			this[attr] = param[attr];
+		}
+	},
+	_private_check_error: function (param,attr) {
+		if(param[attr] !== undefined) {
+			this[attr] = param[attr];
+		} else {
+			throw "Parameter "+attr+" required.";
+		}
+	},
 	get_trace: 		function() { return this.trace; },
 	get_obsel_type: function() { return this.type;	},
 	get_begin: 		function() { return this.begin;	},
