@@ -35,7 +35,7 @@
  * @param {Number} opt.width Width of the time window.
  *
  */
-Samotraces.Lib.TimeWindow = function(opt) {
+Samotraces.Lib.TimeWindow = function TimeWindow(opt) {
 	// Adding the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
 	if(opt.start !== undefined && opt.end  !== undefined) {
@@ -45,8 +45,8 @@ Samotraces.Lib.TimeWindow = function(opt) {
 	} else if (opt.timer !== undefined && opt.width  !== undefined) {
 		this.set_width(opt.width,opt.timer.time)
 		this.timer = opt.timer;
-		this.timer.addEventListener('timer:update',this.updateTime.bind(this));
-		this.timer.addEventListener('timer:play:update',this.updateTime.bind(this));
+		this.timer.addEventListener('timer:update',this._private_updateTime.bind(this));
+		this.timer.addEventListener('timer:play:update',this._private_updateTime.bind(this));
 	} else {
 		throw('Samotraces.Lib.TimeWindow error. Arguments could not be parsed.');
 	}
@@ -56,9 +56,14 @@ Samotraces.Lib.TimeWindow.prototype = {
 	__calculate_width: function() {
 		this.width = this.end - this.start;
 	},
-	updateTime: function(e) {
+	_private_updateTime: function(e) {
 		var time = e.data;
-		this.translate(time - this.start + this.width/2);
+		var delta = time - (this.start + this.width/2);
+
+		this.start = time - this.width/2
+		this.end = time + this.width/2
+		this.trigger('tw:translate',delta);
+
 //		this.set_width(this.width,time);
 	},
 	/** 

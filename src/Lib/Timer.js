@@ -22,7 +22,7 @@
  *     <code>Date.now()</code> by default).
  */
 
-Samotraces.Lib.Timer = function(init_time,period,update_function) {
+Samotraces.Lib.Timer = function Timer(init_time,period,update_function) {
 	// Adding the Observable trait
 	Samotraces.Lib.EventHandler.call(this);
 	this.time = init_time || 0;
