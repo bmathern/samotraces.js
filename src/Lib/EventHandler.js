@@ -17,7 +17,6 @@
  *     Hash matching callbacks to event_types.
  */
 Samotraces.Lib.EventHandler = (function() {
-	var debug = false;
 	/**
 	 * Triggers all the registred callbacks.
 	 * @memberof Samotraces.Lib.EventBuilder.prototype
@@ -28,8 +27,7 @@ Samotraces.Lib.EventHandler = (function() {
 	 *     {@link Samotraces.Lib.EventBuilder#addEventListener}).
 	 */
 	function trigger(event_type,object) {
-		if(debug) { console.log("debug: EventHandler#"+event_type+" triggered"); }
-		//if(debug) { console.log(this); }
+		Samotraces.debug("EventHandler#"+event_type+" triggered");
 		var e = { type: event_type, data: object };
 		if(this.callbacks[event_type]) {
 			this.callbacks[event_type].map(function(f) { f(e); });
