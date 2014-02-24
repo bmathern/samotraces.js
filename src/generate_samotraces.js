@@ -37,7 +37,7 @@
 		}
 	};
 	Samotraces.debug = function() {
-		if(window.console && Samotraces.debug) {
+		if(Samotraces.debug && window.console) {
 			var class_name = (this!==undefined)?[this.constructor.name]:[];
             window.console.log.apply(console, [ "Samotraces.js-debug" ].concat(class_name.slice.call(arguments)));
 		}

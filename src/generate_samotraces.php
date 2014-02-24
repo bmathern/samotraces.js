@@ -47,17 +47,26 @@
 
 header("Content-Disposition: attachment; filename=\"Samotraces.js\"");
 
-function export_all_js($dir) {
+function export_all_js($dir,$priority_list) {
+$first = "";
+$last = "";
 do {
 	foreach (glob($dir."/*.js") as $filename) {
-    	echo(file_get_contents($filename));
+		if(in_array($filename,$priority_list)) {
+$first .= "\n// first: $filename\n";
+			$first .= file_get_contents($filename);
+		} else {
+$last .= "\n// last: $filename\n";
+			$last .= file_get_contents($filename);
+		}
 	}
 	$dir .= '/*';
 } while($dirs = glob($dir, GLOB_ONLYDIR));
+echo($first.$last);
 } 
 
-export_all_js('Lib/');
-export_all_js('Widgets/');
+export_all_js('Lib',['Lib/Obsel.js']);
+export_all_js('Widgets');
 //export_all_js('UIComponents/');
 
 ?>
