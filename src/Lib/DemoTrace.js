@@ -42,7 +42,7 @@ Samotraces.Lib.DemoTrace.prototype = {
 	newObsel: function(type,timeStamp,attributes) {
 		var id = this.count;
 		this.count++;
-		var obs = new Samotraces.Lib.Obsel(id,timeStamp,type,attributes)
+		var obs = new Samotraces.Lib.Obsel({id: id,trace: this,begin: timeStamp,type: type,attributes: attributes})
 		this.traceSet.push(obs);
 		this.trigger('trace:update',this.traceSet);
 		this.trigger('trace:create:obsel',obs);
