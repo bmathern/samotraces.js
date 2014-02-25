@@ -213,16 +213,17 @@ Samotraces.Widgets.ImportTrace.prototype = {
 		csv.pop(); // remove the last line... Why?...
 	//	console.log('fichier parsé');
 		csv.map(function(line) {
-			var time = line.shift();
-			var type = line.shift();
-			var attributes = {};
+			var o_attr = {};
+			o_attr.begin = line.shift();
+			o_attr.type = line.shift();
+			o_attr.attributes = {};
 			for( var i=0; i < (line.length-1)/2 ; i++) {
 				if(line[2*i] != "") {
-					attributes[line[2*i]] = line[2*i+1];
+					o_attr.attributes[line[2*i]] = line[2*i+1];
 				}
 			}
 		//	console.log('new obsel');
-			trace.newObsel(type,time,attributes);
+			trace.create_obsel(o_attr);
 		});		
 /*
 		var output = "";

@@ -12,7 +12,7 @@
 	/**
 	 * @property {Boolean} [debug=false]
 	 */
-	Samotraces.debug = false;
+	debug_mode = false;
 
 	/**
 	 * Library of the Objects of Samotraces
@@ -30,16 +30,16 @@
 	 */
 	Samotraces.Widgets = {};
 
-	Samotraces.log = function() {
+	Samotraces.log = function log() {
 		if(window.console) {
 			var class_name = (this!==undefined)?[this.constructor.name]:[];
-            window.console.log.apply(console, [ "Samotraces.js" ].concat(class_name.slice.call(arguments)));
+            window.console.log.apply(console, [ "Samotraces.js" ].concat(class_name,[].slice.call(arguments)));
 		}
 	};
-	Samotraces.debug = function() {
-		if(window.console && Samotraces.debug) {
+	Samotraces.debug = function debug() {
+		if(debug_mode && window.console) {
 			var class_name = (this!==undefined)?[this.constructor.name]:[];
-            window.console.log.apply(console, [ "Samotraces.js-debug" ].concat(class_name.slice.call(arguments)));
+            window.console.log.apply(console, [ "Samotraces.js-debug" ].concat(class_name,[].slice.call(arguments)));
 		}
 	};
 	

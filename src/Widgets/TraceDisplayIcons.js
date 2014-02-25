@@ -81,8 +81,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
 	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
 	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
-	this.trace.addEventListener('trace:update:obsel',this.draw.bind(this));
-	this.trace.addEventListener('newObsel',this.addObsel.bind(this));
+	this.trace.addEventListener('trace:edit:obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
 	this.window.addEventListener('tw:update',this.refresh_x.bind(this));
@@ -92,7 +91,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 //	this.window.addEventListener('',this..bind(this));
 
 	this.init_DOM();
-	this.data = this.trace.traceSet;
+	this.data = this.trace.list_obsels();
 
 	this.options = {};
 	/**
@@ -237,7 +236,7 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 
 	draw: function(e) {
 		if(e) {
-			this.data = this.trace.traceSet;
+			this.data = this.trace.list_obsels();
 		}
 
 		this.d3Obsels()
@@ -261,18 +260,18 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 			});
 		});
 	},
-	drawObsel: function(obs) {
-		this.draw();	
+
+	obsel_redraw: function(e) {
+		obs = e.data;
+		var sel = this.d3Obsels()
+			.filter(function(o,id) {return id == obs.get_id();})
+			.attr('x',this.options.x)
+			.attr('y',this.options.y)
+			.attr('width',this.options.width)
+			.attr('height',this.options.height)
+			.attr('xlink:href',this.options.url);
 	},
 
-	addObsel: function(e) {
-		var obs = e.data;
-//console.log('addObsel '+obs.id);
-//console.log(obs);
-		this.data.push(obs);
-		this.drawObsel(obs);
-		this.updateEventListener();
-	},
 	d3Obsels: function() {
 		return this.svg_gp
 					.selectAll('circle,image,rect')

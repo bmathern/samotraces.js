@@ -8,10 +8,17 @@
 /**
  * @summary JavaScript Obsel class
  * @class JavaScript Obsel class
- * @param {String} id Identifier of the obsel.
- * @param {Number} timestamp Timestamp of the obsel
- * @param {String} type Type of the obsel.
- * @param {Object} attributes Optional attributes of the obsel.
+ * @param {Object} param Parameters 
+ * @param {String} param.id Identifier of the obsel.
+ * @param {Number} param.begin Timestamp of the obsel
+ * @param {Number} param.end Timestamp of the obsel
+ * @param {String} param.type Type of the obsel.
+ * @param {Object} [param.attributes] Attributes of the obsel.
+ * @param {Array<Object>} [param.attributes] Attributes of the obsel.
+ * @param {Array<FIXME>} [param.relations] Relations from this obsel.
+ * @param {Array<FIXME>} [param.inverse_relations] Relations to this obsel.
+ * @param {Array<Obsel>} [param.source_obsels] Source obsels of the obsel.
+ * @param {String} [param.label] Label of the obsel.
  */
 // *
 Samotraces.Lib.Obsel = function Obsel(param) {
@@ -26,38 +33,14 @@ Samotraces.Lib.Obsel = function Obsel(param) {
 	this._private_check_undef(param,'source_obsels',		[]);
 	this._private_check_undef(param,'label',		"");
 };
-//*/
-/*
-Samotraces.Lib.Obsel = function Obsel(param) {
-	function check_default(param,attr,value) {
-		this[attr] = (param[attr] !== undefined)?param[attr]:value;
-	}
-	function check_undef(param,attr) {
-		if(param[attr] !== undefined) {
-			this[attr] = param[attr];
-		}
-	}
-	function check_error(param,attr) {
-		if(param[attr] !== undefined) {
-			this[attr] = param[attr];
-		} else {
-			throw "Parameter "+attr+" required.";
-		}
-	}
-		check_error.call(this,param,'id');
-		check_error.call(this,param,'trace');
-		check_error.call(this,param,'type');
-		check_default.call(this,param,'begin',	Date.now());
-		check_default.call(this,param,'end',		this.begin);
-		check_default.call(this,param,'attributes',	{});
-		check_undef.call(this,param,'relations',	[]); // TODO ajouter rel à l'autre obsel
-		check_undef.call(this,param,'inverse_relations',	[]); // TODO ajouter rel à l'autre obsel
-		check_undef.call(this,param,'source_obsels',		[]);
-		check_undef.call(this,param,'label',		[]);
-
-};*/
 
 Samotraces.Lib.Obsel.prototype = {
+	// ATTRIBUTES
+	attributes: {},
+	relations: [],
+	inverse_relations: [],
+	source_obsels: [],
+	label: "",
 	_private_check_default: function (param,attr,value) {
 		this[attr] = (param[attr] !== undefined)?param[attr]:value;
 	},
@@ -73,6 +56,15 @@ Samotraces.Lib.Obsel.prototype = {
 			throw "Parameter "+attr+" required.";
 		}
 	},
+	// RESOURCE
+	remove: function() {
+		this.get_trace().remove_obsel(this);
+	},
+	get_id: function() { return this.id; },
+	get_label: function() { return this.label; },
+	set_label: function(lbl) { this.label = lbl; },
+	reset_label: function() { this.label = ""; },
+	// OBSEL
 	get_trace: 		function() { return this.trace; },
 	get_obsel_type: function() { return this.type;	},
 	get_begin: 		function() { return this.begin;	},
@@ -140,11 +132,13 @@ Samotraces.Lib.Obsel.prototype = {
 //	del_attribute_value:	function(attr) {}, // TODO erreur de l'API KTBS?
 	set_attribute:	function(attr, val) {
 		this.attributes[attr] = val;
+		this.trace.trigger('trace:edit:obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 //	del_attribute_value:	function(attr) {}, // TODO erreur de l'API KTBS?
 	del_attribute:			function(attr) {
 		delete this.attributes[attr];
+		this.trace.trigger('trace:edit:obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 	add_related_obsel:		function(rel,obs) {
@@ -156,7 +150,22 @@ Samotraces.Lib.Obsel.prototype = {
 		// TODO
 		throw "method not implemented yet";
 		// TODO envoyer un event pour dier que l'obsel a changé
-	}
+	},
+
+	// NOT IN KTBS API
+	to_constructor: function() { 
+		return {
+			id: this.id,
+			type: this.type,
+			begin: this.begin,
+			end: this.end,
+			attributes: this.attributes,
+			relations: this.relations,
+			inverse_relations: this.inverse_relations,
+			source_obsels: this.source_obsels,
+			label: this.label	
+		};
+	},
 };
 
 
