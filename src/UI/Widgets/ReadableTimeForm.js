@@ -4,9 +4,9 @@
  * @author Benoît Mathern
  * @constructor
  * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.TimeForm
+ * @see Samotraces.UI.Widgets.TimeForm
  * @description
- * Samotraces.Widgets.ReadableTimeForm is a generic
+ * Samotraces.UI.Widgets.ReadableTimeForm is a generic
  * Widget to visualise the current time.
  *
  * The time (in ms from the 01/01/1970) is converted in a
@@ -21,12 +21,12 @@
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Timer} timer
+ * @param {Samotraces.Timer} timer
  *     Timer object to observe.
  */
-Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
+Samotraces.UI.Widgets.ReadableTimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-ReadableTimeForm');
 
@@ -38,7 +38,7 @@ Samotraces.Widgets.ReadableTimeForm = function(html_id,timer) {
 	this.refresh({data: this.timer.time});
 };
 
-Samotraces.Widgets.ReadableTimeForm.prototype = {
+Samotraces.UI.Widgets.ReadableTimeForm.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');

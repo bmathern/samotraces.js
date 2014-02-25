@@ -1,9 +1,9 @@
 /**
  * Obsel is a shortname for the 
- * {@link Samotraces.Lib.Obsel}
+ * {@link Samotraces.Obsel}
  * object.
  * @typedef Obsel
- * @see Samotraces.Lib.Obsel
+ * @see Samotraces.Obsel
  */
 /**
  * @summary JavaScript Obsel class
@@ -21,7 +21,7 @@
  * @param {String} [param.label] Label of the obsel.
  */
 // *
-Samotraces.Lib.Obsel = function Obsel(param) {
+Samotraces.Obsel = function Obsel(param) {
 	this._private_check_error(param,'id');
 	this._private_check_error(param,'trace');
 	this._private_check_error(param,'type');
@@ -34,7 +34,7 @@ Samotraces.Lib.Obsel = function Obsel(param) {
 	this._private_check_undef(param,'label',		"");
 };
 
-Samotraces.Lib.Obsel.prototype = {
+Samotraces.Obsel.prototype = {
 	// ATTRIBUTES
 	attributes: {},
 	relations: [],

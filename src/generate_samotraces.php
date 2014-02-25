@@ -8,6 +8,10 @@
         window.Samotraces = factory(jQuery);
     }
 }(function ($) {
+	/**
+	 * Library of the Objects of Samotraces
+	 * @namespace Samotraces
+	 */
 	var Samotraces = {};
 	/**
 	 * @property {Boolean} [debug=false]
@@ -21,14 +25,14 @@
 	Samotraces.Lib = {};
 	/**
 	 * Library of UI components for Samotraces
-	 * @namespace Samotraces.UIComponents
+	 * @namespace Samotraces.UI
 	 */
-	Samotraces.UIComponents = {};
+	Samotraces.UI = {};
 	/**
 	 * Set of Widgets of Samotraces
-	 * @namespace Samotraces.Widgets
+	 * @namespace Samotraces.UI.Widgets
 	 */
-	Samotraces.Widgets = {};
+	Samotraces.UI.Widgets = {};
 
 	Samotraces.log = function log() {
 		if(window.console) {
@@ -65,8 +69,8 @@ $last .= "\n// last: $filename\n";
 echo($first.$last);
 } 
 
-export_all_js('Lib',['Lib/Obsel.js']);
-export_all_js('Widgets');
+export_all_js('core',['core/Obsel.js']);
+export_all_js('UI');
 //export_all_js('UIComponents/');
 
 ?>

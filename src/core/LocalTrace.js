@@ -3,19 +3,19 @@
  * @class Javascript Trace Object.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Lib.EventHandler
- * @augments Samotraces.Lib.Trace
+ * @mixes Samotraces.EventHandler
+ * @augments Samotraces.Trace
  * @description
- * Samotraces.Lib.DemoTrace is a Javascript Trace object.
+ * Samotraces.DemoTrace is a Javascript Trace object.
  * Methods are available to get 
  * the Obsels from the trace, create new Obsels, etc.
  *
  * The trace is initialised empty. Obsels have to be created
- * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
+ * by using the {@link Samotraces.DemoTrace#newObsel} method.
  */
-Samotraces.Lib.LocalTrace = function(source_traces) {
+Samotraces.LocalTrace = function(source_traces) {
 	// Addint the Observable trait
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.EventHandler.call(this);
 
 	/* Nombre d'obsels dans la trace */
 	this.count = 0; // sert d'ID pour le prochain observé.
@@ -29,7 +29,7 @@ Samotraces.Lib.LocalTrace = function(source_traces) {
 
 };
 
-Samotraces.Lib.LocalTrace.prototype = {
+Samotraces.LocalTrace.prototype = {
 
 	get_label: function() { return this.label; },
 	set_label: function(lbl) {
@@ -84,7 +84,7 @@ Samotraces.Lib.LocalTrace.prototype = {
 		obsel_params.id = this.count;
 		this.count++;
 		obsel_params.trace = this;
-		var obs = new Samotraces.Lib.Obsel(obsel_params);
+		var obs = new Samotraces.Obsel(obsel_params);
 		this.obsel_list.push(obs);
 		this.trigger('trace:create:obsel',obs);
 	},
@@ -100,7 +100,7 @@ Samotraces.Lib.LocalTrace.prototype = {
 	transformations: {
 		duplicate: function(trace) {
 			// TODO better deep copy
-			var transformed_trace = new Samotraces.Lib.LocalTrace([trace]);
+			var transformed_trace = new Samotraces.LocalTrace([trace]);
 			trace.list_obsels().forEach(function(o) {
 				transformed_trace.create_obsel(o.to_constructor());
 			});
@@ -114,7 +114,7 @@ Samotraces.Lib.LocalTrace.prototype = {
 			// TODO: implement
 			// TODO better deep copy
 console.log(opt);
-			var transformed_trace = new Samotraces.Lib.LocalTrace([trace]);
+			var transformed_trace = new Samotraces.LocalTrace([trace]);
 			trace.list_obsels().forEach(function(o) {
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {

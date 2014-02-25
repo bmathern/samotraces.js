@@ -3,9 +3,9 @@
  * @class Widget for visualising a time slider.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * Samotraces.Widgets.d3Basic.TimeSlider is a generic
+ * Samotraces.UI.Widgets.d3Basic.TimeSlider is a generic
  * Widget to visualise the current time in a temporal window
  *
  * @param {String}	divId
@@ -17,12 +17,12 @@
  * @param timer
  *     Timeer object -> containing the current time
  */
-Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
+Samotraces.UI.Widgets.TimeSlider = function(html_id,time_window,timer) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-TimeSlider');
-	Samotraces.Lib.WindowState.addEventListener('resize',this.draw.bind(this));
+	$(window).resize(this.draw.bind(this));
 
 	this.timer = timer;
 	this.timer.addEventListener('timer:update',this.draw.bind(this));
@@ -40,7 +40,7 @@ Samotraces.Widgets.TimeSlider = function(html_id,time_window,timer) {
 
 };
 
-Samotraces.Widgets.TimeSlider.prototype = {
+Samotraces.UI.Widgets.TimeSlider.prototype = {
 	init_DOM: function() {
 		// create the slider
 		this.slider_element = document.createElement('div');

@@ -4,9 +4,9 @@
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Lib.EventHandler
+ * @augments Samotraces.EventHandler
  * @description
- * Samotraces.Lib.Ktbs is a Javascript KTBS object that
+ * Samotraces.Ktbs is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
  * the KTBS. Methods are available to get the list of bases
  * available in the KTBS. Access a specific base, etc.
@@ -21,21 +21,21 @@
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Lib.Ktbs = function Ktbs(uri) {
+Samotraces.Ktbs = function Ktbs(uri) {
 //	this.url = url;
 //	this.bases = [];
 //	this.refresh();
 
 
 	// KTBS is a Resource
-	Samotraces.Lib.Ktbs.Resource.call(this,uri,uri,"");
+	Samotraces.Ktbs.Resource.call(this,uri,uri,"");
 	this.bases = [];
 	this.builtin_methods = [];
 	this.force_state_refresh();
 
 };
 
-Samotraces.Lib.Ktbs.prototype = {
+Samotraces.Ktbs.prototype = {
 /////////// OFFICIAL API
 	list_builtin_methods: function() {},
 	get_builtin_method: function() {},
@@ -46,7 +46,7 @@ Samotraces.Lib.Ktbs.prototype = {
 	 * @param id {String} URI of the base
 	 */
 	get_base: function(id) {
-		return new Samotraces.Lib.Ktbs.Base(id,this.uri+id);
+		return new Samotraces.Ktbs.Base(id,this.uri+id);
 	},
 	/**
 	 * @param id {String} URI of the base (optional)
@@ -81,7 +81,7 @@ Samotraces.Lib.Ktbs.prototype = {
 };
 
 /* MIXIN */
-Samotraces.Lib.Ktbs.Resource = (function(id,uri,label) {
+Samotraces.Ktbs.Resource = (function(id,uri,label) {
 	
 	function get_type() { return this.constructor.name; }
 
@@ -146,7 +146,7 @@ Samotraces.Lib.Ktbs.Resource = (function(id,uri,label) {
 
 	return function(id,uri) {
 		// a Resource is an EventHandler
-		Samotraces.Lib.EventHandler.call(this);
+		Samotraces.EventHandler.call(this);
 		// DOCUMENTED ABOVE
 		// ATTRIBUTES
 		this.id = id;
@@ -176,9 +176,9 @@ Samotraces.Lib.Ktbs.Resource = (function(id,uri,label) {
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @augments Samotraces.Lib.EventHandler
+ * @augments Samotraces.EventHandler
  * @description
- * Samotraces.Lib.KtbsBase is a Javascript KTBS base
+ * Samotraces.KtbsBase is a Javascript KTBS base
  * object that is bound to a KTBS. This Object can be seen
  * as an API to the KTBS. Methods are available to get the 
  * list of traces available in the KTBS base. Access a 
@@ -194,14 +194,14 @@ Samotraces.Lib.Ktbs.Resource = (function(id,uri,label) {
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Lib.Ktbs.Base = function Base(id,uri) {
+Samotraces.Ktbs.Base = function Base(id,uri) {
 	// KTBS.Base is a Resource
-	Samotraces.Lib.Ktbs.Resource.call(this,id,uri,"");
+	Samotraces.Ktbs.Resource.call(this,id,uri,"");
 	this.traces = [];
 	this.force_state_refresh();
 };
 
-Samotraces.Lib.Ktbs.Base.prototype = {
+Samotraces.Ktbs.Base.prototype = {
 	get: function(id) {},
 	list_traces: function() {
 		return this.traces;
@@ -245,7 +245,7 @@ Samotraces.Lib.Ktbs.Base.prototype = {
 	},
 /////////// ADDED / API
 	get_trace: function(id) {
-		return new Samotraces.Lib.Ktbs.Trace(id,this.uri+id);
+		return new Samotraces.Ktbs.Trace(id,this.uri+id);
 	},
 ////////////
 };
@@ -255,9 +255,9 @@ Samotraces.Lib.Ktbs.Base.prototype = {
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
- * @mixes Samotraces.Lib.EventHandler
+ * @mixes Samotraces.EventHandler
  * @description
- * Samotraces.Lib.KtbsTrace is a Javascript Trace object
+ * Samotraces.KtbsTrace is a Javascript Trace object
  * that is bound to a KTBS trace. This Object can be seen as
  * an API to the KTBS trace. Methods are available to get 
  * the Obsels from the KTBS trace, create new Obsels, etc.
@@ -276,9 +276,9 @@ Samotraces.Lib.Ktbs.Base.prototype = {
  *
  * @param {String}	url	Url of the KTBS trace to load.
  */
-Samotraces.Lib.Ktbs.Trace = function Trace(id,uri) {
+Samotraces.Ktbs.Trace = function Trace(id,uri) {
 	// KTBS.Base is a Resource
-	Samotraces.Lib.Ktbs.Resource.call(this,id,uri,"");
+	Samotraces.Ktbs.Resource.call(this,id,uri,"");
 
 	this.default_subject = "";
 	this.model_uri = "";
@@ -290,7 +290,7 @@ Samotraces.Lib.Ktbs.Trace = function Trace(id,uri) {
 	this.force_state_refresh();
 };
 
-Samotraces.Lib.Ktbs.Trace.prototype = {
+Samotraces.Ktbs.Trace.prototype = {
 /////////// OFFICIAL API
 	get_base: function() { return this.base_uri; },
 	get_model: function() { return this.model_uri; },
@@ -356,7 +356,7 @@ Samotraces.Lib.Ktbs.Trace.prototype = {
 			delete(attr.attributes['@type']);
 			delete(attr.attributes['begin']);
 			delete(attr.attributes['end']);
-			obs = new Samotraces.Lib.Ktbs.Obsel(attr);
+			obs = new Samotraces.Ktbs.Obsel(attr);
 			
 			if(! this._check_obsel_loaded_(obs)) {
 				new_obsel_loaded = true;
@@ -385,7 +385,7 @@ Samotraces.Lib.Ktbs.Trace.prototype = {
 // */
 
 /*
-Samotraces.Lib.Ktbs.StoredTrace = function() {
+Samotraces.Ktbs.StoredTrace = function() {
 	set_model: function(model) {},
 	set_origin: function(origin) {},
 	get_default_subject: function() {},
@@ -393,7 +393,7 @@ Samotraces.Lib.Ktbs.StoredTrace = function() {
 	create_obsel: function(id, type, begin, end, subject, attributes, relations, inverse_relations, source_obsels, label) {}
 }
 
-Samotraces.Lib.Ktbs.ComputedTrace = function() {
+Samotraces.Ktbs.ComputedTrace = function() {
 	set_method: function(method) {},
 	list_parameters: function(include_inherited) {},
 	get_parameter: function(key) {},
@@ -402,9 +402,9 @@ Samotraces.Lib.Ktbs.ComputedTrace = function() {
 }
 */
 
-Samotraces.Lib.Ktbs.Obsel = function Obsel(param) {
+Samotraces.Ktbs.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
-	Samotraces.Lib.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
+	Samotraces.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
 
 //	this._private_check_error(param,'id');
 	this._private_check_error(param,'trace');
@@ -418,7 +418,7 @@ Samotraces.Lib.Ktbs.Obsel = function Obsel(param) {
 //	this._private_check_undef(param,'label',		"");
 }
 
-Samotraces.Lib.Ktbs.Obsel.prototype = Samotraces.Lib.Obsel.prototype;
+Samotraces.Ktbs.Obsel.prototype = Samotraces.Obsel.prototype;
 
 
 

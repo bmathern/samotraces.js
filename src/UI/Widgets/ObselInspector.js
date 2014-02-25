@@ -3,9 +3,9 @@
  * @class Widget for visualising an Obsel as an HTML list.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * Samotraces.Widgets.ObselInspector is a generic
+ * Samotraces.UI.Widgets.ObselInspector is a generic
  * Widget to visualise Obsels.
  * 
  * This widget observes a {@link Samotraces.Lib.Selector|Selector}
@@ -22,9 +22,9 @@
  * @param {Selector.<Obsel>} obsel_selector
  *     A Selector of Obsel to observe.
  */
-Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
+Samotraces.UI.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 	this.add_class('Widget-ObselInspector');
 
 	this.obsel = obsel_selector;
@@ -35,7 +35,7 @@ Samotraces.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	this.init_DOM();
 };
 
-Samotraces.Widgets.ObselInspector.prototype = {
+Samotraces.UI.Widgets.ObselInspector.prototype = {
 	init_DOM: function() {
 
 		this.close_element = document.createElement('span');

@@ -3,10 +3,10 @@
  * @class Widget for visualising the current time as a number.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.ReadableTimeForm
+ * @mixes Samotraces.UI.Widgets.Widget
+ * @see Samotraces.UI.Widgets.ReadableTimeForm
  * @description
- * Samotraces.Widgets.TimeForm is a generic
+ * Samotraces.UI.Widgets.TimeForm is a generic
  * Widget to visualise the current time.
  *
  * The time is displayed as a number. See
@@ -21,12 +21,12 @@
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Timer} timer
+ * @param {Samotraces.Timer} timer
  *     Timer object to observe.
  */
-Samotraces.Widgets.TimeForm = function(html_id,timer) {
+Samotraces.UI.Widgets.TimeForm = function(html_id,timer) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.timer = timer;
 	this.timer.addEventListener('timer:update',this.refresh.bind(this));
@@ -36,7 +36,7 @@ Samotraces.Widgets.TimeForm = function(html_id,timer) {
 	this.refresh({data: this.timer.time});
 };
 
-Samotraces.Widgets.TimeForm.prototype = {
+Samotraces.UI.Widgets.TimeForm.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');

@@ -1,21 +1,21 @@
 /**
  * Selector is a shortname for the 
- * {@link Samotraces.Lib.Selector}
+ * {@link Samotraces.Selector}
  * object.
  * @typedef Selector
- * @see Samotraces.Lib.Selector
+ * @see Samotraces.Selector
  */
 /**
  * @summary Object that stores a selection of objects
  * @class Object that stores a selection of objects
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Lib.EventHandler
- * @fires Samotraces.Lib.Selector#selection:add
- * @fires Samotraces.Lib.Selector#selection:remove
- * @fires Samotraces.Lib.Selector#selection:empty
+ * @augments Samotraces.EventHandler
+ * @fires Samotraces.Selector#selection:add
+ * @fires Samotraces.Selector#selection:remove
+ * @fires Samotraces.Selector#selection:empty
  * @description
- * The {@link Samotraces.Lib.Selector|Selector} object
+ * The {@link Samotraces.Selector|Selector} object
  * is a Javascript object that stores a selection of Objects.
  * This Object stores Objects that are selected and informs 
  * widgets or other objects (via the 
@@ -23,13 +23,13 @@
  * When first instanciated, the selection is empty.
  *
  * In order to select an object, the 
- * {@link Samotraces.Lib.Selector#select|Selector#select()} 
+ * {@link Samotraces.Selector#select|Selector#select()} 
  * method has to be called.
  * Similarly, in order to unselect an object, the 
- * {@link Samotraces.Lib.Selector#unselect|Selector#unselect()} 
+ * {@link Samotraces.Selector#unselect|Selector#unselect()} 
  * method has to be called.
  * The whole selection can be emptied at once with the 
- * {@link Samotraces.Lib.Selector#empty|Selector#empty()}
+ * {@link Samotraces.Selector#empty|Selector#empty()}
  * method.
  * 
  * @param {string} type - A string describing the type of
@@ -43,20 +43,23 @@
  * @param {EventConfig}	[events]
  *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Lib.Selector = function(type,selection_mode,events) {
+Samotraces.Selector = function(type,selection_mode,events) {
 	// Adding the Observable trait
-	Samotraces.Lib.EventHandler.call(this,events);
+	Samotraces.EventHandler.call(this,events);
 	this.mode = selection_mode || 'single'; // other option is 'multiple'
 	this.type = type;
 	this.selection = [];
+	// TODO: ajouter eventListener sur Trace si type = obsel
+	// -> Quand "trace:remove:obsel" -> vérifie si un obsel a
+	// été supprimé de la sélection.
 };
 
-Samotraces.Lib.Selector.prototype = {
+Samotraces.Selector.prototype = {
 	/**
      * Method to call to select an Object.
      * @param {Object} object
      *     Object that is added to the selection
-	 * @fires Samotraces.Lib.Selector#selection:add
+	 * @fires Samotraces.Selector#selection:add
      */
 	select: function(object) {
 		if(this.mode === 'multiple') {
@@ -66,7 +69,7 @@ Samotraces.Lib.Selector.prototype = {
 		}
 		/**
 		 * Object selected event.
-		 * @event Samotraces.Lib.Selector#selection:add
+		 * @event Samotraces.Selector#selection:add
 		 * @type {object}
 		 * @property {String} type - The type of the event (= "selection:add").
 		 * @property {Object} data - The selected object.
@@ -75,13 +78,13 @@ Samotraces.Lib.Selector.prototype = {
 	},
 	/**
      * Method to empty the current selection.
-	 * @fires Samotraces.Lib.Selector#selection:empty
+	 * @fires Samotraces.Selector#selection:empty
      */
 	empty: function() {
 		this.selection = [];
 		/**
 		 * Object unselected event.
-		 * @event Samotraces.Lib.Selector#selection:empty
+		 * @event Samotraces.Selector#selection:empty
 		 * @type {object}
 		 * @property {String} type - The type of the event (= "selection:empty").
 		 */
@@ -104,7 +107,7 @@ Samotraces.Lib.Selector.prototype = {
 	},
 	/**
      * Method to call to remove an Object from the selection.
-	 * @fires Samotraces.Lib.Selector#selection:remove
+	 * @fires Samotraces.Selector#selection:remove
      */
 	unselect: function(object) {
 		if(this.mode === 'multiple') {
@@ -123,7 +126,7 @@ Samotraces.Lib.Selector.prototype = {
 		}
 		/**
 		 * Object unselected event.
-		 * @event Samotraces.Lib.Selector#selection:remove
+		 * @event Samotraces.Selector#selection:remove
 		 * @type {object}
 		 * @property {String} type - The type of the event (= "selection:remove").
 		 */

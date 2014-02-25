@@ -10,21 +10,21 @@
  * "EventHandler class", one must run the following code in 
  * the constructor:
  * <code>
- * Samotraces.Lib.EventHandler.call(this);
+ * Samotraces.EventHandler.call(this);
  * </code>
  *
  * @property {Object} callbacks
  *     Hash matching callbacks to event_types.
  */
-Samotraces.Lib.EventHandler = (function() {
+Samotraces.EventHandler = (function() {
 	/**
 	 * Triggers all the registred callbacks.
-	 * @memberof Samotraces.Lib.EventBuilder.prototype
+	 * @memberof Samotraces.EventBuilder.prototype
 	 * @param {String} event_type
 	 *     The type of the triggered event.
 	 * @param {Object} object
 	 *     Object sent with the message to the listeners (see 
-	 *     {@link Samotraces.Lib.EventBuilder#addEventListener}).
+	 *     {@link Samotraces.EventBuilder#addEventListener}).
 	 */
 	function trigger(event_type,object) {
 		Samotraces.debug("EventHandler#"+event_type+" triggered");
@@ -40,7 +40,7 @@ Samotraces.Lib.EventHandler = (function() {
 	}
 	/**
 	 * Adds a callback for the specified event
-	 * @memberof Samotraces.Lib.EventBuilder.prototype
+	 * @memberof Samotraces.EventBuilder.prototype
 	 * @param {String} event_type
 	 *     The type of the event to listen to.
 	 * @param {Function} callback
@@ -68,10 +68,10 @@ Samotraces.Lib.EventHandler = (function() {
 		this.addEventListener = addEventListener;	
 		/**
 		 * EventConfig is a shortname for the 
-		 * {@link Samotraces.Lib.EventHandler.EventConfig}
+		 * {@link Samotraces.EventHandler.EventConfig}
 		 * object.
 		 * @typedef EventConfig
-		 * @see Samotraces.Lib.EventHandler.EventConfig
+		 * @see Samotraces.EventHandler.EventConfig
 		 */
 		/**
 		 * The EventConfig object is used for configurating the
@@ -79,7 +79,7 @@ Samotraces.Lib.EventHandler = (function() {
 		 * Each attribute name of the EventConfig corresponds
 		 * to a type of event listened to, and each
 		 * value is the function to trigger on this event.
-		 * @typedef Samotraces.Lib.EventHandler.EventConfig
+		 * @typedef Samotraces.EventHandler.EventConfig
 		 * @type {Object.<string, function>}
 		 * @property {function} eventName - Function to trigger on this event.
 		 */

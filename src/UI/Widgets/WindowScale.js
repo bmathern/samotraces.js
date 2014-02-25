@@ -4,11 +4,11 @@
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * Samotraces.Widgets.WindowScale is a generic
+ * Samotraces.UI.Widgets.WindowScale is a generic
  * Widget to visualise the temporal scale of a 
- * {@link Samotraces.Lib.TimeWindow|TimeWindow}. This
+ * {@link Samotraces.TimeWindow|TimeWindow}. This
  * widget uses d3.js to calculate and display the scale.
  *
  * Note: unless the optional argument is_javascript_date is defined,
@@ -32,12 +32,12 @@
  *     it is assumed that the JavaScript Date object has been used to represent time.
  *     Otherwise, the numerical value of time will be displayed.
  */
-Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date) {
+Samotraces.UI.Widgets.WindowScale = function(html_id,time_window,is_javascript_date) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-WindowScale');
-	Samotraces.Lib.WindowState.addEventListener('window:resize',this.draw.bind(this));
+	$(window).resize(this.draw.bind(this));
 
 	this.window = time_window;
 //	time_window.addObserver(this);
@@ -57,7 +57,7 @@ Samotraces.Widgets.WindowScale = function(html_id,time_window,is_javascript_date
 
 };
 
-Samotraces.Widgets.WindowScale.prototype = {
+Samotraces.UI.Widgets.WindowScale.prototype = {
 	init_DOM: function() {
 		// create the slider
 		this.svg = d3.select("#"+this.id).append("svg");

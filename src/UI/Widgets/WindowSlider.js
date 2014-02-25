@@ -3,9 +3,9 @@
  * @class Widget for visualising a window slider.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * Samotraces.Widgets.d3Basic.WindowSlider is a generic
+ * Samotraces.UI.Widgets.d3Basic.WindowSlider is a generic
  * Widget to visualise a temporal window
  *
  * @param {String}	divId
@@ -18,12 +18,12 @@
  *     TimeWindow object -> representing the small window
  *     (e.g., the current time window being visualised with another widget)
  */
-Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
+Samotraces.UI.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.Widgets.Widget.call(this,html_id);
 
 	this.add_class('Widget-WindowSlider');
-	Samotraces.Lib.WindowState.addEventListener('window:resize',this.draw.bind(this));
+	$(window).resize(this.draw.bind(this));
 
 	this.wide_window = wide_window;
 	this.wide_window.addEventListener('tw:update',this.draw.bind(this));
@@ -40,7 +40,7 @@ Samotraces.Widgets.WindowSlider = function(html_id,wide_window,slider_window) {
 	this.draw();
 };
 
-Samotraces.Widgets.WindowSlider.prototype = {
+Samotraces.UI.Widgets.WindowSlider.prototype = {
 	init_DOM: function() {
 
 		// create the slider

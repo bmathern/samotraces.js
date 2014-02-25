@@ -3,11 +3,11 @@
  * @class Widget for importing a trace from a CSV file.
  * @author Benoît Mathern
  * @constructor
- * @augments Samotraces.Widgets.Widget
- * @see Samotraces.Widgets.Basic.ImportTrace
+ * @augments Samotraces.UI.Widgets.Widget
+ * @see Samotraces.UI.Widgets.Basic.ImportTrace
  * @todo ATTENTION code qui vient d'ailleurs !
  * @description
- * The {@link Samotraces.Widgets.Basic.ImportTrace} widget is a generic
+ * The {@link Samotraces.UI.Widgets.Basic.ImportTrace} widget is a generic
  * Widget to import a trace from a CSV file.
  * 
  * This widget currently accept the following format:
@@ -30,19 +30,19 @@
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Trace} trace
+ * @param {Samotraces.Trace} trace
  *     Trace object in which the obsels will be imported.
  */
-Samotraces.Widgets.ImportTrace = function(html_id,trace) {
+Samotraces.UI.Widgets.ImportTrace = function(html_id,trace) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.trace = trace;
 
 	this.init_DOM();
 };
 
-Samotraces.Widgets.ImportTrace.prototype = {
+Samotraces.UI.Widgets.ImportTrace.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');

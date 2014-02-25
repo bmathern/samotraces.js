@@ -3,7 +3,7 @@
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @requires jQuery Mouse Wheel plugin (see <a href="https://github.com/brandonaaron/jquery-mousewheel">Mouse Wheel plugin</a>)
  * @description
- * All widgets should inherit from this Samotraces.Widgets.Widget.
+ * All widgets should inherit from this Samotraces.UI.Widgets.Widget.
  * 
  * In order to use create a widget that inherits from the 
  * Widget class, one mush include the following code in 
@@ -16,7 +16,7 @@
  * @property {HTMLElement} element HTML element the
  * Widget is attached to.
  */
-Samotraces.Widgets.Widget = (function() {
+Samotraces.UI.Widgets.Widget = (function() {
 	/**
 	 * Adds the given class to the HTML element to which
 	 * this Widget is attached to.

@@ -4,9 +4,9 @@
  * @author Benoît Mathern
  * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * The {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+ * The {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
  * is a generic
  * Widget to visualise traces with images. This widget uses 
  * d3.js to display traces as images in a SVG image.
@@ -15,7 +15,7 @@
  * icon will be displayed by default for each obsel.
  *
  * Note that clicking on an obsel will trigger a 
- * {@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+ * {@link Samotraces.UI.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
  * event.
  *
  * Tutorials {@tutorial tuto1.1_trace_visualisation},
@@ -45,7 +45,7 @@
  *     the x position or y position of an icon. This 
  *     makes it easy to define various types of behaviours.
  *     Relevant methods to use are:
- *     link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+ *     link Samotraces.UI.Widgets.TraceDisplayIcons.calculate_x}
  *     See tutorial 
  *     {@tutorial tuto1.3_visualisation_personalisation}
  *     for more details and examples.
@@ -67,15 +67,15 @@
  *     }
  * };
  */
-Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
+Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options) {
 
 	options = options || {};
 
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,divId);
+	Samotraces.UI.Widgets.Widget.call(this,divId);
 
 	this.add_class('Widget-TraceDisplayIcons');
-	Samotraces.Lib.WindowState.addEventListener('window:resize',this.refresh_x.bind(this));
+	$(window).resize(this.refresh_x.bind(this));
 
 	this.trace = trace;
 	this.trace.addEventListener('trace:update',this.draw.bind(this));
@@ -156,7 +156,7 @@ Samotraces.Widgets.TraceDisplayIcons = function(divId,trace,time_window,options)
 	this.draw();
 };
 
-Samotraces.Widgets.TraceDisplayIcons.prototype = {
+Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 	init_DOM: function() {
 
 
@@ -264,12 +264,16 @@ Samotraces.Widgets.TraceDisplayIcons.prototype = {
 	obsel_redraw: function(e) {
 		obs = e.data;
 		var sel = this.d3Obsels()
-			.filter(function(o,id) {return id == obs.get_id();})
+			.filter(function(o,id) {
+				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
+				return id == obs.get_id();
+			})
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
 			.attr('xlink:href',this.options.url);
+console.log("obsel_redraw",$.data(sel[0][0]));
 	},
 
 	d3Obsels: function() {

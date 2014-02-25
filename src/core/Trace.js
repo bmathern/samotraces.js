@@ -1,37 +1,37 @@
 /**
  * Trace is a shortname for the 
- * {@link Samotraces.Lib.Trace}
+ * {@link Samotraces.Trace}
  * object.
  * @typedef Trace
- * @see Samotraces.Lib.Trace
+ * @see Samotraces.Trace
  */
 /**
  * @summary JavaScript (abstract) Trace class.
  * @class JavaScript (abstract) Trace class.
  * @author Benoît Mathern
- * @fires Samotraces.Lib.Trace#trace:create:obsel
- * @fires Samotraces.Lib.Trace#trace:update
+ * @fires Samotraces.Trace#trace:create:obsel
+ * @fires Samotraces.Trace#trace:update
  * @constructor
  * @abstract
- * @augments Samotraces.Lib.EventHandler
+ * @augments Samotraces.EventHandler
  * @description
- * Samotraces.Lib.DemoTrace is a Javascript Trace object.
+ * Samotraces.DemoTrace is a Javascript Trace object.
  * Methods are available to get 
  * the Obsels from the trace, create new Obsels, etc.
  *
  * The trace is initialised empty. Obsels have to be created
- * by using the {@link Samotraces.Lib.DemoTrace#newObsel} method.
+ * by using the {@link Samotraces.DemoTrace#newObsel} method.
  */
-Samotraces.Lib.Trace = function() {
+Samotraces.Trace = function() {
 	// Adding the Observable trait
-	Samotraces.Lib.EventHandler.call(this);
+	Samotraces.EventHandler.call(this);
 
 	/* Array d'obsels */
 	this.obsels = [];
 
 };
 
-Samotraces.Lib.Trace.prototype = {
+Samotraces.Trace.prototype = {
 	/**
 	 * Creates a new obsel in the trace.
 	 * @param {string} type Type of the new obsel

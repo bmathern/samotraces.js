@@ -3,29 +3,29 @@
  * @class Widget for playing/pausing a timer and controlling videos.
  * @author Benoît Mathern
  * @constructor
- * @mixes Samotraces.Widgets.Widget
+ * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * Samotraces.Widgets.TimePlayer is a Widget
+ * Samotraces.UI.Widgets.TimePlayer is a Widget
  * that allow to trigger the "play/pause" mechanism
  * of a timer. In addition, it controls a set of videos
  * that are synchronised to this timer.
  * 
- * This widget observes a Samotraces.Lib.Timer object.
+ * This widget observes a Samotraces.Timer object.
  * When the timer changes the videos are .
  * This widget also allow to change the time of the timer.
  * 
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Timer} timer
+ * @param {Samotraces.Timer} timer
  *     Timer object to observe.
- * @param {Array.<Samotraces.Widgets.TimePlayer.VideoConfig>} [videos]
+ * @param {Array.<Samotraces.UI.Widgets.TimePlayer.VideoConfig>} [videos]
  *     Array of VideoConfig, that defines the set of
  *     videos that will be synchronised on the timer.
  */
-Samotraces.Widgets.TimePlayer = function(html_id,timer,videos) {
+Samotraces.UI.Widgets.TimePlayer = function(html_id,timer,videos) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	/**
 	 * @typedef Samotraces.Widgets.TimePlayer.VideoConfig
@@ -58,7 +58,7 @@ Samotraces.Widgets.TimePlayer = function(html_id,timer,videos) {
 	this.onUpdateTime({data: this.timer.time});
 };
 
-Samotraces.Widgets.TimePlayer.prototype = {
+Samotraces.UI.Widgets.TimePlayer.prototype = {
 	init_DOM: function() {
 
 		var p_element = document.createElement('p');
