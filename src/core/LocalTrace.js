@@ -94,19 +94,25 @@ Samotraces.LocalTrace.prototype = {
 		});
 		this.trigger('trace:remove:obsel',obs);
 	},
+	/**
+	 * @todo TODO document this method
+	 */
 	transform: function(transformation_method,parameters) {
 		return transformation_method(this,parameters);
 	},
+	/**
+	 * @todo TODO document this method
+	 */
 	transformations: {
 		duplicate: function(trace) {
 			// TODO better deep copy
 			var transformed_trace = new Samotraces.LocalTrace([trace]);
 			trace.list_obsels().forEach(function(o) {
-				transformed_trace.create_obsel(o.to_constructor());
+				transformed_trace.create_obsel(o.to_Object());
 			});
 			trace.addEventListener('trace:create:obsel',function(e) {
 				var o = e.data;
-				transformed_trace.create_obsel(o.to_constructor());
+				transformed_trace.create_obsel(o.to_Object());
 			});
 			return transformed_trace;
 		},
@@ -118,11 +124,11 @@ console.log(opt);
 			trace.list_obsels().forEach(function(o) {
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {
-						transformed_trace.create_obsel(o.to_constructor());
+						transformed_trace.create_obsel(o.to_Object());
 					}
 				} else  {
 					if(opt.mode === "remove") {
-						transformed_trace.create_obsel(o.to_constructor());
+						transformed_trace.create_obsel(o.to_Object());
 					}
 				}
 			});
@@ -130,11 +136,11 @@ console.log(opt);
 				var o = e.data;
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {
-						transformed_trace.create_obsel(o.to_constructor());
+						transformed_trace.create_obsel(o.to_Object());
 					}
 				} else  {
 					if(opt.mode === "remove") {
-						transformed_trace.create_obsel(o.to_constructor());
+						transformed_trace.create_obsel(o.to_Object());
 					}
 				}
 			});

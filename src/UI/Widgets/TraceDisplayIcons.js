@@ -265,7 +265,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		obs = e.data;
 		var sel = this.d3Obsels()
 			.filter(function(o,id) {
-				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
+//				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
 				return id == obs.get_id();
 			})
 			.attr('x',this.options.x)

@@ -290,6 +290,9 @@ Samotraces.Ktbs.Trace = function Trace(id,uri) {
 	this.force_state_refresh();
 };
 
+//Samotraces.Ktbs.Trace.prototype = Samotraces.LocalTrace.prototype;
+
+
 Samotraces.Ktbs.Trace.prototype = {
 /////////// OFFICIAL API
 	get_base: function() { return this.base_uri; },
@@ -402,6 +405,11 @@ Samotraces.Ktbs.ComputedTrace = function() {
 }
 */
 
+/**
+ * @augments Samotraces.Obsel
+ * @todo TODO update set_methods
+ * -> sync with KTBS instead of local change
+ */
 Samotraces.Ktbs.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
 	Samotraces.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
