@@ -62,9 +62,11 @@ Samotraces.LocalTrace.prototype = {
 	 * @todo use KTBS abstract API.
 	 */	
 	get_obsel: function(id) {
-		return this.obsel_list.find(function(o) {
-			return (o.get_id() == id);
+		var obs;
+		this.obsel_list.forEach(function(o) {
+			if(o.get_id() == id) { obs = o; }
 		});
+		return obs;
 	},
 	set_model: function(model) {
 		this.model = model;
