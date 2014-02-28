@@ -83,28 +83,30 @@ Samotraces.Ktbs.prototype = {
 /* MIXIN */
 Samotraces.Ktbs.Resource = (function(id,uri,label) {
 	
-	function get_type() { return this.constructor.name; }
+	function get_type() { return this.type; }
 
 	// RESOURCE API
 	function get_id() { return this.id; }
 	function get_uri() { return this.uri; }
 	function force_state_refresh() {
+		
 		$.ajax({
-			url: (this.traces)?this.uri+'.json':this.uri, // tweek to make it work with KTBS on bases with .json
+			url: this.uri,
 			type: 'GET',
 			dataType: 'json',
-			error: function(jqXHR, textStatus, errorThrown) {
-				logmsg("Cannot refresh trace " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
-			},
+			error: (function(jqXHR, textStatus, errorThrown) {
+console.log("error",this);
+				Samotraces.log("Cannot refresh "+this.get_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
+			}).bind(this),
 			success: this._on_state_refresh_.bind(this),
-			error: function(jqXHR,textStatus,error) {
+		/*	error: function(jqXHR,textStatus,error) {
 				console.log("Error in force_state_refresh():");
 				console.log([jqXHR,textStatus,error]);
 				if(textStatus == "parsererror") {
 					console.log("--> parsererror -->");
 					console.log(jqXHR.responseText);
 				}
-			}
+			}*/
 		});
 	}
 	function start_auto_refresh(period) {
@@ -138,7 +140,9 @@ Samotraces.Ktbs.Resource = (function(id,uri,label) {
 
 	// ADDED FUNCTIONS
 	function _check_change_(local_field,distant,message_if_changed) {
-		if(this[local_field] !== distant) {
+		// TODO check if this is the wanted behaviour:
+		// If distant is undefined -> what to do?
+		if(distant !== undefined && this[local_field] !== distant) {
 			this[local_field] = distant;
 			this.trigger(message_if_changed);
 		}
@@ -162,10 +166,11 @@ Samotraces.Ktbs.Resource = (function(id,uri,label) {
 		this.set_label = set_label;
 		this.reset_label = reset_label;
 		// helper
+		this.get_type = get_type;
 		this._check_change_ = _check_change_;
 		this.start_auto_refresh = start_auto_refresh;
 		this.stop_auto_refresh = stop_auto_refresh;
-		this.get_type = get_type();
+		this.get_type = get_type;
 		return this;
 	};
 })();
@@ -213,7 +218,7 @@ Samotraces.Ktbs.Base.prototype = {
 			"@type":	"StoredTrace",
 			"@id":		id+"/"
 		};
-		new_trace.hasModel = (model==undefined)?"http://liris.cnrs.fr/silex/2011/simple-trace-model/":model;
+		new_trace.hasModel = (model==undefined)?"http://liris.cnrs.fr/silex/2011/simple-trace-model":model;
 		new_trace.origin = (origin==undefined)?"1970-01-01T00:00:00Z":origin;
 //			if(origin==undefined) new_trace.origin = origin;
 		if(default_subject==undefined) new_trace.default_subject = default_subject;
@@ -231,9 +236,6 @@ Samotraces.Ktbs.Base.prototype = {
 		});
 	},
 
-	create_base: function(id, label) {
-	},
-
 	create_computed_trace: function(id,method,parameters,sources,label) {},
 	create_model: function(id,parents,label) {},
 	create_method: function(id,parent,parameters,label) {},
@@ -245,7 +247,7 @@ Samotraces.Ktbs.Base.prototype = {
 	},
 /////////// ADDED / API
 	get_trace: function(id) {
-		return new Samotraces.Ktbs.Trace(id,this.uri+id);
+		return new Samotraces.Ktbs.Trace(id,this.uri+id+'/');
 	},
 ////////////
 };
@@ -280,6 +282,9 @@ Samotraces.Ktbs.Trace = function Trace(id,uri) {
 	// KTBS.Base is a Resource
 	Samotraces.Ktbs.Resource.call(this,id,uri,"");
 
+	this.type = "Trace";
+	this.temp = {}; // attribute used to store actions made by the user on the trace while not knowing if they are allowed. e.g., create_obsel, when we don't know yet if the Trace is a StoredTrace because the Ktbs didn't reply yet.
+
 	this.default_subject = "";
 	this.model_uri = "";
 	this.obsel_list_uri = "";
@@ -300,6 +305,7 @@ Samotraces.Ktbs.Trace.prototype = {
 	get_origin: function() { return this.origin; },
 	list_source_traces: function() {},
 	list_transformed_traces: function() {},
+	// @todo TODO add an optional CALLBACK
 	list_obsels: function(begin,end,reverse) {
 		if(this.obsel_list_uri === "") {
 			console.log("Error in Ktbs:Trace:list_obsels() unknown uri");
@@ -330,22 +336,33 @@ Samotraces.Ktbs.Trace.prototype = {
 		}
 	},
 
-	get_obsel: function(id) {},
-///////////
-	_on_state_refresh_: function(data) {
-//		console.log(data);
-		this._check_change_('default_subject', data.hasDefaultSubject, '');
-		this._check_change_('model_uri', data.hasModel, '');
-		this._check_change_('obsel_list_uri', data.hasObselList, 'trace:update');
-		this._check_change_('base_uri', data.inBase, '');
-		this._check_change_('origin', data.origin, '');
+	/**
+	 * Retrieve an obsel in the trace from its ID.
+	 * @param {String} id ID of the Obsel to retrieve
+	 * @returns {Obsel} Obsel that corresponds to this ID
+	 *     or undefined if the obsel was not found.
+	 * @todo TODO if undefined -> send a query to the KTBS
+	 * @todo TODO add an optional CALLBACK
+	 */	
+	get_obsel: function(id) {
+		var obs;
+		this.obsel_list.forEach(function(o) {
+			if(o.get_id() == id) { obs = o; }
+		});
+		if(obs === undefined) {
+			// sends a query to find the obsel
+			jQuery.ajax({
+					// TODO ideally JSON... When KTBS supports it!
+					url: this.uri+id, 
+					dataType: 'json',
+					type: 'GET',
+					success: this._parse_get_obsel_.bind(this),
+				});
+		}
+		return obs;
 	},
-///////////
-	_on_refresh_obsel_list_: function(data) {
-//		console.log(data);
-		var id, label, type, begin, end, attributes, obs;
-		var new_obsel_loaded = false;
-		data.obsels.forEach(function(el,key) {
+	_parse_get_obsel_: function(data,textStatus,jqXHR) {
+/*
 			var attr = {};
 			attr.id = el['@id'];
 			attr.trace = this;
@@ -364,10 +381,102 @@ Samotraces.Ktbs.Trace.prototype = {
 			if(! this._check_obsel_loaded_(obs)) {
 				new_obsel_loaded = true;
 			}
+*/
+		var obs = {
+			attributes: {}
+		};
+
+		// OBSEL ID
+		obs.id = data["@id"];
+		if(obs.id.substr(0,2) == "./") { obs.id = obs.id.substr(2); }
+		
+		// OBSEL TRACE
+		// data.hasTrace;
+		obs.trace = this;
+
+		// OBSEL TYPE
+		// data["@type"]; // TODO BUG KTBS -> USE "m:type" instead
+		// data["m:type"];
+		obs.type = data["m:type"];
+	
+		// DELETING PROPERTIES THAT HAVE ALREADY BEEN COPIED
+		delete data["@id"];
+		delete data.hasTrace;
+		delete data["@type"];
+		delete data["m:type"];
+		
+		// ATTRIBUTES
+		for(var attr in data) {
+			if(attr.substr(0,2) == "m:") { // TODO this is not generic!!!!
+				obs.attributes[attr.substr(2)] = data[attr];
+			}
+		}
+	//console.log(data,obs);
+		var o = new Samotraces.Ktbs.Obsel(obs);
+		if(!this._check_obsel_loaded_(o)) { // TODO first approximation
+			this.trigger('trace:create:obsel',o);
+		}
+	},
+
+///////////
+	_on_state_refresh_: function(data) {
+//		console.log(data);
+		this._check_and_update_trace_type_(data['@type']);
+		this._check_change_('default_subject', data.hasDefaultSubject, '');
+		this._check_change_('model_uri', data.hasModel, '');
+		this._check_change_('obsel_list_uri', data.hasObselList, 'trace:update');
+		this._check_change_('base_uri', data.inBase, '');
+		this._check_change_('origin', data.origin, '');
+	},
+	_update_method_: function(trace_type,method_name) {
+		this[method_name] = this[trace_type+"_methods"][method_name];
+		if(this.temp[method_name] !== undefined) {
+			Samotraces.debug("Unfilling calls to method "+method_name);
+			this.temp[method_name].forEach(function(param) {
+				this[method_name](param);
+			},this);
+		}
+	},
+	_check_and_update_trace_type_: function(type) {
+		if(this.type !== type) {
+			Samotraces.debug("Trace type = "+type);
+			this._update_method_(type,"create_obsel");
+			this._update_method_(type,"get_default_subject");
+			this.type = type;
+		}
+	},
+///////////
+	_on_refresh_obsel_list_: function(data) {
+//		console.log(data);
+		var id, label, type, begin, end, attributes, obs;
+		var new_obsel_loaded = false;
+		data.obsels.forEach(function(el,key) {
+			this._parse_get_obsel_(el);
+/*
+			var attr = {};
+			attr.id = el['@id'];
+			attr.trace = this;
+			attr.label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
+			attr.type = el['@type'];
+			attr.begin = el['begin'];
+			attr.end = el['end'];
+			attr.attributes = el;
+			delete(attr.attributes['@id']);
+			delete(attr.attributes['http://www.w3.org/2000/01/rdf-schema#label']);
+			delete(attr.attributes['@type']);
+			delete(attr.attributes['begin']);
+			delete(attr.attributes['end']);
+			obs = new Samotraces.Ktbs.Obsel(attr);
+			
+			if(! this._check_obsel_loaded_(obs)) {
+				new_obsel_loaded = true;
+			}
+*/
 		},this);
-		if(new_obsel_loaded) {
+/*		if(new_obsel_loaded) {
 			this.trigger('trace:update',this.traceSet);
 		}
+*/
 	},
 	_check_obsel_loaded_: function(obs) {
 		if(this.obsel_list.some(function(o) {
@@ -376,34 +485,127 @@ Samotraces.Ktbs.Trace.prototype = {
 			return true;
 		} else {
 			this.obsel_list.push(obs);
-			this._compatibility_();
 			return false;
 		}
 	},
-///////////
-	_compatibility_: function() {
-		this.traceSet = this.obsel_list;
-	}
-};
-// */
+	StoredTrace_methods: {
+		set_model: function(model) {},
+		set_origin: function(origin) {},
+		get_default_subject: function() { return this.default_subject; },
+		set_default_subject: function(subject) {},
+		create_obsel: function(params) {
+			// LOCAL TRACE
+			//var obs = new Samotraces.Obsel(obsel_params);
+			// KTBS BOGUE
+			var json_obsel = {
+				"@context":	[
+					"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
+       					{ "m": "http://liris.cnrs.fr/silex/2011/simple-trace-model#" }
+				],
+				"@type":	"m:"+"SimpleObsel", // TODO KTBS BUG TO FIX
+				hasTrace:	"",
+				subject:	params.hasOwnProperty("subject")?params.subject:this.get_default_subject(),
+				"m:type":	params.type
+			};
+			//console.log(params.hasOwnProperty("subject")?params.subject:this.get_default_subject(),params.hasOwnProperty("subject"),params.subject,this.get_default_subject());
+			if(params.hasOwnProperty("begin")) { json_obsel.begin=params.begin; }
+			if(params.hasOwnProperty("end")) { json_obsel.begin=params.end;}
+			if(params.hasOwnProperty("attributes")) {
+				for(var attr in params.attributes) {
+					json_obsel["m:"+attr] = params.attributes[attr];
+				}
+			}
 
 /*
-Samotraces.Ktbs.StoredTrace = function() {
-	set_model: function(model) {},
-	set_origin: function(origin) {},
-	get_default_subject: function() {},
-	set_default_subject: function(subject:str) {},
-	create_obsel: function(id, type, begin, end, subject, attributes, relations, inverse_relations, source_obsels, label) {}
-}
-
-Samotraces.Ktbs.ComputedTrace = function() {
-	set_method: function(method) {},
-	list_parameters: function(include_inherited) {},
-	get_parameter: function(key) {},
-	set_parameter: function(key, value) {},
-	del_parameter: function(key) {}
-}
+			var ttl_obsel = '@prefix : <http://liris.cnrs.fr/silex/2009/ktbs#> .\n@prefix m: <http://liris.cnrs.fr/silex/2011/simple-trace-model#> .\n';
+			ttl_obsel += '[ a m:'+params.type+' ;\n';
+			ttl_obsel += '  :hasTrace <> ;\n';
+			ttl_obsel += '  :hasSubject "" ;\n';
+			if(params.hasOwnProperty("begin")) {
+				ttl_obsel += '  :hasBegin '+params.begin+' ;\n';
+			}
+			if(params.hasOwnProperty("end")) {
+				ttl_obsel += '  :hasEnd '+params.end+' ;\n';
+			}
+			if(params.hasOwnProperty("attributes")) {
+				for(var name in params.attributes) {
+					ttl_obsel += '  m:'+name+' "'+params.attributes[name]+'" ;\n';
+				}
+			}
+			ttl_obsel += '].';
+			jQuery.ajax({
+					url: this.uri,
+					type: 'POST',
+					contentType: 'text/turtle',
+					success: this._on_create_obsel_success_.bind(this),
+					data: ttl_obsel
+				});
 */
+			jQuery.ajax({
+					url: this.uri,
+					type: 'POST',
+					contentType: 'application/json',
+					success: this._on_create_obsel_success_.bind(this),
+					data: JSON.stringify(json_obsel)
+				});
+		}
+	},
+	_on_create_obsel_success_: function(data,textStatus,jqXHR) {
+		var url = jqXHR.getResponseHeader('Location');
+		var url_array = url.split('/');
+		var obsel_id = url_array[url_array.length -1];
+		this.get_obsel(obsel_id);
+	},
+///////////////////////////////
+	// KTBS BOGUE
+/*
+	getNewObsel: function(id) {
+		jQuery.ajax({
+				url: this.url+id+'.xml',
+				type: 'GET',
+				success: this.getNewObselSuccess.bind(this),
+			});
+	},*/
+/*	getNewObselSuccess: function(data,textStatus,jqXHR) {
+		// workaround to get the id eventhough the ktbs doesn't return it.
+		var url = jqXHR.getResponseHeader('Content-Location');
+		var url_array = url.split('/');
+		var obsel_id = url_array[url_array.length -1];
+		if(obsel_id.endsWith('.xml')) {
+			obsel_id = obsel_id.substr(0,obsel_id.length-4);
+		}
+				
+		var raw_json = Samotraces.Tools.xmlToJson(data);
+		var obsels = [];
+		var obs;
+		el = raw_json['rdf:RDF']['rdf:Description'];
+		obs = this.rdf2obs(el);
+		if(obs !== undefined) {
+			obs.id = obsel_id; 
+			this.traceSet.push(obs);
+			this.trigger('newObsel',obs);
+		}
+	},
+	// FIN KTBS BOGUE
+/////////////////////////////// */
+
+	ComputedTrace_methods: {
+		set_method: function(method) {},
+		list_parameters: function(include_inherited) {},
+		get_parameter: function(key) {},
+		set_parameter: function(key, value) {},
+		del_parameter: function(key) {}
+	},
+
+	// TEMPORARY METHODS	
+	create_obsel: function(obsel_params) {
+		Samotraces.debug("Trace type not know yet -> file the call to create_obsel()");
+		this.temp.create_obsel.push[obsel_params];
+	},
+
+};
+
+
 
 /**
  * @augments Samotraces.Obsel
@@ -414,7 +616,6 @@ Samotraces.Ktbs.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
 	Samotraces.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
 
-//	this._private_check_error(param,'id');
 	this._private_check_error(param,'trace');
 	this._private_check_error(param,'type');
 	this._private_check_default(param,'begin',	Date.now());
@@ -423,7 +624,6 @@ Samotraces.Ktbs.Obsel = function Obsel(param) {
 	this._private_check_undef(param,'relations',	[]); // TODO ajouter rel à l'autre obsel
 	this._private_check_undef(param,'inverse_relations',	[]); // TODO ajouter rel à l'autre obsel
 	this._private_check_undef(param,'source_obsels',		[]);
-//	this._private_check_undef(param,'label',		"");
 }
 
 Samotraces.Ktbs.Obsel.prototype = Samotraces.Obsel.prototype;

@@ -1,8 +1,5 @@
 
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
+Samotraces.UI.Widgets.ktbs = Samotraces.UI.Widgets.ktbs || {};
 
 /**
  * @class Generic Widget for visualising the available bases of a KTBS.
@@ -20,10 +17,10 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
+Samotraces.UI.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
-	Samotraces.Lib.EventHandler.call(this,events);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
+	Samotraces.EventHandler.call(this,events);
 	this.add_class('Widget-ListBases');
 
 	this.ktbs = ktbs;
@@ -32,7 +29,7 @@ Samotraces.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 	this.init_DOM();
 };
 
-Samotraces.Widgets.ktbs.ListBases.prototype = {
+Samotraces.UI.Widgets.ktbs.ListBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
 		$(this.element).append('<h2>Ktbs root: '+this.ktbs.get_uri()+'</h2>');

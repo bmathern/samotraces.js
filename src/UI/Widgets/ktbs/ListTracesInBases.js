@@ -1,8 +1,4 @@
-
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
+Samotraces.UI.Widgets.ktbs = Samotraces.UI.Widgets.ktbs || {};
 
 /**
  * @class Generic Widget for visualising the available bases of a KTBS.
@@ -20,10 +16,10 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
+Samotraces.UI.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
-	Samotraces.Lib.EventHandler.call(this,events);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
+	Samotraces.EventHandler.call(this,events);
 	this.add_class('Widget-ListTraces');
 
 	this.base = ktbs_base;
@@ -32,7 +28,7 @@ Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
 	this.init_DOM();
 };
 
-Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
+Samotraces.UI.Widgets.ktbs.ListTracesInBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
 
