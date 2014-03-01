@@ -28,9 +28,9 @@ Samotraces.UI.Widgets.ObselInspector = function(html_id,obsel_selector) {
 	this.add_class('Widget-ObselInspector');
 
 	this.obsel = obsel_selector;
-	this.obsel.addEventListener('selection:add',this.inspect.bind(this));
-	this.obsel.addEventListener('selection:empty',this.close.bind(this));
-	this.obsel.addEventListener('selection:remove',this.close.bind(this));
+	this.obsel.on('selection:add',this.inspect.bind(this));
+	this.obsel.on('selection:empty',this.close.bind(this));
+	this.obsel.on('selection:remove',this.close.bind(this));
 
 	this.init_DOM();
 };

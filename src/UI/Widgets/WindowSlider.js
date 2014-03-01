@@ -26,11 +26,11 @@ Samotraces.UI.Widgets.WindowSlider = function(html_id,wide_window,slider_window)
 	$(window).resize(this.draw.bind(this));
 
 	this.wide_window = wide_window;
-	this.wide_window.addEventListener('tw:update',this.draw.bind(this));
-	this.wide_window.addEventListener('tw:translate',this.draw.bind(this));
+	this.wide_window.on('tw:update',this.draw.bind(this));
+	this.wide_window.on('tw:translate',this.draw.bind(this));
 	this.slider_window = slider_window;
-	this.slider_window.addEventListener('tw:update',this.draw.bind(this));
-	this.slider_window.addEventListener('tw:translate',this.draw.bind(this));
+	this.slider_window.on('tw:update',this.draw.bind(this));
+	this.slider_window.on('tw:translate',this.draw.bind(this));
 
 	this.slider_offset = 0;
 	this.width = 0;

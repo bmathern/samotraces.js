@@ -29,8 +29,8 @@ Samotraces.UI.Widgets.TimeForm = function(html_id,timer) {
 	Samotraces.UI.Widgets.Widget.call(this,html_id);
 
 	this.timer = timer;
-	this.timer.addEventListener('timer:update',this.refresh.bind(this));
-	this.timer.addEventListener('timer:play:update',this.refresh.bind(this));
+	this.timer.on('timer:update',this.refresh.bind(this));
+	this.timer.on('timer:play:update',this.refresh.bind(this));
 
 	this.init_DOM();
 	this.refresh({data: this.timer.time});

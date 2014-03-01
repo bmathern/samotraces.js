@@ -1,12 +1,12 @@
 /**
- * @summary Javascript Ktbs Object that is bound to a KTBS. 
- * @class Javascript Ktbs Object that is bound to a KTBS. 
+ * @summary Javascript KTBS Object that is bound to a KTBS. 
+ * @class Javascript KTBS Object that is bound to a KTBS. 
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
  * @augments Samotraces.EventHandler
  * @description
- * Samotraces.Ktbs is a Javascript KTBS object that
+ * Samotraces.KTBS is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
  * the KTBS. Methods are available to get the list of bases
  * available in the KTBS. Access a specific base, etc.
@@ -21,21 +21,21 @@
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Ktbs = function Ktbs(uri) {
+Samotraces.KTBS = function KTBS(uri) {
 //	this.url = url;
 //	this.bases = [];
 //	this.refresh();
 
 
 	// KTBS is a Resource
-	Samotraces.Ktbs.Resource.call(this,uri,uri,"");
+	Samotraces.KTBS.Resource.call(this,uri,uri,"");
 	this.bases = [];
 	this.builtin_methods = [];
 	this.force_state_refresh();
 
 };
 
-Samotraces.Ktbs.prototype = {
+Samotraces.KTBS.prototype = {
 /////////// OFFICIAL API
 	list_builtin_methods: function() {},
 	get_builtin_method: function() {},
@@ -46,7 +46,7 @@ Samotraces.Ktbs.prototype = {
 	 * @param id {String} URI of the base
 	 */
 	get_base: function(id) {
-		return new Samotraces.Ktbs.Base(id,this.uri+id);
+		return new Samotraces.KTBS.Base(id,this.uri+id);
 	},
 	/**
 	 * @param id {String} URI of the base (optional)
@@ -81,7 +81,7 @@ Samotraces.Ktbs.prototype = {
 };
 
 /* MIXIN */
-Samotraces.Ktbs.Resource = (function(id,uri,label) {
+Samotraces.KTBS.Resource = (function(id,uri,label) {
 	
 	function get_type() { return this.type; }
 
@@ -177,13 +177,13 @@ console.log("error",this);
 
 
 /**
- * @class Javascript KtbsBase Object that is bound to a KTBS. 
+ * @class Javascript KTBS.Base Object that is bound to a KTBS. 
  * @author Benoît Mathern
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
  * @augments Samotraces.EventHandler
  * @description
- * Samotraces.KtbsBase is a Javascript KTBS base
+ * Samotraces.KTBS.Base is a Javascript KTBS base
  * object that is bound to a KTBS. This Object can be seen
  * as an API to the KTBS. Methods are available to get the 
  * list of traces available in the KTBS base. Access a 
@@ -192,21 +192,21 @@ console.log("error",this);
  * This class is a first (quick and dirty) attempt to access
  * Bases from the KTBS.
  *
- * Note: this KtbsBase object is not an actual API to the KTBS.
+ * Note: this KTBS.Base object is not an actual API to the KTBS.
  *
  * @todo update to a full JSON approach when the KTBS fully
  * supports JSON.
  *
  * @param {String}	url	Url of the KTBS to load.
  */
-Samotraces.Ktbs.Base = function Base(id,uri) {
+Samotraces.KTBS.Base = function Base(id,uri) {
 	// KTBS.Base is a Resource
-	Samotraces.Ktbs.Resource.call(this,id,uri,"");
+	Samotraces.KTBS.Resource.call(this,id,uri,"");
 	this.traces = [];
 	this.force_state_refresh();
 };
 
-Samotraces.Ktbs.Base.prototype = {
+Samotraces.KTBS.Base.prototype = {
 	get: function(id) {},
 	list_traces: function() {
 		return this.traces;
@@ -247,7 +247,7 @@ Samotraces.Ktbs.Base.prototype = {
 	},
 /////////// ADDED / API
 	get_trace: function(id) {
-		return new Samotraces.Ktbs.Trace(id,this.uri+id+'/');
+		return new Samotraces.KTBS.Trace(id,this.uri+id+'/');
 	},
 ////////////
 };
@@ -259,7 +259,7 @@ Samotraces.Ktbs.Base.prototype = {
  * @constructor
  * @mixes Samotraces.EventHandler
  * @description
- * Samotraces.KtbsTrace is a Javascript Trace object
+ * Samotraces.KTBS.Trace is a Javascript Trace object
  * that is bound to a KTBS trace. This Object can be seen as
  * an API to the KTBS trace. Methods are available to get 
  * the Obsels from the KTBS trace, create new Obsels, etc.
@@ -278,12 +278,12 @@ Samotraces.Ktbs.Base.prototype = {
  *
  * @param {String}	url	Url of the KTBS trace to load.
  */
-Samotraces.Ktbs.Trace = function Trace(id,uri) {
+Samotraces.KTBS.Trace = function Trace(id,uri) {
 	// KTBS.Base is a Resource
-	Samotraces.Ktbs.Resource.call(this,id,uri,"");
+	Samotraces.KTBS.Resource.call(this,id,uri,"");
 
 	this.type = "Trace";
-	this.temp = {}; // attribute used to store actions made by the user on the trace while not knowing if they are allowed. e.g., create_obsel, when we don't know yet if the Trace is a StoredTrace because the Ktbs didn't reply yet.
+	this.temp = {}; // attribute used to store actions made by the user on the trace while not knowing if they are allowed. e.g., create_obsel, when we don't know yet if the Trace is a StoredTrace because the KTBS didn't reply yet.
 
 	this.default_subject = "";
 	this.model_uri = "";
@@ -295,10 +295,10 @@ Samotraces.Ktbs.Trace = function Trace(id,uri) {
 	this.force_state_refresh();
 };
 
-//Samotraces.Ktbs.Trace.prototype = Samotraces.LocalTrace.prototype;
+//Samotraces.KTBS.Trace.prototype = Samotraces.LocalTrace.prototype;
 
 
-Samotraces.Ktbs.Trace.prototype = {
+Samotraces.KTBS.Trace.prototype = {
 /////////// OFFICIAL API
 	get_base: function() { return this.base_uri; },
 	get_model: function() { return this.model_uri; },
@@ -308,7 +308,7 @@ Samotraces.Ktbs.Trace.prototype = {
 	// @todo TODO add an optional CALLBACK
 	list_obsels: function(begin,end,reverse) {
 		if(this.obsel_list_uri === "") {
-			console.log("Error in Ktbs:Trace:list_obsels() unknown uri");
+			console.log("Error in KTBS:Trace:list_obsels() unknown uri");
 			return false;
 		}
 		$.ajax({
@@ -376,7 +376,7 @@ Samotraces.Ktbs.Trace.prototype = {
 			delete(attr.attributes['@type']);
 			delete(attr.attributes['begin']);
 			delete(attr.attributes['end']);
-			obs = new Samotraces.Ktbs.Obsel(attr);
+			obs = new Samotraces.KTBS.Obsel(attr);
 			
 			if(! this._check_obsel_loaded_(obs)) {
 				new_obsel_loaded = true;
@@ -397,13 +397,13 @@ Samotraces.Ktbs.Trace.prototype = {
 		// OBSEL TYPE
 		// data["@type"]; // TODO BUG KTBS -> USE "m:type" instead
 		// data["m:type"];
-		obs.type = data["m:type"];
+		obs.type = data["@type"].substr(2);
 	
 		// DELETING PROPERTIES THAT HAVE ALREADY BEEN COPIED
 		delete data["@id"];
 		delete data.hasTrace;
 		delete data["@type"];
-		delete data["m:type"];
+		//delete data["m:type"];
 		
 		// ATTRIBUTES
 		for(var attr in data) {
@@ -412,7 +412,7 @@ Samotraces.Ktbs.Trace.prototype = {
 			}
 		}
 	//console.log(data,obs);
-		var o = new Samotraces.Ktbs.Obsel(obs);
+		var o = new Samotraces.KTBS.Obsel(obs);
 		if(!this._check_obsel_loaded_(o)) { // TODO first approximation
 			this.trigger('trace:create:obsel',o);
 		}
@@ -466,7 +466,7 @@ Samotraces.Ktbs.Trace.prototype = {
 			delete(attr.attributes['@type']);
 			delete(attr.attributes['begin']);
 			delete(attr.attributes['end']);
-			obs = new Samotraces.Ktbs.Obsel(attr);
+			obs = new Samotraces.KTBS.Obsel(attr);
 			
 			if(! this._check_obsel_loaded_(obs)) {
 				new_obsel_loaded = true;
@@ -502,10 +502,10 @@ Samotraces.Ktbs.Trace.prototype = {
 					"http://liris.cnrs.fr/silex/2011/ktbs-jsonld-context",
        					{ "m": "http://liris.cnrs.fr/silex/2011/simple-trace-model#" }
 				],
-				"@type":	"m:"+"SimpleObsel", // TODO KTBS BUG TO FIX
+				"@type":	"m:"+params.type, // fixed: "SimpleObsel", // TODO KTBS BUG TO FIX
 				hasTrace:	"",
 				subject:	params.hasOwnProperty("subject")?params.subject:this.get_default_subject(),
-				"m:type":	params.type
+				//"m:type":	params.type
 			};
 			//console.log(params.hasOwnProperty("subject")?params.subject:this.get_default_subject(),params.hasOwnProperty("subject"),params.subject,this.get_default_subject());
 			if(params.hasOwnProperty("begin")) { json_obsel.begin=params.begin; }
@@ -612,9 +612,9 @@ Samotraces.Ktbs.Trace.prototype = {
  * @todo TODO update set_methods
  * -> sync with KTBS instead of local change
  */
-Samotraces.Ktbs.Obsel = function Obsel(param) {
+Samotraces.KTBS.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
-	Samotraces.Ktbs.Resource.call(this,param.id,param.uri,param.label || "");
+	Samotraces.KTBS.Resource.call(this,param.id,param.uri,param.label || "");
 
 	this._private_check_error(param,'trace');
 	this._private_check_error(param,'type');
@@ -626,7 +626,7 @@ Samotraces.Ktbs.Obsel = function Obsel(param) {
 	this._private_check_undef(param,'source_obsels',		[]);
 }
 
-Samotraces.Ktbs.Obsel.prototype = Samotraces.Obsel.prototype;
+Samotraces.KTBS.Obsel.prototype = Samotraces.Obsel.prototype;
 
 
 

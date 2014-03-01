@@ -78,14 +78,14 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	$(window).resize(this.refresh_x.bind(this));
 
 	this.trace = trace;
-	this.trace.addEventListener('trace:update',this.draw.bind(this));
-	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
-	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
-	this.trace.addEventListener('trace:edit:obsel',this.obsel_redraw.bind(this));
+	this.trace.on('trace:update',this.draw.bind(this));
+	this.trace.on('trace:create:obsel',this.draw.bind(this));
+	this.trace.on('trace:remove:obsel',this.draw.bind(this));
+	this.trace.on('trace:edit:obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
-	this.window.addEventListener('tw:update',this.refresh_x.bind(this));
-	this.window.addEventListener('tw:translate',this.translate_x.bind(this));
+	this.window.on('tw:update',this.refresh_x.bind(this));
+	this.window.on('tw:translate',this.translate_x.bind(this));
 
 //	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));

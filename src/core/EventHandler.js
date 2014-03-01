@@ -24,7 +24,7 @@ Samotraces.EventHandler = (function() {
 	 *     The type of the triggered event.
 	 * @param {Object} object
 	 *     Object sent with the message to the listeners (see 
-	 *     {@link Samotraces.EventBuilder#addEventListener}).
+	 *     {@link Samotraces.EventBuilder#on}).
 	 */
 	function trigger(event_type,object) {
 		Samotraces.debug("EventHandler#"+event_type+" triggered");
@@ -52,7 +52,7 @@ Samotraces.EventHandler = (function() {
 	 *     event.type: the type of event that is triggered
 	 *     event.data: optional data that is transmitted with the event
 	 */
-	function addEventListener(event_type,callback) {
+	function on(event_type,callback) {
 		if({}.toString.call(callback) !== '[object Function]') {
 			console.log(callback);
 			throw "Callback for event "+event_type+" is not a function";
@@ -65,7 +65,7 @@ Samotraces.EventHandler = (function() {
 		// DOCUMENTED ABOVE
 		this.callbacks = this.callbacks || {};
 		this.trigger = trigger;
-		this.addEventListener = addEventListener;	
+		this.on = on;	
 		/**
 		 * EventConfig is a shortname for the 
 		 * {@link Samotraces.EventHandler.EventConfig}
@@ -85,7 +85,7 @@ Samotraces.EventHandler = (function() {
 		 */
 		for(var event_name in events) {
 			var fun = events[event_name];
-			this.addEventListener(event_name,function(e) { fun(e.data); });
+			this.on(event_name,function(e) { fun(e.data); });
 		}
 		return this;
 	};

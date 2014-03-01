@@ -112,7 +112,7 @@ Samotraces.LocalTrace.prototype = {
 			trace.list_obsels().forEach(function(o) {
 				transformed_trace.create_obsel(o.to_Object());
 			});
-			trace.addEventListener('trace:create:obsel',function(e) {
+			trace.on('trace:create:obsel',function(e) {
 				var o = e.data;
 				transformed_trace.create_obsel(o.to_Object());
 			});
@@ -134,7 +134,7 @@ console.log(opt);
 					}
 				}
 			});
-			trace.addEventListener('trace:create:obsel',function(e) {
+			trace.on('trace:create:obsel',function(e) {
 				var o = e.data;
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {

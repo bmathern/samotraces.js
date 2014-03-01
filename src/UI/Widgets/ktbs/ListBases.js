@@ -12,8 +12,8 @@ Samotraces.UI.Widgets.ktbs = Samotraces.UI.Widgets.ktbs || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Ktbs} ktbs
- *     Ktbs to bind to.
+ * @param {Samotraces.Lib.KTBS} ktbs
+ *     KTBS to bind to.
  * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
@@ -24,7 +24,7 @@ Samotraces.UI.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 	this.add_class('Widget-ListBases');
 
 	this.ktbs = ktbs;
-	ktbs.addEventListener('ktbs:update',this.refresh.bind(this));
+	ktbs.on('ktbs:update',this.refresh.bind(this));
 
 	this.init_DOM();
 };
@@ -32,10 +32,10 @@ Samotraces.UI.Widgets.ktbs.ListBases = function(html_id,ktbs,events) {
 Samotraces.UI.Widgets.ktbs.ListBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
-		$(this.element).append('<h2>Ktbs root: '+this.ktbs.get_uri()+'</h2>');
+		$(this.element).append('<h2>KTBS root: '+this.ktbs.get_uri()+'</h2>');
 /*
 		var title = document.createElement('h2');
-		var title_text = document.createTextNode('Ktbs root: '+this.ktbs.get_uri());
+		var title_text = document.createTextNode('KTBS root: '+this.ktbs.get_uri());
 		title.appendChild(title_text);
 		this.element.appendChild(title);
 */

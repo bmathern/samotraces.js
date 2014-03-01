@@ -31,8 +31,8 @@ Samotraces.UI.Widgets.ReadableTimeForm = function(html_id,timer) {
 	this.add_class('Widget-ReadableTimeForm');
 
 	this.timer = timer;
-	this.timer.addEventListener('timer:update',this.refresh.bind(this));
-	this.timer.addEventListener('timer:play:update',this.refresh.bind(this));
+	this.timer.on('timer:update',this.refresh.bind(this));
+	this.timer.on('timer:play:update',this.refresh.bind(this));
 
 	this.init_DOM();
 	this.refresh({data: this.timer.time});

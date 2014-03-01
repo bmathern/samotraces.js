@@ -45,8 +45,8 @@ Samotraces.TimeWindow = function TimeWindow(opt) {
 	} else if (opt.timer !== undefined && opt.width  !== undefined) {
 		this.set_width(opt.width,opt.timer.time)
 		this.timer = opt.timer;
-		this.timer.addEventListener('timer:update',this._private_updateTime.bind(this));
-		this.timer.addEventListener('timer:play:update',this._private_updateTime.bind(this));
+		this.timer.on('timer:update',this._private_updateTime.bind(this));
+		this.timer.on('timer:play:update',this._private_updateTime.bind(this));
 	} else {
 		throw('Samotraces.TimeWindow error. Arguments could not be parsed.');
 	}

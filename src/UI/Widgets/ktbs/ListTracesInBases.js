@@ -11,8 +11,8 @@ Samotraces.UI.Widgets.ktbs = Samotraces.UI.Widgets.ktbs || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Ktbs.Base} ktbs_base
- *     Ktbs Base to bind to.
+ * @param {Samotraces.Lib.KTBS.Base} ktbs_base
+ *     KTBS Base to bind to.
  * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
@@ -23,7 +23,7 @@ Samotraces.UI.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events
 	this.add_class('Widget-ListTraces');
 
 	this.base = ktbs_base;
-	this.base.addEventListener('base:update',this.refresh.bind(this));
+	this.base.on('base:update',this.refresh.bind(this));
 
 	this.init_DOM();
 };
