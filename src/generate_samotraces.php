@@ -20,11 +20,6 @@
 	Samotraces.set_debug = function(val) { debug_mode = val; };
 
 	/**
-	 * Library of the Objects of Samotraces
-	 * @namespace Samotraces.Lib
-	 */
-	Samotraces.Lib = {};
-	/**
 	 * Library of UI components for Samotraces
 	 * @namespace Samotraces.UI
 	 */

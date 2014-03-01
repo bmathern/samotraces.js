@@ -34,10 +34,6 @@
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.html">Lib</a>
-						</li>
-						
-						<li>
 							<a href="Samotraces.UI.html">UI</a>
 						</li>
 						
@@ -56,23 +52,15 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Ktbs.html">Ktbs</a>
+							<a href="Samotraces.KTBS.html">KTBS</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Base.html">Base</a>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Trace.html">Trace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
 						</li>
 						
 						<li>
@@ -101,6 +89,14 @@
 						
 						<li>
 							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
 						</li>
 						
 						<li>
@@ -139,14 +135,6 @@
 							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -176,19 +164,19 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
 						</li>
 						
 						<li>
@@ -215,6 +203,22 @@
 							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
 						</li>
 						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
 
 					</ul>
 				</li>
@@ -235,20 +239,6 @@
 						
 						<li>
 							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
-						</li>
-						
-
-					</ul>
-				</li>
-				
-				<li class="dropdown">
-					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
-						class="caret"></b></a>
-
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="global.html#debug_mode">debug_mode</a>
 						</li>
 						
 
@@ -352,14 +342,14 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	$(window).resize(this.refresh_x.bind(this));
 
 	this.trace = trace;
-	this.trace.addEventListener('trace:update',this.draw.bind(this));
-	this.trace.addEventListener('trace:create:obsel',this.draw.bind(this));
-	this.trace.addEventListener('trace:remove:obsel',this.draw.bind(this));
-	this.trace.addEventListener('trace:edit:obsel',this.obsel_redraw.bind(this));
+	this.trace.on('trace:update',this.draw.bind(this));
+	this.trace.on('trace:create:obsel',this.draw.bind(this));
+	this.trace.on('trace:remove:obsel',this.draw.bind(this));
+	this.trace.on('trace:edit:obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
-	this.window.addEventListener('tw:update',this.refresh_x.bind(this));
-	this.window.addEventListener('tw:translate',this.translate_x.bind(this));
+	this.window.on('tw:update',this.refresh_x.bind(this));
+	this.window.on('tw:translate',this.translate_x.bind(this));
 
 //	this.obsel_selector = obsel_selector;
 //	this.window.addEventListener('',this..bind(this));
@@ -519,7 +509,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		this.d3Obsels()
 			.enter()
 			.append('image')
-			.attr('class','Σ-obsel')
+			.attr('class','Samotraces-obsel')
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
@@ -529,8 +519,8 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		// events defined by users with jQuery
 		$('image',this.element).each(function(i,el) {
 			$.data(el,{
-				'Σ-type': 'obsel',
-				'Σ-data': d3.select(el).datum()
+				'Samotraces-type': 'obsel',
+				'Samotraces-data': d3.select(el).datum()
 			});
 		});
 	},
@@ -539,7 +529,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		obs = e.data;
 		var sel = this.d3Obsels()
 			.filter(function(o,id) {
-				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
+//				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
 				return id == obs.get_id();
 			})
 			.attr('x',this.options.x)
@@ -582,7 +572,7 @@ console.log("obsel_redraw",$.data(sel[0][0]));
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Feb 25 2014 12:58:31 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sat Mar 01 2014 16:02:17 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

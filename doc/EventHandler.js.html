@@ -34,10 +34,6 @@
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.html">Lib</a>
-						</li>
-						
-						<li>
 							<a href="Samotraces.UI.html">UI</a>
 						</li>
 						
@@ -56,23 +52,15 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Ktbs.html">Ktbs</a>
+							<a href="Samotraces.KTBS.html">KTBS</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Base.html">Base</a>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Trace.html">Trace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
 						</li>
 						
 						<li>
@@ -101,6 +89,14 @@
 						
 						<li>
 							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
 						</li>
 						
 						<li>
@@ -139,14 +135,6 @@
 							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -176,19 +164,19 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
 						</li>
 						
 						<li>
@@ -215,6 +203,22 @@
 							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
 						</li>
 						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
 
 					</ul>
 				</li>
@@ -235,20 +239,6 @@
 						
 						<li>
 							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
-						</li>
-						
-
-					</ul>
-				</li>
-				
-				<li class="dropdown">
-					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
-						class="caret"></b></a>
-
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="global.html#debug_mode">debug_mode</a>
 						</li>
 						
 
@@ -298,7 +288,7 @@ Samotraces.EventHandler = (function() {
 	 *     The type of the triggered event.
 	 * @param {Object} object
 	 *     Object sent with the message to the listeners (see 
-	 *     {@link Samotraces.EventBuilder#addEventListener}).
+	 *     {@link Samotraces.EventBuilder#on}).
 	 */
 	function trigger(event_type,object) {
 		Samotraces.debug("EventHandler#"+event_type+" triggered");
@@ -326,7 +316,7 @@ Samotraces.EventHandler = (function() {
 	 *     event.type: the type of event that is triggered
 	 *     event.data: optional data that is transmitted with the event
 	 */
-	function addEventListener(event_type,callback) {
+	function on(event_type,callback) {
 		if({}.toString.call(callback) !== '[object Function]') {
 			console.log(callback);
 			throw "Callback for event "+event_type+" is not a function";
@@ -339,7 +329,7 @@ Samotraces.EventHandler = (function() {
 		// DOCUMENTED ABOVE
 		this.callbacks = this.callbacks || {};
 		this.trigger = trigger;
-		this.addEventListener = addEventListener;	
+		this.on = on;	
 		/**
 		 * EventConfig is a shortname for the 
 		 * {@link Samotraces.EventHandler.EventConfig}
@@ -359,7 +349,7 @@ Samotraces.EventHandler = (function() {
 		 */
 		for(var event_name in events) {
 			var fun = events[event_name];
-			this.addEventListener(event_name,function(e) { fun(e.data); });
+			this.on(event_name,function(e) { fun(e.data); });
 		}
 		return this;
 	};
@@ -383,7 +373,7 @@ Samotraces.EventHandler = (function() {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Feb 25 2014 12:58:31 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sat Mar 01 2014 16:02:17 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

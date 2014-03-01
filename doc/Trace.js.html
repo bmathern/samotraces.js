@@ -34,10 +34,6 @@
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.html">Lib</a>
-						</li>
-						
-						<li>
 							<a href="Samotraces.UI.html">UI</a>
 						</li>
 						
@@ -56,23 +52,15 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Ktbs.html">Ktbs</a>
+							<a href="Samotraces.KTBS.html">KTBS</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Base.html">Base</a>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Trace.html">Trace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
 						</li>
 						
 						<li>
@@ -101,6 +89,14 @@
 						
 						<li>
 							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
 						</li>
 						
 						<li>
@@ -139,14 +135,6 @@
 							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -176,19 +164,19 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
 						</li>
 						
 						<li>
@@ -213,6 +201,22 @@
 						
 						<li>
 							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
 						</li>
 						
 
@@ -241,20 +245,6 @@
 					</ul>
 				</li>
 				
-				<li class="dropdown">
-					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
-						class="caret"></b></a>
-
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="global.html#debug_mode">debug_mode</a>
-						</li>
-						
-
-					</ul>
-				</li>
-				
 			</ul>
 		</div>
 	</div>
@@ -272,20 +262,44 @@
     
     <section>
         <article>
-            <pre class="sunlight-highlight-javascript linenums">/**
+            <pre class="sunlight-highlight-javascript linenums">// This file is only for the documentation. No actual implmentation.
+// TODO make a Javascript class that throws an error if called?
+// TODO pas de doc abstraite tans Trace.js -> doc concrète dans LocalTrace -> c'est moins compliqué !!! -> de toute façon, Javascript ne fait pas de vrai héritage !
+
+/**
  * Trace is a shortname for the 
  * {@link Samotraces.Trace}
  * object.
  * @typedef Trace
  * @see Samotraces.Trace
  */
+
+/* *
+ * @summary JavaScript (abstract) Trace class.
+ * @class JavaScript (abstract) Trace class.
+ * @constructor Samotraces.Trace-ktbs-API
+ * @abstract
+ * @todo define Trace-ktbs-API abstract class
+ */
+/* *
+ * @summary JavaScript (abstract) Trace class.
+ * @class JavaScript (abstract) Trace class.
+ * @constructor Samotraces.Trace-Samotraces-API
+ * @augments Trace-ktbs-API
+ * @abstract
+ * @todo define Trace-Samotraces-API abstract class
+ */
+
+
 /**
  * @summary JavaScript (abstract) Trace class.
  * @class JavaScript (abstract) Trace class.
  * @author Benoît Mathern
  * @fires Samotraces.Trace#trace:create:obsel
+ * @fires Samotraces.Trace#trace:remove:obsel
+ * @fires Samotraces.Trace#trace:edit:obsel
  * @fires Samotraces.Trace#trace:update
- * @constructor
+ * @constructor Samotraces.Trace
  * @abstract
  * @augments Samotraces.EventHandler
  * @description
@@ -296,66 +310,78 @@
  * The trace is initialised empty. Obsels have to be created
  * by using the {@link Samotraces.DemoTrace#newObsel} method.
  */
-Samotraces.Trace = function() {
-	// Adding the Observable trait
-	Samotraces.EventHandler.call(this);
 
-	/* Array d'obsels */
-	this.obsels = [];
-
-};
-
-Samotraces.Trace.prototype = {
-	/**
-	 * Creates a new obsel in the trace.
-	 * @param {string} type Type of the new obsel
-	 * @param {number} timeStamp Timestamp of the new obsel
-	 * @param {Object} attributes Additional attributes of the
-	 *     new obsel.
-	 * @todo update documentation by creating (fake) Trace
-	 * object from which each trace object must inherit.
-	 * This way, all traces have the same documentation.
-	 * @todo use KTBS abstract API.
-	 */
-	newObsel: function(type,timeStamp,attributes) {
-		console.log('Method Trace:newObsel() is abstract...');
-		/**
-		 * New obsel event.
-		 * @event Samotraces.Lib.Trace#trace:create:obsel
-		 * @type {object}
-		 * @property {string} type - The type of the event (= "trace:create:obsel").
-		 * @property {Samotraces.Lib.Obsel} data - The new obsel.
-		 */
-		/**
-		 * Trace change event.
-		 * @event Samotraces.Lib.Trace#trace:update
-		 * @type {object}
-		 * @property {string} type - The type of the event (= "trace:update").
-		 * @property {Array.&lt;Samotraces.Lib.Obsel>} data - Updated array of obsels of the trace.
-		 */
-	},
-	
-	getObsel: function(id) {
-		console.log('Method Trace:getObsel() is abstract...');
-	},
-
-/// OFFICIAL TRACE API
-
-	/**
-	 * Returns a list obsels of this trace matching the parameters
-	 * @abstract
-	 * @returns {Array.&lt;Obsels>} List of obsels matching the parameters
-	 * @param {number} [begin] 
-	 * @param {number} [end] 
-	 * @param {boolean} [reverse] 
-	 */
-	list_obsels: function(begin,end,reverse) {
-		console.log('Error: Trace:list_obsels() is abstract...');
-	}
+/**
+ * @summary
+ * Triggers when a new obsel has been added to the trace
+ * @event Samotraces.Trace#trace:create:obsel
+ * @type {object}
+ * @property {string} type - The type of the event (= "trace:create:obsel").
+ * @property {Samotraces.Obsel} data - The new obsel.
+ */
+/**
+ * @summary
+ * Triggers when the trace has changed.
+ * @event Samotraces.Trace#trace:update
+ * @type {object}
+ * @property {string} type - The type of the event (= "trace:update").
+ * @property {Array.&lt;Samotraces.Obsel>} data - Updated array of obsels of the trace.
+ */
+/**
+ * @summary
+ * Triggers when an Obsel has been removed from the trace.
+ * @event Samotraces.Trace#trace:remove:obsel
+ * @type {object}
+ * @property {string} type - The type of the event (= "trace:remove:obsel").
+ * @property {Samotraces.Obsel} data - Obsel that has been removed from the trace.
+ */
+/**
+ * @summary
+ * Triggers when an Obsel has been edited.
+ * @event Samotraces.Trace#trace:edit:obsel
+ * @type {object}
+ * @property {string} type - The type of the event (= "trace:edit:obsel").
+ * @property {Samotraces.Obsel} data - Obsel that has been edited.
+ */
 
 
-};
 
+//	get_label: function() { return this.label; },
+//	set_label: function(lbl) {},
+//	reset_label: function() {},
+
+//	get_model: function() { return this.model; },
+//	get_origin: function() { return this.origin; },
+//	list_source_traces: function() { return this.source_traces; },
+//	list_transformed_traces: function() { return this.transformed_traces; },
+/**
+ * @summary
+ * Returns a list obsels of this trace matching the parameters.
+ * @description
+ * Returns a list obsels of this trace matching the parameters.
+ * @method Samotraces.Trace#list_obsels
+ * @abstract
+ * @returns {Array.&lt;Obsels>} List of obsels matching the parameters
+ * @param {number} [begin] Minimum of time for retrieved Obsels.
+ * @param {number} [end] Maximum of time for retrieved Obsels.
+ * @param {boolean} [reverse] 
+ * @todo TODO finish documentation
+ */
+//	list_obsels: function(begin,end,reverse) {},
+
+/**
+ * @summary
+ * Retrieve an obsel in the trace from its ID.
+ * @param {String} id ID of the Obsel to retrieve
+ * @returns {Obsel} Obsel that corresponds to this ID
+ *     or undefined if the obsel was not found.
+ */	
+//	set_model: function(model) {	},
+//	set_origin: function(origin) {	},
+//	get_default_subject: function() { return this.subject;},
+//	set_default_subject: function(subject) {	},
+//	create_obsel: function(obsel_params) {	},
+//	remove_obsel: function(obs) {	},
 
 </pre>
         </article>
@@ -373,7 +399,7 @@ Samotraces.Trace.prototype = {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Feb 25 2014 12:58:31 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sat Mar 01 2014 16:02:17 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

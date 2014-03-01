@@ -34,10 +34,6 @@
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.html">Lib</a>
-						</li>
-						
-						<li>
 							<a href="Samotraces.UI.html">UI</a>
 						</li>
 						
@@ -56,23 +52,15 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Ktbs.html">Ktbs</a>
+							<a href="Samotraces.KTBS.html">KTBS</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Base.html">Base</a>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Ktbs.Trace.html">Trace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.Ktbs4jsTrace.html">Ktbs4jsTrace</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html">KtbsBogueTrace</a>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
 						</li>
 						
 						<li>
@@ -101,6 +89,14 @@
 						
 						<li>
 							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
 						</li>
 						
 						<li>
@@ -139,14 +135,6 @@
 							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
 						</li>
 						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListBases.html">ListBases</a>
-						</li>
-						
-						<li>
-							<a href="Samotraces.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
-						</li>
-						
 
 					</ul>
 				</li>
@@ -176,19 +164,19 @@
 					<ul class="dropdown-menu ">
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.KtbsBogueTrace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
 						</li>
 						
 						<li>
-							<a href="Samotraces.Lib.Trace.html#event:trace:update">trace:update</a>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
 						</li>
 						
 						<li>
@@ -213,6 +201,22 @@
 						
 						<li>
 							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
 						</li>
 						
 
@@ -241,20 +245,6 @@
 					</ul>
 				</li>
 				
-				<li class="dropdown">
-					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
-						class="caret"></b></a>
-
-					<ul class="dropdown-menu ">
-						
-						<li>
-							<a href="global.html#debug_mode">debug_mode</a>
-						</li>
-						
-
-					</ul>
-				</li>
-				
 			</ul>
 		</div>
 	</div>
@@ -272,11 +262,7 @@
     
     <section>
         <article>
-            <pre class="sunlight-highlight-javascript linenums">
-// Check if relevant namespaces exist - or create them.
-var Samotraces = Samotraces || {};
-Samotraces.Widgets = Samotraces.Widgets || {};
-Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
+            <pre class="sunlight-highlight-javascript linenums">Samotraces.UI.Widgets.ktbs = Samotraces.UI.Widgets.ktbs || {};
 
 /**
  * @class Generic Widget for visualising the available bases of a KTBS.
@@ -289,24 +275,24 @@ Samotraces.Widgets.ktbs = Samotraces.Widgets.ktbs || {};
  * @param {String}	html_id
  *     Id of the DIV element where the widget will be
  *     instantiated
- * @param {Samotraces.Lib.Ktbs.Base} ktbs_base
- *     Ktbs Base to bind to.
+ * @param {Samotraces.Lib.KTBS.Base} ktbs_base
+ *     KTBS Base to bind to.
  * @param {Samotraces.Lib.EventHandler.EventConfig} [events]
  *     Events to listen to and their corresponding callbacks.
  */
-Samotraces.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
+Samotraces.UI.Widgets.ktbs.ListTracesInBases = function(html_id,ktbs_base,events) {
 	// WidgetBasicTimeForm is a Widget
-	Samotraces.Widgets.Widget.call(this,html_id);
-	Samotraces.Lib.EventHandler.call(this,events);
+	Samotraces.UI.Widgets.Widget.call(this,html_id);
+	Samotraces.EventHandler.call(this,events);
 	this.add_class('Widget-ListTraces');
 
 	this.base = ktbs_base;
-	this.base.addEventListener('base:update',this.refresh.bind(this));
+	this.base.on('base:update',this.refresh.bind(this));
 
 	this.init_DOM();
 };
 
-Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
+Samotraces.UI.Widgets.ktbs.ListTracesInBases.prototype = {
 	init_DOM: function() {
 		this.element.innerHTML = "";
 
@@ -403,7 +389,7 @@ Samotraces.Widgets.ktbs.ListTracesInBases.prototype = {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Feb 25 2014 12:58:31 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Sat Mar 01 2014 16:02:17 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

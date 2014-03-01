@@ -16,13 +16,9 @@
 	/**
 	 * @property {Boolean} [debug=false]
 	 */
-	debug_mode = false;
+	var debug_mode = false;
+	Samotraces.set_debug = function(val) { debug_mode = val; };
 
-	/**
-	 * Library of the Objects of Samotraces
-	 * @namespace Samotraces.Lib
-	 */
-	Samotraces.Lib = {};
 	/**
 	 * Library of UI components for Samotraces
 	 * @namespace Samotraces.UI
@@ -36,19 +32,16 @@
 
 	Samotraces.log = function log() {
 		if(window.console) {
-			var class_name = (this!==undefined)?[this.constructor.name]:[];
-            window.console.log.apply(console, [ "Samotraces.js" ].concat(class_name,[].slice.call(arguments)));
+            window.console.log.apply(console, [ "Samotraces.js" ].concat([].slice.call(arguments)));
 		}
 	};
 	Samotraces.debug = function debug() {
 		if(debug_mode && window.console) {
-			var class_name = (this!==undefined)?[this.constructor.name]:[];
-            window.console.log.apply(console, [ "Samotraces.js-debug" ].concat(class_name,[].slice.call(arguments)));
+            window.console.log.apply(console, [ "Samotraces.js-debug" ].concat([].slice.call(arguments)));
 		}
 	};
 	
-	// ALL SRC FILES INCLUDED HERE --- SEE PHP	
+	// ALL SRC FILES INCLUDED HERE --- SEE PHP
 
 	return Samotraces;
 }));
-
