@@ -245,7 +245,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		this.d3Obsels()
 			.enter()
 			.append('image')
-			.attr('class','Σ-obsel')
+			.attr('class','Samotraces-obsel')
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
@@ -255,8 +255,8 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 		// events defined by users with jQuery
 		$('image',this.element).each(function(i,el) {
 			$.data(el,{
-				'Σ-type': 'obsel',
-				'Σ-data': d3.select(el).datum()
+				'Samotraces-type': 'obsel',
+				'Samotraces-data': d3.select(el).datum()
 			});
 		});
 	},

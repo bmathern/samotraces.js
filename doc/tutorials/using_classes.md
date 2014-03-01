@@ -27,19 +27,19 @@ in combination with CSS to customise the style, the main reason of their develop
 was to offer an easy way to define UI behaviours in combination with jQuery.
 
 The class names are defined by the lowercase name of the object prefixed by the
-"Σ-" characters ("Σ" standing for "samotraces").
+"Samotraces-" String.
 For instance, the visual representation of an Obsel will be associated to the
-<code>Σ-obsel</code> class. With jQuery, the following code will therefore allow to capture
+<code>Samotraces-obsel</code> class. With jQuery, the following code will therefore allow to capture
 any click on any obsel on the page:
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">$('body').on('click','.Σ-obsel',callback);
+<pre class="prettyprint sunlight-highlight-javascript linenums">$('body').on('click','.Samotraces-obsel',callback);
 </pre>
 
 ## Data binding
 
 In addition to the class, each HTML object representation is associated to the actual
 Object it represent. For instance, an HTML image element representing an obsel would
-have the <code>Σ-obsel</code> class and also contain the data of the actual 
+have the <code>Samotraces-obsel</code> class and also contain the data of the actual 
 {@link Samotraces.Lib.Obsel|Obsel} it represents.
 
 This data can be retrieved by using the 
@@ -51,8 +51,8 @@ Here is how you retrieve the information:
 
 Each Samotraces.js object is associated with two <code>DATA_KEY</code>:
 
-- <code>Σ-type</code>, which contains the Samotraces type of the object, and
-- <code>Σ-data</code>, which contains the actual Samotraces object.
+- <code>Samotraces-type</code>, which contains the Samotraces type of the object, and
+- <code>Samotraces-data</code>, which contains the actual Samotraces object.
 
 ## Full example
 
@@ -72,9 +72,9 @@ callback should do the job:
 <pre class="prettyprint sunlight-highlight-javascript linenums">var callback = function(event) {
 
 	// The "obsel" variable will store the Obsel object
-	var obsel = $.data(event.target,'Σ-data');
+	var obsel = $.data(event.target,'Samotraces-data');
 	
-	// Note that this callback is only called on 'Σ-obsel' class,
+	// Note that this callback is only called on 'Samotraces-obsel' class,
 	// therefore we know an obsel was the target of the event.
 	// Otherwise, we would have to check if it is an obsel.
 	
