@@ -5,6 +5,7 @@
  * @requires jQuery framework (see <a href="http://jquery.com">jquery.com</a>)
  * @constructor
  * @augments Samotraces.EventHandler
+ * @augments Samotraces.KTBS.Resource
  * @description
  * Samotraces.KTBS is a Javascript KTBS object that
  * is bound to a KTBS. This Object can be seen as an API to
@@ -19,7 +20,7 @@
  * @todo update to a full JSON approach when the KTBS fully
  * supports JSON.
  *
- * @param {String}	url	Url of the KTBS to load.
+ * @param {String}	uri	URI of the KTBS to load.
  */
 Samotraces.KTBS = function KTBS(uri) {
 //	this.url = url;
@@ -46,7 +47,7 @@ Samotraces.KTBS.prototype = {
 	 * @param id {String} URI of the base
 	 */
 	get_base: function(id) {
-		return new Samotraces.KTBS.Base(id,this.uri+id);
+		return new Samotraces.KTBS.Base(this.uri+id,id);
 	},
 	/**
 	 * @param id {String} URI of the base (optional)
@@ -81,13 +82,39 @@ Samotraces.KTBS.prototype = {
 };
 
 /* MIXIN */
+/**
+ * @summary Resource Objects have an uri, an id and an optional label
+ * @class Resource Objects have an uri, an id and an optional label
+ * @param {String} id Id of the Resource
+ * @param {String} url URI of the Resource
+ * @param {label} [label] Label of the Resource
+ */
 Samotraces.KTBS.Resource = (function(id,uri,label) {
-	
+	/**
+	 * @todo TODO document this
+	 */
 	function get_type() { return this.type; }
 
 	// RESOURCE API
+	/**
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource ID.
+	 */
 	function get_id() { return this.id; }
+	/**
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource ID.
+	 * @returns {String} Resource URI.
+	 */
 	function get_uri() { return this.uri; }
+	/**
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @description
+	 * Forces the Resource to synchronise with the KTBS.
+	 * This method triggers a Ajax query that will
+	 * trigger the _on_state_refresh_ method of the Resource 
+	 * on success.
+	 */
 	function force_state_refresh() {
 		
 		$.ajax({
@@ -197,10 +224,12 @@ console.log("error",this);
  * @todo update to a full JSON approach when the KTBS fully
  * supports JSON.
  *
- * @param {String}	url	Url of the KTBS to load.
+ * @param {String}	uri	URI of the Base to load.
+ * @param {String}	[id]	ID of the Base to load.
  */
-Samotraces.KTBS.Base = function Base(id,uri) {
+Samotraces.KTBS.Base = function Base(uri,id) {
 	// KTBS.Base is a Resource
+	if(id === undefined) { id = uri; }
 	Samotraces.KTBS.Resource.call(this,id,uri,"");
 	this.traces = [];
 	this.force_state_refresh();
@@ -247,7 +276,7 @@ Samotraces.KTBS.Base.prototype = {
 	},
 /////////// ADDED / API
 	get_trace: function(id) {
-		return new Samotraces.KTBS.Trace(id,this.uri+id+'/');
+		return new Samotraces.KTBS.Trace(this.uri+id+'/',id);
 	},
 ////////////
 };
@@ -276,10 +305,12 @@ Samotraces.KTBS.Base.prototype = {
  * @todo update to a full JSON approach when the KTBS fully
  * supports JSON.
  *
- * @param {String}	url	Url of the KTBS trace to load.
+ * @param {String}	uri	URI of the KTBS trace to load.
+ * @param {String}	[id]	ID of the KTBS trace to load.
  */
-Samotraces.KTBS.Trace = function Trace(id,uri) {
-	// KTBS.Base is a Resource
+Samotraces.KTBS.Trace = function Trace(uri,id) {
+	// KTBS.Trace is a Resource
+	if(id === undefined) { id = uri; }
 	Samotraces.KTBS.Resource.call(this,id,uri,"");
 
 	this.type = "Trace";

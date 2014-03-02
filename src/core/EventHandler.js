@@ -19,12 +19,12 @@
 Samotraces.EventHandler = (function() {
 	/**
 	 * Triggers all the registred callbacks.
-	 * @memberof Samotraces.EventBuilder.prototype
+	 * @memberof Samotraces.EventHandler.prototype
 	 * @param {String} event_type
 	 *     The type of the triggered event.
 	 * @param {Object} object
 	 *     Object sent with the message to the listeners (see 
-	 *     {@link Samotraces.EventBuilder#on}).
+	 *     {@link Samotraces.EventHandler#on}).
 	 */
 	function trigger(event_type,object) {
 		Samotraces.debug("EventHandler#"+event_type+" triggered");
@@ -40,7 +40,7 @@ Samotraces.EventHandler = (function() {
 	}
 	/**
 	 * Adds a callback for the specified event
-	 * @memberof Samotraces.EventBuilder.prototype
+	 * @memberof Samotraces.EventHandler.prototype
 	 * @param {String} event_type
 	 *     The type of the event to listen to.
 	 * @param {Function} callback
