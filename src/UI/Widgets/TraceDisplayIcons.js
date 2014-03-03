@@ -236,7 +236,14 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 
 	draw: function(e) {
 		if(e) {
-			this.data = this.trace.list_obsels();
+			switch(e.type) {
+				case "trace:update":
+					this.data = this.trace.list_obsels();
+					break;
+				default:
+					this.data = this.trace.obsel_list; // do not want to trigger the refreshing of list_obsels()...
+					break;
+				}
 		}
 
 		this.d3Obsels()
