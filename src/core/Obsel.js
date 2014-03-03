@@ -89,7 +89,7 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Remove the obsel from its trace.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:remove:obsel} event
+	 * {@link Samotraces.Trace#trace:remove_obsel} event
 	 */
 	remove: function() {
 		this.get_trace().remove_obsel(this);
@@ -148,14 +148,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the type of the Obsel.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {String} type Type of the obsel.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_obsel_type: function(type) {
 		this.type = type;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -163,14 +163,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the time when the Obsel starts.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {Number} begin Time when the Obsel starts.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_begin: function(begin) {
 		this.begin = begin;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -178,14 +178,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the time when the Obsel ends.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {Number} end Time when the Obsel ends.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_end: 	function(end) {
 		this.end = end;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -293,7 +293,7 @@ Samotraces.Obsel.prototype = {
 	 */
 	set_attribute:	function(attr, val) {
 		this.attributes[attr] = val;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 //	del_attribute_value:	function(attr) {}, // TODO erreur de l'API KTBS?
@@ -303,13 +303,13 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Removes the attribute with the given name.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @todo TODO Check consistency with KTBS API.
 	 * @param {String} attr Attribute name.
 	 */
 	del_attribute:			function(attr) {
 		delete this.attributes[attr];
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 	/**

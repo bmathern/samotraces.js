@@ -34,11 +34,11 @@ Samotraces.LocalTrace.prototype = {
 	get_label: function() { return this.label; },
 	set_label: function(lbl) {
 		this.label = lbl;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	reset_label: function() {
 		this.label = "";
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 
 	get_model: function() { return this.model; },
@@ -70,16 +70,16 @@ Samotraces.LocalTrace.prototype = {
 	},
 	set_model: function(model) {
 		this.model = model;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	set_origin: function(origin) {
 		this.origin = origin;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	get_default_subject: function() { return this.subject;},
 	set_default_subject: function(subject) {
 		this.subject = subject;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 
 	create_obsel: function(obsel_params) {
@@ -88,13 +88,13 @@ Samotraces.LocalTrace.prototype = {
 		obsel_params.trace = this;
 		var obs = new Samotraces.Obsel(obsel_params);
 		this.obsel_list.push(obs);
-		this.trigger('trace:create:obsel',obs);
+		this.trigger('trace:create_obsel',obs);
 	},
 	remove_obsel: function(obs) {
 		this.obsel_list = this.obsel_list.filter(function(o) {
 			return (o===obs)?false:true;
 		});
-		this.trigger('trace:remove:obsel',obs);
+		this.trigger('trace:remove_obsel',obs);
 	},
 	/**
 	 * @todo TODO document this method
@@ -112,7 +112,7 @@ Samotraces.LocalTrace.prototype = {
 			trace.list_obsels().forEach(function(o) {
 				transformed_trace.create_obsel(o.to_Object());
 			});
-			trace.on('trace:create:obsel',function(e) {
+			trace.on('trace:create_obsel',function(e) {
 				var o = e.data;
 				transformed_trace.create_obsel(o.to_Object());
 			});
@@ -134,7 +134,7 @@ console.log(opt);
 					}
 				}
 			});
-			trace.on('trace:create:obsel',function(e) {
+			trace.on('trace:create_obsel',function(e) {
 				var o = e.data;
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {

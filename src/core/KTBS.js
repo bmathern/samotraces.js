@@ -461,7 +461,7 @@ Samotraces.KTBS.Trace.prototype = {
 	//console.log(data,obs);
 		var o = new Samotraces.KTBS.Obsel(obs);
 		if(!this._check_obsel_loaded_(o)) { // TODO first approximation
-			this.trigger('trace:create:obsel',o);
+			this.trigger('trace:create_obsel',o);
 		}
 	},
 
@@ -578,7 +578,7 @@ Samotraces.KTBS.Trace.prototype = {
 				params.trace = this;
 				var o = new Samotraces.KTBS.Obsel(params);
 				if(!this._check_obsel_loaded_(o)) {
-					this.trigger('trace:create:obsel',o);
+					this.trigger('trace:create_obsel',o);
 				}
 			}
 			jQuery.ajax({
