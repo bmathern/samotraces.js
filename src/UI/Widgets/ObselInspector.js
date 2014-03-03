@@ -59,7 +59,11 @@ Samotraces.UI.Widgets.ObselInspector.prototype = {
 		var attributes = obs.attributes;
 		
 		var li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('id: '+ obs.id));
+		li_element.appendChild(document.createTextNode('id: '+ obs.get_id()));
+		this.datalist_element.appendChild(li_element);
+
+		li_element = document.createElement('li');
+		li_element.appendChild(document.createTextNode('type: '+ obs.get_type()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
