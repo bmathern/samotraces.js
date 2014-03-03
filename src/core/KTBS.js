@@ -564,8 +564,11 @@ Samotraces.KTBS.Trace.prototype = {
 				}
 			}
 			function _on_create_obsel_success_(data,textStatus,jqXHR) {
+				/*
 				var url = jqXHR.getResponseHeader('Location');
 				var url_array = url.split('/');
+				*/
+				var url_array = data.split('/');
 				var obsel_id = url_array[url_array.length -1];
 				//this.get_obsel(obsel_id);
 				// Optimisation: do not do a GET query to get the OBSEL
