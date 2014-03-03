@@ -128,8 +128,9 @@ Samotraces.Obsel.prototype = {
 	 * @summary
 	 * Returns the type of the Obsel.
 	 * @returns {String} Type of the obsel.
+	 * @todo TODO differs from KTBS API -> express it clearly
 	 */
-	get_obsel_type: function() { return this.type;	},
+	get_type: function() { return this.type; },
 	/**
 	 * Returns the time when the Obsel starts.
 	 * @returns {Number} Time when the Obsel starts.

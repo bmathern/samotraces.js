@@ -29,7 +29,7 @@ Samotraces.KTBS = function KTBS(uri) {
 
 
 	// KTBS is a Resource
-	Samotraces.KTBS.Resource.call(this,uri,uri,"");
+	Samotraces.KTBS.Resource.call(this,uri,uri,'KTBS',"");
 	this.bases = [];
 	this.builtin_methods = [];
 	this.force_state_refresh();
@@ -44,6 +44,8 @@ Samotraces.KTBS.prototype = {
 		return this.bases;
 	},
 	/**
+	 * @summary Returns the KTBS.Base with the given ID.
+	 * @returns Samotraces.KTBS.Base Base corresponding to the given ID
 	 * @param id {String} URI of the base
 	 */
 	get_base: function(id) {
@@ -81,33 +83,39 @@ Samotraces.KTBS.prototype = {
 ///////////
 };
 
-/* MIXIN */
 /**
  * @summary Resource Objects have an uri, an id and an optional label
  * @class Resource Objects have an uri, an id and an optional label
  * @param {String} id Id of the Resource
  * @param {String} url URI of the Resource
+ * @param {String} type Type of the Resource ('KTBS','Base',
+ *     'Trace','StoredTrace','ComputedTrace' or 'Obsel')
  * @param {label} [label] Label of the Resource
  */
-Samotraces.KTBS.Resource = (function(id,uri,label) {
+Samotraces.KTBS.Resource = (function() {
 	/**
-	 * @todo TODO document this
+	 * @summary Returns the resource type of the Resource.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource type ('KTBS','Base',
+	 *     'Trace','StoredTrace','ComputedTrace' or 'Obsel').
 	 */
-	function get_type() { return this.type; }
+	function get_resource_type() { return this.type; }
 
 	// RESOURCE API
 	/**
+	 * @summary Returns the ID of the Resource.
 	 * @memberof Samotraces.KTBS.Resource.prototype
 	 * @returns {String} Resource ID.
 	 */
 	function get_id() { return this.id; }
 	/**
+	 * @summary Returns the URI of the Resource. 
 	 * @memberof Samotraces.KTBS.Resource.prototype
-	 * @returns {String} Resource ID.
 	 * @returns {String} Resource URI.
 	 */
 	function get_uri() { return this.uri; }
 	/**
+	 * @summary Forces the Resource to synchronise with the KTBS.
 	 * @memberof Samotraces.KTBS.Resource.prototype
 	 * @description
 	 * Forces the Resource to synchronise with the KTBS.
@@ -123,7 +131,7 @@ Samotraces.KTBS.Resource = (function(id,uri,label) {
 			dataType: 'json',
 			error: (function(jqXHR, textStatus, errorThrown) {
 console.log("error",this);
-				Samotraces.log("Cannot refresh "+this.get_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
+				Samotraces.log("Cannot refresh "+this.get_resource_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
 			}).bind(this),
 			success: this._on_state_refresh_.bind(this),
 		/*	error: function(jqXHR,textStatus,error) {
@@ -136,6 +144,15 @@ console.log("error",this);
 			}*/
 		});
 	}
+	/**
+	 * @summary Forces the Resource to synchronise 
+	 * with at a given refreshing rate.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @description
+	 * Forces the Resource to synchronise with the KTBS
+	 * every period seconds.
+	 * @param {Number} period Time in seconds between two synchronisations.
+	 */
 	function start_auto_refresh(period) {
 		this.auto_refresh_id?this.stop_auto_refresh():null;
 		this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period*1000);
@@ -157,7 +174,7 @@ console.log("error",this);
 			type: 'DELETE',
 			success: refresh_parent.bind(this),
 			error: function(jqXHR,textStatus,error) {
-                 throw "Cannot delete "+this.get_type()+" " + this.uri + ": " + textStatus + ' ' + JSON.stringify(errorThrown);
+                 throw "Cannot delete "+this.get_resource_type()+" " + this.uri + ": " + textStatus + ' ' + JSON.stringify(errorThrown);
 			}
 		});
 	}
@@ -175,7 +192,7 @@ console.log("error",this);
 		}
 	}
 
-	return function(id,uri) {
+	return function(id,uri,type,label) {
 		// a Resource is an EventHandler
 		Samotraces.EventHandler.call(this);
 		// DOCUMENTED ABOVE
@@ -183,6 +200,7 @@ console.log("error",this);
 		this.id = id;
 		this.uri = uri;
 		this.label = label;
+		this.type = type;
 		// API METHODS
 		this.get_id = get_id;
 		this.get_uri = get_uri;
@@ -193,11 +211,10 @@ console.log("error",this);
 		this.set_label = set_label;
 		this.reset_label = reset_label;
 		// helper
-		this.get_type = get_type;
+		this.get_resource_type = get_resource_type;
 		this._check_change_ = _check_change_;
 		this.start_auto_refresh = start_auto_refresh;
 		this.stop_auto_refresh = stop_auto_refresh;
-		this.get_type = get_type;
 		return this;
 	};
 })();
@@ -230,7 +247,7 @@ console.log("error",this);
 Samotraces.KTBS.Base = function Base(uri,id) {
 	// KTBS.Base is a Resource
 	if(id === undefined) { id = uri; }
-	Samotraces.KTBS.Resource.call(this,id,uri,"");
+	Samotraces.KTBS.Resource.call(this,id,uri,'Base',"");
 	this.traces = [];
 	this.force_state_refresh();
 };
@@ -311,9 +328,8 @@ Samotraces.KTBS.Base.prototype = {
 Samotraces.KTBS.Trace = function Trace(uri,id) {
 	// KTBS.Trace is a Resource
 	if(id === undefined) { id = uri; }
-	Samotraces.KTBS.Resource.call(this,id,uri,"");
+	Samotraces.KTBS.Resource.call(this,id,uri,'Base',"");
 
-	this.type = "Trace";
 	this.temp = {}; // attribute used to store actions made by the user on the trace while not knowing if they are allowed. e.g., create_obsel, when we don't know yet if the Trace is a StoredTrace because the KTBS didn't reply yet.
 
 	this.default_subject = "";
@@ -471,8 +487,9 @@ Samotraces.KTBS.Trace.prototype = {
 	_check_and_update_trace_type_: function(type) {
 		if(this.type !== type) {
 			Samotraces.debug("Trace type = "+type);
-			this._update_method_(type,"create_obsel");
-			this._update_method_(type,"get_default_subject");
+			for(var method_name in this[type+"_methods"]) {
+				this._update_method_(type,method_name);
+			}
 			this.type = type;
 		}
 	},
@@ -546,79 +563,30 @@ Samotraces.KTBS.Trace.prototype = {
 					json_obsel["m:"+attr] = params.attributes[attr];
 				}
 			}
-
-/*
-			var ttl_obsel = '@prefix : <http://liris.cnrs.fr/silex/2009/ktbs#> .\n@prefix m: <http://liris.cnrs.fr/silex/2011/simple-trace-model#> .\n';
-			ttl_obsel += '[ a m:'+params.type+' ;\n';
-			ttl_obsel += '  :hasTrace <> ;\n';
-			ttl_obsel += '  :hasSubject "" ;\n';
-			if(params.hasOwnProperty("begin")) {
-				ttl_obsel += '  :hasBegin '+params.begin+' ;\n';
-			}
-			if(params.hasOwnProperty("end")) {
-				ttl_obsel += '  :hasEnd '+params.end+' ;\n';
-			}
-			if(params.hasOwnProperty("attributes")) {
-				for(var name in params.attributes) {
-					ttl_obsel += '  m:'+name+' "'+params.attributes[name]+'" ;\n';
+			function _on_create_obsel_success_(data,textStatus,jqXHR) {
+				var url = jqXHR.getResponseHeader('Location');
+				var url_array = url.split('/');
+				var obsel_id = url_array[url_array.length -1];
+				//this.get_obsel(obsel_id);
+				// Optimisation: do not do a GET query to get the OBSEL
+				// The Obsel parameters are already known in param
+				// We just need to add the ID.
+				params.id = obsel_id;
+				params.trace = this;
+				var o = new Samotraces.KTBS.Obsel(params);
+				if(!this._check_obsel_loaded_(o)) {
+					this.trigger('trace:create:obsel',o);
 				}
 			}
-			ttl_obsel += '].';
-			jQuery.ajax({
-					url: this.uri,
-					type: 'POST',
-					contentType: 'text/turtle',
-					success: this._on_create_obsel_success_.bind(this),
-					data: ttl_obsel
-				});
-*/
 			jQuery.ajax({
 					url: this.uri,
 					type: 'POST',
 					contentType: 'application/json',
-					success: this._on_create_obsel_success_.bind(this),
+					success: _on_create_obsel_success_.bind(this),
 					data: JSON.stringify(json_obsel)
 				});
 		}
 	},
-	_on_create_obsel_success_: function(data,textStatus,jqXHR) {
-		var url = jqXHR.getResponseHeader('Location');
-		var url_array = url.split('/');
-		var obsel_id = url_array[url_array.length -1];
-		this.get_obsel(obsel_id);
-	},
-///////////////////////////////
-	// KTBS BOGUE
-/*
-	getNewObsel: function(id) {
-		jQuery.ajax({
-				url: this.url+id+'.xml',
-				type: 'GET',
-				success: this.getNewObselSuccess.bind(this),
-			});
-	},*/
-/*	getNewObselSuccess: function(data,textStatus,jqXHR) {
-		// workaround to get the id eventhough the ktbs doesn't return it.
-		var url = jqXHR.getResponseHeader('Content-Location');
-		var url_array = url.split('/');
-		var obsel_id = url_array[url_array.length -1];
-		if(obsel_id.endsWith('.xml')) {
-			obsel_id = obsel_id.substr(0,obsel_id.length-4);
-		}
-				
-		var raw_json = Samotraces.Tools.xmlToJson(data);
-		var obsels = [];
-		var obs;
-		el = raw_json['rdf:RDF']['rdf:Description'];
-		obs = this.rdf2obs(el);
-		if(obs !== undefined) {
-			obs.id = obsel_id; 
-			this.traceSet.push(obs);
-			this.trigger('newObsel',obs);
-		}
-	},
-	// FIN KTBS BOGUE
-/////////////////////////////// */
 
 	ComputedTrace_methods: {
 		set_method: function(method) {},
@@ -631,6 +599,9 @@ Samotraces.KTBS.Trace.prototype = {
 	// TEMPORARY METHODS	
 	create_obsel: function(obsel_params) {
 		Samotraces.debug("Trace type not know yet -> file the call to create_obsel()");
+		if(!this.create_obsel.hasOwnProperty('create_obsel')) {
+			this.temp.create_obsel = [];
+		}
 		this.temp.create_obsel.push[obsel_params];
 	},
 
@@ -645,7 +616,7 @@ Samotraces.KTBS.Trace.prototype = {
  */
 Samotraces.KTBS.Obsel = function Obsel(param) {
 	// KTBS.Base is a Resource
-	Samotraces.KTBS.Resource.call(this,param.id,param.uri,param.label || "");
+	Samotraces.KTBS.Resource.call(this,param.id,param.uri,'Obsel',param.label || "");
 
 	this._private_check_error(param,'trace');
 	this._private_check_error(param,'type');
@@ -659,5 +630,10 @@ Samotraces.KTBS.Obsel = function Obsel(param) {
 
 Samotraces.KTBS.Obsel.prototype = Samotraces.Obsel.prototype;
 
+/*
+Samotraces.KTBS.Obsel.prototype.get_ktbs_status = function() {
+	return this.ktbs_status
+};
+*/
 
 
