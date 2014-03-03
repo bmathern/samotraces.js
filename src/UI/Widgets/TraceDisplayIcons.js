@@ -79,9 +79,9 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 
 	this.trace = trace;
 	this.trace.on('trace:update',this.draw.bind(this));
-	this.trace.on('trace:create:obsel',this.draw.bind(this));
-	this.trace.on('trace:remove:obsel',this.draw.bind(this));
-	this.trace.on('trace:edit:obsel',this.obsel_redraw.bind(this));
+	this.trace.on('trace:create_obsel',this.draw.bind(this));
+	this.trace.on('trace:remove_obsel',this.draw.bind(this));
+	this.trace.on('trace:edit_obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
 	this.window.on('tw:update',this.refresh_x.bind(this));
@@ -271,16 +271,16 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 	obsel_redraw: function(e) {
 		obs = e.data;
 		var sel = this.d3Obsels()
-			.filter(function(o,id) {
+			.filter(function(o) {
 //				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
-				return id == obs.get_id();
+				return o.get_id() == obs.get_id();
 			})
+			.datum(obs)
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
 			.attr('xlink:href',this.options.url);
-console.log("obsel_redraw",$.data(sel[0][0]));
 	},
 
 	d3Obsels: function() {
