@@ -409,26 +409,6 @@ Samotraces.KTBS.Trace.prototype = {
 		return obs;
 	},
 	_parse_get_obsel_: function(data,textStatus,jqXHR) {
-/*
-			var attr = {};
-			attr.id = el['@id'];
-			attr.trace = this;
-			attr.label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
-			attr.type = el['@type'];
-			attr.begin = el['begin'];
-			attr.end = el['end'];
-			attr.attributes = el;
-			delete(attr.attributes['@id']);
-			delete(attr.attributes['http://www.w3.org/2000/01/rdf-schema#label']);
-			delete(attr.attributes['@type']);
-			delete(attr.attributes['begin']);
-			delete(attr.attributes['end']);
-			obs = new Samotraces.KTBS.Obsel(attr);
-			
-			if(! this._check_obsel_loaded_(obs)) {
-				new_obsel_loaded = true;
-			}
-*/
 		var obs = {
 			attributes: {}
 		};
@@ -446,12 +426,22 @@ Samotraces.KTBS.Trace.prototype = {
 		// data["m:type"];
 		obs.type = data["@type"].substr(2);
 	
+		if(data.hasOwnProperty('http://www.w3.org/2000/01/rdf-schema#label')) {
+			obs.label = data['http://www.w3.org/2000/01/rdf-schema#label'];
+		}
+		obs.begin = data.begin;
+		obs.end = data.end;
+		
 		// DELETING PROPERTIES THAT HAVE ALREADY BEEN COPIED
 		delete data["@id"];
 		delete data.hasTrace;
 		delete data["@type"];
+		delete data.begin;
+		delete data.end;
+		delete data['http://www.w3.org/2000/01/rdf-schema#label'];
 		//delete data["m:type"];
 		
+			
 		// ATTRIBUTES
 		for(var attr in data) {
 			if(attr.substr(0,2) == "m:") { // TODO this is not generic!!!!
