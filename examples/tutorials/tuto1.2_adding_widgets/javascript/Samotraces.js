@@ -134,7 +134,7 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Remove the obsel from its trace.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:remove:obsel} event
+	 * {@link Samotraces.Trace#trace:remove_obsel} event
 	 */
 	remove: function() {
 		this.get_trace().remove_obsel(this);
@@ -193,14 +193,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the type of the Obsel.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {String} type Type of the obsel.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_obsel_type: function(type) {
 		this.type = type;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -208,14 +208,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the time when the Obsel starts.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {Number} begin Time when the Obsel starts.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_begin: function(begin) {
 		this.begin = begin;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -223,14 +223,14 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Sets the time when the Obsel ends.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @params {Number} end Time when the Obsel ends.
 	 * @todo TODO not KTBS API compliant
 	 * @deprecated This method might not be supported in the future.
 	 */
 	force_set_end: 	function(end) {
 		this.end = end;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 	},
 	/**
 	 * @summary
@@ -338,7 +338,7 @@ Samotraces.Obsel.prototype = {
 	 */
 	set_attribute:	function(attr, val) {
 		this.attributes[attr] = val;
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 //	del_attribute_value:	function(attr) {}, // TODO erreur de l'API KTBS?
@@ -348,13 +348,13 @@ Samotraces.Obsel.prototype = {
 	 * @description
 	 * Removes the attribute with the given name.
 	 * The trace will trigger a 
-	 * {@link Samotraces.Trace#trace:edit:obsel} event
+	 * {@link Samotraces.Trace#trace:edit_obsel} event
 	 * @todo TODO Check consistency with KTBS API.
 	 * @param {String} attr Attribute name.
 	 */
 	del_attribute:			function(attr) {
 		delete this.attributes[attr];
-		this.trace.trigger('trace:edit:obsel',this);
+		this.trace.trigger('trace:edit_obsel',this);
 		// TODO envoyer un event pour dier que l'obsel a changé
 	},
 	/**
@@ -930,26 +930,6 @@ Samotraces.KTBS.Trace.prototype = {
 		return obs;
 	},
 	_parse_get_obsel_: function(data,textStatus,jqXHR) {
-/*
-			var attr = {};
-			attr.id = el['@id'];
-			attr.trace = this;
-			attr.label = el['http://www.w3.org/2000/01/rdf-schema#label'] || undefined;
-			attr.type = el['@type'];
-			attr.begin = el['begin'];
-			attr.end = el['end'];
-			attr.attributes = el;
-			delete(attr.attributes['@id']);
-			delete(attr.attributes['http://www.w3.org/2000/01/rdf-schema#label']);
-			delete(attr.attributes['@type']);
-			delete(attr.attributes['begin']);
-			delete(attr.attributes['end']);
-			obs = new Samotraces.KTBS.Obsel(attr);
-			
-			if(! this._check_obsel_loaded_(obs)) {
-				new_obsel_loaded = true;
-			}
-*/
 		var obs = {
 			attributes: {}
 		};
@@ -967,12 +947,22 @@ Samotraces.KTBS.Trace.prototype = {
 		// data["m:type"];
 		obs.type = data["@type"].substr(2);
 	
+		if(data.hasOwnProperty('http://www.w3.org/2000/01/rdf-schema#label')) {
+			obs.label = data['http://www.w3.org/2000/01/rdf-schema#label'];
+		}
+		obs.begin = data.begin;
+		obs.end = data.end;
+		
 		// DELETING PROPERTIES THAT HAVE ALREADY BEEN COPIED
 		delete data["@id"];
 		delete data.hasTrace;
 		delete data["@type"];
+		delete data.begin;
+		delete data.end;
+		delete data['http://www.w3.org/2000/01/rdf-schema#label'];
 		//delete data["m:type"];
 		
+			
 		// ATTRIBUTES
 		for(var attr in data) {
 			if(attr.substr(0,2) == "m:") { // TODO this is not generic!!!!
@@ -982,7 +972,7 @@ Samotraces.KTBS.Trace.prototype = {
 	//console.log(data,obs);
 		var o = new Samotraces.KTBS.Obsel(obs);
 		if(!this._check_obsel_loaded_(o)) { // TODO first approximation
-			this.trigger('trace:create:obsel',o);
+			this.trigger('trace:create_obsel',o);
 		}
 	},
 
@@ -1085,8 +1075,11 @@ Samotraces.KTBS.Trace.prototype = {
 				}
 			}
 			function _on_create_obsel_success_(data,textStatus,jqXHR) {
+				/*
 				var url = jqXHR.getResponseHeader('Location');
 				var url_array = url.split('/');
+				*/
+				var url_array = data.split('/');
 				var obsel_id = url_array[url_array.length -1];
 				//this.get_obsel(obsel_id);
 				// Optimisation: do not do a GET query to get the OBSEL
@@ -1096,7 +1089,7 @@ Samotraces.KTBS.Trace.prototype = {
 				params.trace = this;
 				var o = new Samotraces.KTBS.Obsel(params);
 				if(!this._check_obsel_loaded_(o)) {
-					this.trigger('trace:create:obsel',o);
+					this.trigger('trace:create_obsel',o);
 				}
 			}
 			jQuery.ajax({
@@ -1196,11 +1189,11 @@ Samotraces.LocalTrace.prototype = {
 	get_label: function() { return this.label; },
 	set_label: function(lbl) {
 		this.label = lbl;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	reset_label: function() {
 		this.label = "";
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 
 	get_model: function() { return this.model; },
@@ -1232,16 +1225,16 @@ Samotraces.LocalTrace.prototype = {
 	},
 	set_model: function(model) {
 		this.model = model;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	set_origin: function(origin) {
 		this.origin = origin;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 	get_default_subject: function() { return this.subject;},
 	set_default_subject: function(subject) {
 		this.subject = subject;
-		this.trigger('trace:edit:meta');
+		this.trigger('trace:edit_meta');
 	},
 
 	create_obsel: function(obsel_params) {
@@ -1250,13 +1243,13 @@ Samotraces.LocalTrace.prototype = {
 		obsel_params.trace = this;
 		var obs = new Samotraces.Obsel(obsel_params);
 		this.obsel_list.push(obs);
-		this.trigger('trace:create:obsel',obs);
+		this.trigger('trace:create_obsel',obs);
 	},
 	remove_obsel: function(obs) {
 		this.obsel_list = this.obsel_list.filter(function(o) {
 			return (o===obs)?false:true;
 		});
-		this.trigger('trace:remove:obsel',obs);
+		this.trigger('trace:remove_obsel',obs);
 	},
 	/**
 	 * @todo TODO document this method
@@ -1274,7 +1267,7 @@ Samotraces.LocalTrace.prototype = {
 			trace.list_obsels().forEach(function(o) {
 				transformed_trace.create_obsel(o.to_Object());
 			});
-			trace.on('trace:create:obsel',function(e) {
+			trace.on('trace:create_obsel',function(e) {
 				var o = e.data;
 				transformed_trace.create_obsel(o.to_Object());
 			});
@@ -1296,7 +1289,7 @@ console.log(opt);
 					}
 				}
 			});
-			trace.on('trace:create:obsel',function(e) {
+			trace.on('trace:create_obsel',function(e) {
 				var o = e.data;
 				if(opt.types.some(function(type) {return type === o.get_obsel_type();})) {
 					if(opt.mode === "keep") {
@@ -1563,7 +1556,7 @@ Samotraces.TimeWindow.prototype = {
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_end: function(time) {
-		if(this.start != time) {
+		if(this.end != time) {
 			this.end = time;
 			this.__calculate_width();
 			this.trigger('tw:update');
@@ -2133,11 +2126,11 @@ Samotraces.UI.Widgets.ObselInspector.prototype = {
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('begin: '+ Date(obs.get_begin()).toString()));
+		li_element.appendChild(document.createTextNode('begin: '+ (new Date(obs.get_begin())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('end: '+ Date(obs.get_end()).toString()));
+		li_element.appendChild(document.createTextNode('end: '+ (new Date(obs.get_end())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		for(var key in obs.attributes) {
@@ -2668,9 +2661,9 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 
 	this.trace = trace;
 	this.trace.on('trace:update',this.draw.bind(this));
-	this.trace.on('trace:create:obsel',this.draw.bind(this));
-	this.trace.on('trace:remove:obsel',this.draw.bind(this));
-	this.trace.on('trace:edit:obsel',this.obsel_redraw.bind(this));
+	this.trace.on('trace:create_obsel',this.draw.bind(this));
+	this.trace.on('trace:remove_obsel',this.draw.bind(this));
+	this.trace.on('trace:edit_obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
 	this.window.on('tw:update',this.refresh_x.bind(this));
@@ -2860,16 +2853,16 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 	obsel_redraw: function(e) {
 		obs = e.data;
 		var sel = this.d3Obsels()
-			.filter(function(o,id) {
+			.filter(function(o) {
 //				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
-				return id == obs.get_id();
+				return o.get_id() == obs.get_id();
 			})
+			.datum(obs)
 			.attr('x',this.options.x)
 			.attr('y',this.options.y)
 			.attr('width',this.options.width)
 			.attr('height',this.options.height)
 			.attr('xlink:href',this.options.url);
-console.log("obsel_redraw",$.data(sel[0][0]));
 	},
 
 	d3Obsels: function() {
@@ -2910,32 +2903,47 @@ console.log("obsel_redraw",$.data(sel[0][0]));
  * @todo add description and update doc...
  */
 Samotraces.UI.Widgets.TraceDisplayObselOccurrences = function(divId,trace,time_window) {
-
 	// WidgetBasicTimeForm is a Widget
 	Samotraces.UI.Widgets.Widget.call(this,divId);
 
-	this.add_class('Widget-TraceDisplayObselOccurrences');
+	this.add_class('Widget-ObselOccurrences');
+	//this.add_class('Widget-TraceDisplayObselOccurrences');
 	$(window).resize(this.refresh_x.bind(this));
 
 	this.trace = trace;
 	this.trace.on('trace:update',this.draw.bind(this));
-	this.trace.on('newObsel',this.addObsel.bind(this));
+	this.trace.on('trace:create_obsel',this.draw.bind(this));
+	this.trace.on('trace:remove_obsel',this.draw.bind(this));
+	this.trace.on('trace:edit_obsel',this.obsel_redraw.bind(this));
 
 	this.window = time_window;
 	this.window.on('tw:update',this.refresh_x.bind(this));
+	this.window.on('tw:translate',this.translate_x.bind(this));
 
+//	this.obsel_selector = obsel_selector;
+//	this.window.addEventListener('',this..bind(this));
 
 	this.init_DOM();
-	this.data = this.trace.traceSet;
+	this.data = this.trace.list_obsels();
+
+	// create function that returns value or function
+	var this_widget = this;
 
 	this.draw();
 };
 
 Samotraces.UI.Widgets.TraceDisplayObselOccurrences.prototype = {
 	init_DOM: function() {
-		var div_elmt = d3.select('#'+this.id);
-		this.svg = div_elmt.append('svg');
 
+
+		var div_elmt = d3.select('#'+this.id);
+		this.svg = div_elmt.append('svg')
+				.attr("xmlns","http://www.w3.org/2000/svg")
+				.attr("version","1.1");
+
+
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
 
 		this.svg_gp = this.svg.append('g')
 						.attr('transform', 'translate(0,0)');
@@ -2945,20 +2953,14 @@ Samotraces.UI.Widgets.TraceDisplayObselOccurrences.prototype = {
 		this.add_behaviour('changeTimeOnDrag',this.element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
-					widget.window.translate(time_delta);	
-				//	var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
-					// replace element.getSize() by element.clientWidth?
-					widget.svg_gp.attr('transform','translate(0,0)');
-				//	widget.timer.set(new_time);
-					
+					widget.svg_gp.attr('transform','translate('+(-widget.translate_offset)+',0)');
+					widget.window.translate(time_delta);
 				},
 				onMoveCallback: function(offset) {
-					widget.svg_gp.attr('transform','translate('+offset+',0)');
+					widget.svg_gp.attr('transform','translate('+(offset-widget.translate_offset)+',0)');
 				},
 			});
 		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
-//		this.element.addEventListener('wheel',this.build_callback('wheel'));
-//		this.element.addEventListener('mousedown',this.build_callback('mousedown'));
 	},
 
 
@@ -2970,59 +2972,321 @@ Samotraces.UI.Widgets.TraceDisplayObselOccurrences.prototype = {
 	 * @param {Number} time Time for which to seek the corresponding x parameter
 	 */
 	calculate_x: function(o) {
-//console.log(o);
-		var x = (o.attributes.hasBegin - this.window.start)*this.element.clientWidth/this.window.get_width();
-//console.log(x);
-		return x;
+		return x = (o.get_begin() - this.window.start)*this.scale_x + this.translate_offset;
+	},
+	calculate_width: function(o) {
+		return x = Math.max(0.01, (o.get_end() - o.get_begin())*this.scale_x ); // width of 0 => not displayed
+	},
+	translate_x: function(e) {
+		var time_delta = e.data;
+		this.translate_offset += time_delta*this.scale_x;
+		this.svg_gp
+			.attr('transform', 'translate('+(-this.translate_offset)+',0)');
 	},
 
 	refresh_x: function() {
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
+		this.svg_gp
+			.attr('transform', 'translate(0,0)');
 		this.d3Obsels()
-			.attr('x1',this.calculate_x.bind(this))
-			.attr('x2',this.calculate_x.bind(this));
+			.attr('x',this.calculate_x.bind(this))
+			.attr('width',this.calculate_width.bind(this))
 	},
-/*	translate_x: function() {
-		this.time
-		var delta_x = this.timer.time - 
-var new_time = widget.timer.time - delta_x*widget.window.get_width()/widget.element.clientWidth;
-		this.current_offset = this.current_offset + offset;
-		this.svg_gp.attr('transform','translate('+this.current_offset+',0)');
-	},*/
 
 	draw: function(e) {
 		if(e) {
-			this.data = this.trace.traceSet;
+			switch(e.type) {
+				case "trace:update":
+					this.data = this.trace.list_obsels();
+					break;
+				default:
+					this.data = this.trace.obsel_list; // do not want to trigger the refreshing of list_obsels()...
+					break;
+				}
 		}
+
+		this.d3Obsels()
+			.exit()
+			.remove();
 		this.d3Obsels()
 			.enter()
-			.append('line')
-			.attr('x1',this.calculate_x.bind(this))
-			.attr('y1','0%')
-			.attr('x2',this.calculate_x.bind(this))
-			.attr('y2','100%')
-			.attr('stroke-width','1px')
-			.attr('stroke','black');
-	},
-	drawObsel: function(obs) {
-		this.draw();	
+			.append('rect')
+			//.attr('class','Samotraces-obsel')
+			.attr('x',this.calculate_x.bind(this))
+			.attr('y','0')
+			.attr('width',this.calculate_width.bind(this))
+			.attr('height','20');
+			//.attr('stroke-width','1px')
+			//.attr('stroke','black');
+		// Storing obsel data with jQuery for accessibility from 
+		// events defined by users with jQuery
+		$('rect',this.element).each(function(i,el) {
+			$.data(el,{
+				'Samotraces-type': 'obsel',
+				'Samotraces-data': d3.select(el).datum()
+			});
+		});
 	},
 
-	addObsel: function(e) {
-		var obs = e.data;
-//console.log('addObsel '+obs.id);
-//console.log(obs);
-		this.data.push(obs);
-		this.drawObsel(obs);
+	obsel_redraw: function(e) {
+		obs = e.data;
+		var sel = this.d3Obsels()
+			.filter(function(o) {
+//				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
+				return o.get_id() == obs.get_id();
+			})
+			.datum(obs)
+			.attr('x',this.calculate_x.bind(this))
+			.attr('width',this.calculate_width.bind(this))
+			.attr('xlink:href',this.options.url);
 	},
+
 	d3Obsels: function() {
 		return this.svg_gp
-					.selectAll('line')
+					.selectAll('circle,image,rect')
 					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
-					.data(this.data); //,function(d) { return d.id;});
+					//.data(this.data); //,function(d) { return d.id;});
+					.data(this.data, function(d) { return d.id;}); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
 	},
 
 
 };
+
+
+
+
+
+
+
+
+// last: UI/Widgets/TraceDisplayZoomContext.js
+/**
+ * @summary Widget for visualising a trace.
+ * @class Widget for visualising a trace.
+ * @author Benoît Mathern
+ * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
+ * @constructor
+ * @mixes Samotraces.UI.Widgets.Widget
+ * @description
+ * DESCRIPTION TO COME....
+ * @param {String}	divId
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Samotraces.Trace}	trace
+ *     Trace object to display
+ * @param {Samotraces.TimeWindow} time_window
+ *     TimeWindow object that defines the time frame
+ *     being currently displayed.
+ * @todo add description and update doc...
+ */
+Samotraces.UI.Widgets.TraceDisplayZoomContext = function(divId,trace,time_window1,time_window2,options1,options2) {
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.UI.Widgets.Widget.call(this,divId);
+
+	this.mode = 'window_sync';
+	if(options1 !== undefined || options2 !== undefined) {
+		this.mode = 'obsel_sync';
+		if(options1 !== undefined && options1.hasOwnProperty('x')) {
+			this.x1 = options1.x.bind(this);	
+		}
+		if(options2 !== undefined && options2.hasOwnProperty('x')) {
+			this.x2 = options2.x.bind(this);
+		}
+	}
+
+	this.add_class('Widget-ObselOccurrences');
+	//this.add_class('Widget-TraceDisplayObselOccurrences');
+	$(window).resize(this.refresh_x.bind(this));
+
+	this.trace = trace;
+	this.trace.on('trace:update',this.draw.bind(this));
+	this.trace.on('trace:create_obsel',this.draw.bind(this));
+	this.trace.on('trace:remove_obsel',this.draw.bind(this));
+	this.trace.on('trace:edit_obsel',this.obsel_redraw.bind(this));
+
+	this.window1 = time_window1;
+	this.window1.on('tw:update',this.refresh_x.bind(this));
+	this.window1.on('tw:translate',this.refresh_x.bind(this));
+
+	this.window2 = time_window2;
+	this.window2.on('tw:update',this.refresh_x.bind(this));
+	this.window2.on('tw:translate',this.refresh_x.bind(this));
+
+//	this.obsel_selector = obsel_selector;
+//	this.window1.addEventListener('',this..bind(this));
+
+	this.init_DOM();
+	this.data = this.trace.list_obsels();
+
+	// create function that returns value or function
+	var this_widget = this;
+
+	this.draw();
+};
+
+Samotraces.UI.Widgets.TraceDisplayZoomContext.prototype = {
+	init_DOM: function() {
+
+
+		var div_elmt = d3.select('#'+this.id);
+		this.svg = div_elmt.append('svg')
+				.attr("xmlns","http://www.w3.org/2000/svg")
+				.attr("version","1.1");
+
+
+		this.scale_x1 = this.element.clientWidth/this.window1.get_width();
+		this.scale_x2 = this.element.clientWidth/this.window2.get_width();
+		this.translate_offset = 0;
+
+		this.sync_path = this.svg.append('path')
+					.attr('style','stroke:grey;stroke-width:1px;fill:#ddd;');
+		this.svg_gp = this.svg.append('g')
+						.attr('transform', 'translate(0,0)');
+
+	},
+
+
+	// TODO: needs to be named following a convention 
+	// to be decided on
+	/**
+	 * Calculates the X position in pixels corresponding to 
+	 * the time given in parameter.
+	 * @param {Number} time Time for which to seek the corresponding x parameter
+	 */
+	calculate_x: function(t) {
+		return x = (t - this.w_start)*this.scale_x;
+	},
+	o2x1: function(o) {
+		this.w_start = this.window1.start;
+		this.scale_x = this.scale_x1;
+		return this.x1(o);
+	},
+	o2x2: function(o) {
+		this.w_start = this.window2.start;
+		this.scale_x = this.scale_x2;
+		return this.x2(o);
+	},
+	x1: function(o) {
+		return this.calculate_x(o.get_begin());
+	},
+	x2: function(o) {
+		return this.calculate_x(o.get_begin());
+	},
+	calculate_path: function(o) {
+		var p = [];
+		var x1 = this.o2x1(o);
+		var x2 = this.o2x2(o);
+		p = ['M',x1,'0','C',x1,'10,',x2,'10,',x2,'20'];
+		return p.join(' ');
+	},
+	calculate_visibility: function(o) {
+		var x1 = this.o2x1(o);
+		if(x1 < 0) return false;
+		if(x1 > this.element.clientWidth) return false;
+		var x2 = this.o2x2(o);
+		if(x2 > this.element.clientWidth) return false;
+		if(x2 < 0) return false;
+		return true;
+	},
+	calculate_style: function(o) {
+		if(this.calculate_visibility(o)) {
+		//if(true) {
+			return 'stroke:grey;stroke-width:1px;fill:none;';
+		} else {
+			return 'stroke:none;stroke-width:1px;fill:none;';
+		}
+	},
+	translate_x: function(e) {
+		var time_delta = e.data;
+		this.translate_offset += time_delta*this.scale_x;
+		this.svg_gp
+			.attr('transform', 'translate('+(-this.translate_offset)+',0)');
+	},
+
+	refresh_x: function() {
+		this.scale_x1 = this.element.clientWidth/this.window1.get_width();
+		this.scale_x2 = this.element.clientWidth/this.window2.get_width();
+		this.translate_offset = 0;
+		this.svg_gp
+			.attr('transform', 'translate(0,0)');
+		if(this.mode == "obsel_sync") {
+			this.d3Obsels()
+				.attr('d',this.calculate_path.bind(this))
+				.attr('style',this.calculate_style.bind(this));
+		} else {
+			this.sync_path.attr('d',this.calculate_sync_path.bind(this));
+		}
+	},
+
+	draw: function(e) {
+		if(e) {
+			switch(e.type) {
+				case "trace:update":
+					this.data = this.trace.list_obsels();
+					break;
+				default:
+					this.data = this.trace.obsel_list; // do not want to trigger the refreshing of list_obsels()...
+					break;
+				}
+		}
+		if(this.mode == "obsel_sync") {
+			this.d3Obsels()
+				.exit()
+				.remove();
+			this.d3Obsels()
+				.enter()
+				.append('path')
+				//.attr('class','Samotraces-obsel')
+				.attr('d',this.calculate_path.bind(this))
+				.attr('style',this.calculate_style.bind(this));
+			this.d3Obsels()
+				//.attr('stroke-width','1px')
+				//.attr('stroke','black');
+			// Storing obsel data with jQuery for accessibility from 
+			// events defined by users with jQuery
+			$('path',this.element).each(function(i,el) {
+				$.data(el,{
+					'Samotraces-type': 'obsel',
+					'Samotraces-data': d3.select(el).datum()
+				});
+			});
+		} else {
+			this.sync_path.attr('d',this.calculate_sync_path.bind(this));
+		}
+	},
+	calculate_sync_path: function() {
+		var ts = Math.max(this.window1.start,this.window2.start);
+		var te = Math.min(this.window1.end,this.window2.end);
+		var x1s = (Math.min(ts,this.window1.end) - this.window1.start)*this.scale_x1;
+		var x2s = (Math.min(ts,this.window2.end) - this.window2.start)*this.scale_x2;
+		var x1e = (Math.max(te,this.window1.start) - this.window1.start)*this.scale_x1;
+		var x2e = (Math.max(te,this.window2.start) - this.window2.start)*this.scale_x2;
+		var p = ["M",x1s,"0","C",x1s,"20,",x2s,"0,",x2s,"20","L",x2e,"20","C",x2e,"0,",x1e,"20,",x1e,"0","Z"];
+		return p.join(" ");
+	},
+	obsel_redraw: function(e) {
+		obs = e.data;
+		var sel = this.d3Obsels()
+			.filter(function(o) {
+//				console.log('data:id,obsel_edit_id',id,obs.get_id(),id == obs.get_id());
+				return o.get_id() == obs.get_id();
+			})
+			.datum(obs)
+			.attr('d',this.calculate_path.bind(this))
+	},
+
+	d3Obsels: function() {
+		return this.svg_gp
+					.selectAll('path')
+					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
+					//.data(this.data); //,function(d) { return d.id;});
+					.data(this.data, function(d) { return d.id;}); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
+	},
+
+
+};
+
 
 
 
