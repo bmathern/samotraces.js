@@ -88,7 +88,7 @@ Samotraces.TimeWindow.prototype = {
 	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_end: function(time) {
-		if(this.start != time) {
+		if(this.end != time) {
 			this.end = time;
 			this.__calculate_width();
 			this.trigger('tw:update');
