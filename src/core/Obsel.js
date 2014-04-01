@@ -5,20 +5,46 @@
  * @typedef Obsel
  * @see Samotraces.Obsel
  */
+
+/**
+ * ObselParam is an object that contains parameters
+ * necessary to create a new obsel.
+ * This type of object is used in several methods
+ * such as the Obsel constructor, or the
+ * Trace.create_obsel method.
+ * The optional porperties varies depending on the
+ * method called.
+ * @typedef ObselParam
+ * @property {String} [id] Id of the obsel
+ * @property {Trace} [trace] Trace of the obsel
+ * @property {String} [type] Type of the obsel
+ * @property {Number} [begin] Timestamp of when the obsel starts
+ * @property {Number} [end] Timestamp of when the obsel ends
+ * @property {Object} [attributes] Attributes of the obsel.
+ * @property {Array<Object>} [attributes] Attributes of the obsel.
+ * @property {Array<Relation>} [relations] Relations from this obsel.
+ * @property {Array<Relation>} [inverse_relations] Relations to this obsel.
+ * @property {Array<Obsel>} [source_obsels] Source obsels of the obsel.
+ * @property {String} [param.label] Label of the obsel.
+ * @todo FIXME DEFINE WHAT IS A RELATION
+ */
+
 /**
  * @summary JavaScript Obsel class
  * @class JavaScript Obsel class
- * @param {Object} param Parameters 
+ * @param {ObselParam} param Parameters of the obsel
  * @param {String} param.id Identifier of the obsel.
- * @param {Number} param.begin Timestamp of the obsel
- * @param {Number} param.end Timestamp of the obsel
+ * @param {Trace} param.Trace Trace of the obsel.
  * @param {String} param.type Type of the obsel.
+ * @param {Number} [param.begin=Date.now()] Timestamp of when the obsel starts
+ * @param {Number} [param.end=param.begin] Timestamp of when the obsel ends
  * @param {Object} [param.attributes] Attributes of the obsel.
  * @param {Array<Object>} [param.attributes] Attributes of the obsel.
- * @param {Array<FIXME>} [param.relations] Relations from this obsel.
- * @param {Array<FIXME>} [param.inverse_relations] Relations to this obsel.
+ * @param {Array<Relation>} [param.relations] Relations from this obsel.
+ * @param {Array<Relation>} [param.inverse_relations] Relations to this obsel.
  * @param {Array<Obsel>} [param.source_obsels] Source obsels of the obsel.
  * @param {String} [param.label] Label of the obsel.
+ * @todo FIXME RELATIONS ARE NOT YET SUPPORTED
  */
 // *
 Samotraces.Obsel = function Obsel(param) {
@@ -135,13 +161,19 @@ Samotraces.Obsel.prototype = {
 	 * Returns the time when the Obsel starts.
 	 * @returns {Number} Time when the Obsel starts.
 	 */
-	get_begin: 		function() { return this.begin;	},
+	get_begin: 		function() { 
+		//return this.get_trace().get_origin_offset() + this.begin;
+		return this.begin;
+	},
 	/**
 	 * @summary
 	 * Returns the time when the Obsel ends.
 	 * @returns {Number} Time when the Obsel ends.
 	 */
-	get_end: 		function() { return this.end;	},
+	get_end: 		function() {
+		//return this.get_trace().get_origin_offset() + this.end;
+		return this.end;
+	},
 	/**
 	 * @summary
 	 * Sets the type of the Obsel.

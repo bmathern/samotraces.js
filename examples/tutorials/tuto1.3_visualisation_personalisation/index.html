@@ -42,9 +42,9 @@
         <script type="text/javascript">
         function init() {
             // Create logical objects
-            var trace        = new Samotraces.Lib.DemoTrace();
-            var tw            = new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-            var obsel_selector    = new Samotraces.Lib.Selector('Obsel');
+            var trace        = new Samotraces.LocalTrace();
+            var tw            = new Samotraces.TimeWindow({start: 0,end: 20});
+            var obsel_selector    = new Samotraces.Selector('Obsel');
 
             // Visualisation options
             var options = {
@@ -60,10 +60,10 @@
             };
 
             // Create widgets
-            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
-            new Samotraces.Widgets.WindowScale('scale',tw);
-            new Samotraces.Widgets.ImportTrace('importer',trace);
-            new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+            new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+            new Samotraces.UI.Widgets.WindowScale('scale',tw);
+            new Samotraces.UI.Widgets.ImportTrace('importer',trace);
+            new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 
 			// Adding behaviour when clicking on obsels using jQuery
 			$('body').on('click','.Σ-obsel',function(e) {

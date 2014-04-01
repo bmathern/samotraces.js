@@ -124,6 +124,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayCurve.html">TraceDisplayCurve</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 						</li>
 						
@@ -316,7 +320,7 @@ http://en.wikipedia.org/wiki/Music_note#12-tone_chromatic_scale
 <p>
 In this tutorial, you will display these notes on a music sheet.
 For this purpose, you will setup the
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
 and tweak the HTML and CSS files.
 </p>
 
@@ -351,19 +355,19 @@ Let's start with the code obtained at the end of the previous part of the tutori
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Selector('Obsel');
 
 			var options = {
 				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
 			}
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
-			new Samotraces.Widgets.WindowScale('scale',tw);
-			new Samotraces.Widgets.ImportTrace('importer',trace);
-			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.UI.Widgets.WindowScale('scale',tw);
+			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
+			new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -391,13 +395,13 @@ window.addEventListener('DOMContentLoaded', init );
 		</li>
 		<li>Create the following widgets:
 			<ul>
-				<li><a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>: 
+				<li><a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>: 
 				a trace visualisation widget</li>
-				<li>WindowScale: 
+				<li><a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a>: 
 				a time scale widget</li>
-				<li>ImportTrace: 
+				<li><a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>: 
 				a widget to import CSV files in the current trace</li>
-				<li>ObselInspector: 
+				<li><a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a>: 
 				a widget that inspect obsels</li>
 			</ul>
 		</li>
@@ -439,17 +443,17 @@ and change the visualisation so that music notes are displayed instead of the de
 <p>
 In order to change the default visualisation symbol of the displayed trace,
 we will go back to the documentation of the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
 </p>
 
 <p>
-When you initialise the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+When you initialise the <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 widget the last parameter is an optional parameter.
 This parameter will determine the default behaviour when some
 events are triggered by the widget (like clicking on an obsel),
 and the visualisation parameters.
 More precisely, the <code>options.visu</code> parameter is a
-<a href="Samotraces.Widgets.TraceDisplayIcons.html#VisuConfig">VisuConfig</a>
+VisuConfig
 object, which defines how each obsel will be displayed:
 the image name (url), its height, width, and its coordinates x and y.
 Let's have a look at each parameters more precisely:
@@ -528,7 +532,7 @@ options.visu = {
 };
 
 // Create widgets
-new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 </pre>
 
 <p>
@@ -544,7 +548,7 @@ It is a bit too small though.
 <p>
 The original image file is 34 pixel in width by 60 pixels in height.
 So, why is it so small?
-Well, this is because the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
+Well, this is because the <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
 displays images of 16px by 16px by default.
 So, now, you want to edit the visualisation to change de default width
 and default height. This is pretty easy (don't forget the commas to separate the attributes!):
@@ -660,7 +664,7 @@ Samotraces.js widgets. Feel free to edit it to make your own templates!
 <p>
 Now that we know how it works, let's go back to our initial problem.
 We want to change the height
-of the <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+of the <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
 For this, we must edit the CSS style of the "Widget-TraceDisplayIcons" class.
 </p>
 
@@ -681,7 +685,7 @@ existing CSS file, you will have to update the paths to the background images.)
 
 <p>
 If you look at the samotraces.css file, you will see that
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget's
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget's
 height is setup to 50px. This explains why our 60px image wouldn't fit.
 Now, we will write some CSS code in the HTML page that will override this
 property to make the widget 150px in height:
@@ -727,15 +731,15 @@ spot on the staff.
 
 <p>
 But hang on, how do I know if a note is A, B, C, etc.?
-Well, this information is stored on the Obsel object.
-Obsel objects each have a type, a timestamp and
+Well, this information is stored on the <a href="Samotraces.Obsel.html">Obsel</a> object.
+<a href="Samotraces.Obsel.html">Obsel</a> objects each have a type, a timestamp and
 optional attributes. In our example, the note's height (A, B, C, etc.) 
 is stored in the type of the obsel.
 </p>
 
 <p>
 So now, we have to go back to the <code>options</code> JavaScript object
-that is used by <a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+that is used by <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 widget to adapt the visualisation of each obsel:
 </p>
 
@@ -752,11 +756,11 @@ But hang on, we don't want all obsels to be displayed at the same y.
 We want each obsel to be displayed to it's own <code>y</code>,
 corresponding to its own type. How do we do that?
 Well, if you go back to the documentation of the
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
 you will see that each option argument can be either a value
 (like what we have done so far), or a function.
 If it is a function, the function will be passed as argument the 
-specific Obsel object to display
+specific <a href="Samotraces.Obsel.html">Obsel</a> object to display
 and should return the calculated value for this obsel.
 </p>
 
@@ -841,7 +845,7 @@ does that:
 The duration of the obsel-note is stored in the duration attribute.
 As duration is an optional attribute (the non-optional attributes are
 the id, the type and the timestamp), its value is stored in the
-"attributes" field of the {@link Samotraces.Lib.Obsel|Obsel} object.
+"attributes" field of the <a href="Samotraces.Obsel.html">Obsel</a> object.
 That explains why it is accessed with the code
 <code>obsel.attributes.duration</code>.
 </p>
@@ -897,8 +901,8 @@ the widgets).
 The reason why all the widgets are encapsulated into a "widgets" DIV is
 to make it possible for all the widget to have the same width.
 Without doing so, the width of the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
-WindowScale widget might be different,
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
+<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> widget might be different,
 and therefore, the time representation would not match.
 </p>
 
@@ -935,8 +939,8 @@ that it adapts itself to the available space.
 
 <p>
 the attribute <code>width</code> of the widgets
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
-WindowScale had to be overridden.
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> and
+<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> had to be overridden.
 The default value in samotraces.css file is <code>width: 100%;</code>,
 which corresponds to the width of the HTML page, not to the width
 of the available space on the left.
@@ -992,9 +996,9 @@ Enjoy the result!</p>
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Selector('Obsel');
 
 			// Visualisation options
 			var options = {};
@@ -1014,10 +1018,10 @@ Enjoy the result!</p>
 			};
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
-			new Samotraces.Widgets.WindowScale('scale',tw);
-			new Samotraces.Widgets.ImportTrace('importer',trace);
-			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.UI.Widgets.WindowScale('scale',tw);
+			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
+			new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -1055,7 +1059,7 @@ Now, feel free to enjoy Samotraces.js and to use it in your own applications!
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Mar 11 2014 11:00:49 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Tue Apr 01 2014 17:32:47 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

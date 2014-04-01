@@ -124,6 +124,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayCurve.html">TraceDisplayCurve</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 						</li>
 						
@@ -277,7 +281,7 @@
 <p>
 In the first part of this tutorial, you have seen how to
 create a first basic visualisation of a trace with the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 widget.
 In this second part of the tutorial, you will learn how to 
 use other widgets. 
@@ -308,16 +312,16 @@ Let's start with the code obtained at the end of the previous part of the tutori
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 
 			// Add obsels to the trace
-			trace.newObsel('click',1);
-			trace.newObsel('click',5);
-			trace.newObsel('click',12);
+			trace.create_obsel({type: 'click', begin: 1});
+			trace.create_obsel({type: 'click', begin: 5});
+			trace.create_obsel({type: 'click', begin: 12});
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -354,7 +358,7 @@ window.addEventListener('DOMContentLoaded', init );
 
 <p>
 As you have seen during the first tutorial, when you want to create a 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget, 
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget, 
 the first argument that will be provided is the ID of the HTML DIV
 element where the plugin will be instanciated.
 This will <strong>always</strong> be the case for 
@@ -380,37 +384,37 @@ Then you can update your JavaScript source code to create the new widget.
 
 <p>
 First, we will add a time scale to the trace. This will be done with 
-the WindowScale widget.
+the <a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> widget.
 </p>
 
 <p>
-The documentation of the WindowScale widget
+The documentation of the <a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> widget
 tells us that the 
-WindowScale widget requires two parameters:
+<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> widget requires two parameters:
 <ol>
 	<li>A String, which is the ID of the HTML DIV element 
 	where we want to instanciate the widget.</li>
-	<li>A TimeWindow which delimitates
+	<li>A <a href="Samotraces.TimeWindow.html">TimeWindow</a> which delimitates
 	the current time window.</li>
 </ol>
 </p>
 
 <p>
 As we want the time scale to match what is displayed on the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
-we will use the same TimeWindow object 
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+we will use the same <a href="Samotraces.TimeWindow.html">TimeWindow</a> object 
 (<code>tw</code>).
 All we need to do is to create a HTML DIV element for the widget 
 (with the id <code>"scale"</code> for instance) and then instanciate the 
-{@link Samotraces.Widgets.WindowScale|WindowScale} widget with this id and the
-TimeWindow object <code>tw</code> that
+<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a> widget with this id and the
+<a href="Samotraces.TimeWindow.html">TimeWindow</a> object <code>tw</code> that
 have already been instanciated:
 </p>
 
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="scale"&gt;&lt;/div&gt;
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.WindowScale('scale',tw);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.UI.Widgets.WindowScale('scale',tw);
 </pre>
 
 <p>
@@ -421,7 +425,7 @@ Now you should see something like this:
 When zooming in or out on the trace, you should see that the scale updates itself.
 The same happens if you move the trace to the left of to the right.
 This is the magic of using the same 
-{@link Samotraces.Lib.TimeWindow|TimeWindow} object in the two widgets.
+<a href="Samotraces.TimeWindow.html">TimeWindow</a> object in the two widgets.
 </p>
 
 
@@ -430,7 +434,7 @@ This is the magic of using the same
 <p>
 In the previous tutorial, we had added manually three obsels to an empty trace.
 In this section, we will import obsels from a CSV file with the 
-ImportTrace widget.
+<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a> widget.
 </p>
 
 <p>
@@ -439,13 +443,13 @@ Then, we need to instanciate the ImportTrace widget.
 </p>
 
 <p>
-Reading the ImportTrace widget
+Reading the <a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a> widget
 documentation tells us that the 
-ImportTrace widget requires two parameters:
+<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a> widget requires two parameters:
 <ol>
 	<li>A String, which is the ID of the HTML DIV element 
 	where we want to instanciate the widget.</li>
-	<li>A Trace object in which the CSV file(s) will be imported.</li>
+	<li>A <a href="Samotraces.Trace.html">Trace</a> object in which the CSV file(s) will be imported.</li>
 </ol>
 </p>
 
@@ -453,14 +457,14 @@ ImportTrace widget requires two parameters:
 As we want to import the CSV file in the current trace, we only need to create
 a HTML DIV element for the widget (with the id <code>"importer"</code> 
 for instance) and then instanciate the 
-ImportTrace widget with this id and the
+<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a> widget with this id and the
 trace object already instanciated in parameter:
 </p>
 
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="importer"&gt;&lt;/div&gt;
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ImportTrace('importer',trace);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.UI.Widgets.ImportTrace('importer',trace);
 </pre>
 
 <p>
@@ -484,13 +488,13 @@ The resulting code should be the following:
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
-			new Samotraces.Widgets.WindowScale('scale',tw);
-			new Samotraces.Widgets.ImportTrace('importer',trace);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+			new Samotraces.UI.Widgets.WindowScale('scale',tw);
+			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -521,20 +525,20 @@ It is even possible to select multiple CSV files to import at once.
 <h2>Inspecting an obsel</h2>
 
 <p>
-Now let's visualise the details of an obsel with the ObselInspector widget.
-The ObselInspector widget makes
+Now let's visualise the details of an obsel with the <a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a> widget.
+The <a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a> widget makes
 it possible to visualise the content of a selected obsel.
 It offers a simple list of all the attributes of the selected obsel.
 </p>
 
 <p>
 The documentation of the 
-ObselInspector widget says
+<a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a> widget says
 that it requires two parameters:
 <ol>
 	<li>A String, which is the ID of the HTML DIV element 
 	where we want to instanciate the widget.</li>
-	<li>A Selector of Obsel object.</li>
+	<li>A <a href="Samotraces.Selector.html">Selector</a> of Obsel object.</li>
 </ol>
 </p>
 
@@ -542,19 +546,19 @@ that it requires two parameters:
 The obsel Selector object stores the currently selected obsel
 and informs relevant plugins of the evolution of the selection.
 Let's try to make the 
-{@link Samotraces.Widgets.ObselInspector|ObselInspector} widget
+<a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a> widget
 work by adding a new HTML DIV element, and instanciating it
 with the previously defined 
-Selector object:
+<a href="Samotraces.Selector.html">Selector</a> object:
 </p>
 
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;div id="obsel-inspector"&gt;&lt;/div&gt;
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+<pre class="prettyprint sunlight-highlight-javascript linenums">var obsel_selector	= new Samotraces.Selector('Obsel');
 </pre>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 </pre>
 
 <p>
@@ -576,15 +580,15 @@ hidden. That is why there are nothing displayed.
 
 <p>
 You can select an obsel by using the
-Selector.select()
+<a href="Samotraces.Selector.html#select">Selector.select()</a>
 method, with the obsel as a parameter.
 However, we would like something more user friendly. For instance, 
 we would like to be able to select an obsel by clicking
 on it on the visualisation.
 For this, we need to link the click event on obsels displayed with the
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> visualisation
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> visualisation
 widget to the 
-Selector.select()
+<a href="Samotraces.Selector.html#select">Selector.select()</a>
 method.
 </p>
 
@@ -636,7 +640,7 @@ Now, let's define the <code>SELECTION</code> and the <code>CALLBACK</code>.
 <p>
 In Samotraces.js, classes are attached to HTML elements.
 Inside a Widget, such as the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
 each obsel representation will be attached to the <code>"Σ-obsel"</code>
 class. Note that "Σ" stands for "samotraces".
 With jQuery, it is easy to define a class selector (the CSS notation is
@@ -665,7 +669,7 @@ the target of the click event).
 <p>
 
 If you look more closely to the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget
 documentation, you will find that the widget triggers an event
 of type 
 ui:click:obsel
@@ -673,21 +677,21 @@ when the user click on an Obsel.
 This means, we need to bind the 
 ui:click:obsel
 event to the 
-Selector.select()
+<a href="Samotraces.Selector.html#select">Selector.select()</a>
 method.
 This can be done with the optional parameters of the 
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget.
 </p>
 
 <p>
 Looking back to the
-<a href="Samotraces.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget documentation,
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget documentation,
 we see that we need to create an object <code>options</code>
 that contains a field <code>events</code> of type 
 EventConfig
 in which the behaviour
 on the 
-{@link Samotraces.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+{@link Samotraces.UI.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
 event will be defined.
 The documentation gives an example of the option paramater, that we can
 simplify for the purpose of this tutorial:
@@ -698,7 +702,7 @@ simplify for the purpose of this tutorial:
 }
 
 // Create widgets
-new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 </pre>
 
 <p>
@@ -707,7 +711,7 @@ you might wonder what is the use of the "<code>.bind(obsel_selector)</code>"
 code.
 It turns out that with Javascript, if you use the reference to a method
 this way: <code>obsel_selector.select</code>, the 
-{@link Samotraces.Lib.Selector#select|Selector.select()} method
+{@link Samotraces.Selector#select|Selector.select()} method
 will be called, but the <code>this</code> parameter will not be bound to
 any instance.
 The <code>.bind(obsel_selector)</code> code ensures that the
@@ -743,19 +747,19 @@ Here is the final code that you should have obtained:
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
-			var obsel_selector	= new Samotraces.Lib.Selector('Obsel');
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
+			var obsel_selector	= new Samotraces.Selector('Obsel');
 
 			var options = {
 				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
 			}
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
-			new Samotraces.Widgets.WindowScale('scale',tw);
-			new Samotraces.Widgets.ImportTrace('importer',trace);
-			new Samotraces.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.UI.Widgets.WindowScale('scale',tw);
+			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
+			new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -807,7 +811,7 @@ You will learn how to make your own trace visualisation.
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Mar 11 2014 11:00:49 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Tue Apr 01 2014 17:32:47 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

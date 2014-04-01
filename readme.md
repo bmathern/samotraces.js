@@ -5,10 +5,12 @@ About Samotraces
 ----------------
 
 Samotraces.js is a framework for the development of trace-based applications.
+It offers ways to easily developed synchronised, multi-view, multi-scale,
+multi-sources visualisations.
 
 "Samotraces" stands for "a framework for scanning, skiming,
 supervising, apprehending, analysing, manipulating, managing and organizing
-observed traces". TODO -> update
+observed traces".
 
 How to use Samotraces.js?
 -------------------------

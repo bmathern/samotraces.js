@@ -337,6 +337,7 @@ Samotraces.KTBS.Trace = function Trace(uri,id) {
 	this.obsel_list_uri = "";
 	this.base_uri = "";
 	this.origin = "";
+	//this.origin_offset = (new Date(0)).getMilliseconds();
 	this.obsel_list = []; this.traceSet = [];
 
 	this.force_state_refresh();
@@ -350,6 +351,17 @@ Samotraces.KTBS.Trace.prototype = {
 	get_base: function() { return this.base_uri; },
 	get_model: function() { return this.model_uri; },
 	get_origin: function() { return this.origin; },
+	//get_origin_offset: function() { return this.origin_offset; },
+	/*ktbs_origin_to_ms: function(ktbs_date_str) {
+		var Y = ktbs_date_str.substr(0,4);
+		var M = ktbs_date_str.substr(5,2) - 1;
+		var D = ktbs_date_str.substr(8,2);
+		var h = ktbs_date_str.substr(11,2);
+		var m = ktbs_date_str.substr(14,2);
+		var s = ktbs_date_str.substr(17,2);
+		var ms = ktbs_date_str.substr(20,3);
+		return Date.UTC(Y,M,D,h,m,s,ms);
+	},*/
 	list_source_traces: function() {},
 	list_transformed_traces: function() {},
 	// @todo TODO add an optional CALLBACK
@@ -464,6 +476,7 @@ Samotraces.KTBS.Trace.prototype = {
 		this._check_change_('obsel_list_uri', data.hasObselList, 'trace:update');
 		this._check_change_('base_uri', data.inBase, '');
 		this._check_change_('origin', data.origin, '');
+		//this._check_change_('origin_offset',this.ktbs_origin_to_ms(data.origin),'');
 	},
 	_update_method_: function(trace_type,method_name) {
 		this[method_name] = this[trace_type+"_methods"][method_name];
@@ -528,7 +541,11 @@ Samotraces.KTBS.Trace.prototype = {
 	},
 	StoredTrace_methods: {
 		set_model: function(model) {},
-		set_origin: function(origin) {},
+		set_origin: function(origin) {
+			this.origin = origin;
+		//	this.origin_offset = (new Date(origin)).getMilliseconds();
+			// TODO sync with KTBS
+		},
 		get_default_subject: function() { return this.default_subject; },
 		set_default_subject: function(subject) {},
 		create_obsel: function(params) {

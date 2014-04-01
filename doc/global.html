@@ -124,6 +124,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayCurve.html">TraceDisplayCurve</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 						</li>
 						
@@ -463,6 +467,445 @@ object.</p>
             
                 
 <dt>
+    <h4 class="name" id="ObselParam">ObselParam</h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>ObselParam is an object that contains parameters
+necessary to create a new obsel.
+This type of object is used in several methods
+such as the Obsel constructor, or the
+Trace.create_obsel method.
+The optional porperties varies depending on the
+method called.</p>
+    </div>
+    
+    
+    
+
+    
+<dl class="details">
+    
+
+        <h5 class="subsection-title">Properties:</h5>
+
+        <dl>
+
+<table class="props table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Id of the obsel</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>trace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Trace">Trace</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Trace of the obsel</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Type of the obsel</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>begin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Timestamp of when the obsel starts</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Timestamp of when the obsel ends</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attributes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Attributes of the obsel.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attributes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Attributes of the obsel.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>relations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Relation></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Relations from this obsel.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>inverse_relations</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Relation></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Relations to this obsel.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>source_obsels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#Obsel">Obsel</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Source obsels of the obsel.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>param.label</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Label of the obsel.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+</dl>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Obsel.js.html">core/Obsel.js</a>, <a href="Obsel.js.html#sunlight-1-line-9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>FIXME DEFINE WHAT IS A RELATION</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+</dd>
+
+            
+                
+<dt>
     <h4 class="name" id="Selector">Selector</h4>
     
     
@@ -712,6 +1155,69 @@ object.</p>
     
 </dd>
 
+            
+                
+<dt>
+    <h4 class="name" id="VisuConfig">VisuConfig</h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>VisuConfig is a shortname for the 
+<a href="Samotraces.Widgets.TraceDisplayIcons.html#VisuConfig">Samotraces.Widgets.TraceDisplayIcons.VisuConfig</a>
+object.</p>
+    </div>
+    
+    
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="TraceDisplayCurve.js.html">UI/Widgets/TraceDisplayCurve.js</a>, <a href="TraceDisplayCurve.js.html#sunlight-1-line-95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Samotraces.Widgets.TraceDisplayIcons.html#VisuConfig">Samotraces.Widgets.TraceDisplayIcons.VisuConfig</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
             </dl>
     
 
@@ -731,7 +1237,7 @@ object.</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Tue Mar 11 2014 11:00:47 GMT+0100 (CET) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Tue Apr 01 2014 17:32:45 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

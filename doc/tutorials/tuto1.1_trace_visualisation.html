@@ -23,7 +23,7 @@ that the Widgets will need to access to.
 <p>
 Widgets are simple programs with a graphical user interface.
 In this tutorial, for instance, we will use a widget for 
-visualising a trace ({@link Samotraces.Widgets.TraceDisplayIcons} widget).
+visualising a trace ({@link Samotraces.UI.Widgets.TraceDisplayIcons} widget).
 </p>
 
 <p>
@@ -131,14 +131,14 @@ We will focus now on the javascript code.
 
 <p>
 First, we want to create a trace visualisation. For this, we
-will use the {@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget. If you have a look at the 
-{@link Samotraces.Widgets.TraceDisplayIcons|TraceDisplayIcons} 
+will use the {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget. If you have a look at the 
+{@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} 
 documentation, you will see that this widget needs to be 
 initialised with 5 parameters:
 <ol>
 	<li>An HTML id</li>
-	<li>A trace {@link Samotraces.Lib.DemoTrace|Trace}</li>
-	<li>A time window {@link Samotraces.Lib.TimeWindow|TimeWindow}</li>
+	<li>A trace {@link Samotraces.LocalTrace|Trace}</li>
+	<li>A time window {@link Samotraces.TimeWindow|TimeWindow}</li>
 	<li>Optional parameters for specifying the visualisation settings</li>
 </ol>
 As the last parameter is optional, let's put it aside for 
@@ -146,7 +146,7 @@ the moment. In order to initialise the widget, we need to
 write something like:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons(id,trace,time_window);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.UI.Widgets.TraceDisplayIcons(id,trace,time_window);
 </pre>
 
 <p>
@@ -159,7 +159,7 @@ defined in the HTML source: <code>"my-widget"</code>. We
 can replace it direcly:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,time_window);
+<pre class="prettyprint sunlight-highlight-javascript linenums">new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,time_window);
 </pre>
 
 <p>
@@ -169,17 +169,17 @@ Now, we will initialise the other 2 parameters:
 </p>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">// Create logical objects
-var trace 		= new Samotraces.Lib.DemoTrace();
-var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+var trace 		= new Samotraces.LocalTrace();
+var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 </pre>
 
 <p>
 Let's explain what this means.
 First, we initialise a trace, using the object 
-{@link Samotraces.Lib.DemoTrace|DemoTrace}.
+{@link Samotraces.LocalTrace|LocalTrace}.
 By doing this, we create a new (empty) trace.<br>
-Then, we create a {@link Samotraces.Lib.TimeWindow|TimeWindow}.
-The {@link Samotraces.Lib.TimeWindow|TimeWindow} object is 
+Then, we create a {@link Samotraces.TimeWindow|TimeWindow}.
+The {@link Samotraces.TimeWindow|TimeWindow} object is 
 created with an initial time frame.
 There are two ways to initialise the time frame:
 either by giving the times where the time window starts and ends,
@@ -209,10 +209,10 @@ you can wrap it in a function.
 <pre class="prettyprint sunlight-highlight-xml linenums">&lt;script type="text/javascript"&gt;
 function init() {
 	// Create logical objects
-	var trace 		= new Samotraces.Lib.DemoTrace();
-	var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+	var trace 		= new Samotraces.LocalTrace();
+	var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 	// Create widgets
-	new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+	new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 }
 
 // calling the init function when the DOM has been loaded
@@ -236,10 +236,10 @@ window.addEventListener('DOMContentLoaded', init );
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var trace 		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 		// calling the init function when the DOM has been loaded
@@ -256,9 +256,9 @@ an empty trace!
 
 <p>
 Let's add some objects in this trace. As can be seen in the
-documentation of the {@link Samotraces.Lib.DemoTrace|DemoTrace}
+documentation of the {@link Samotraces.LocalTrace|LocalTrace}
 object, adding a trace to an Obsel is quite easy. You simply
-have to call the method <code>newObsel()</code> on the trace
+have to call the method <code>create_obsel()</code> on the trace
 object. This method takes 3 arguments:
 <ol>
 	<li>A String representing the type of the obsel</li>
@@ -276,9 +276,9 @@ This is done with the following code (that should be inserted
 at the end of the <code>init()</code> function):
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">	trace.newObsel('click',1);
-	trace.newObsel('click',5);
-	trace.newObsel('click',12);
+<pre class="prettyprint sunlight-highlight-javascript linenums">	trace.create_obsel({type: 'click', begin: 1});
+	trace.create_obsel({type: 'click', begin: 5});
+	trace.create_obsel({type: 'click', begin: 12});
 </pre>
 
 <p>
@@ -300,16 +300,16 @@ Now, your source code should look as follows.
 		&lt;script type="text/javascript"&gt;
 		function init() {
 			// Create logical objects
-			var trace 		= new Samotraces.Lib.DemoTrace();
-			var tw			= new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+			var trace		= new Samotraces.LocalTrace();
+			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 
 			// Add obsels to the trace
-			trace.newObsel('click',1);
-			trace.newObsel('click',5);
-			trace.newObsel('click',12);
+			trace.create_obsel({type: 'click', begin: 1});
+			trace.create_obsel({type: 'click', begin: 5});
+			trace.create_obsel({type: 'click', begin: 12});
 
 			// Create widgets
-			new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 		}
 
 // calling the init function when the DOM has been loaded

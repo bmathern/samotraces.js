@@ -50,20 +50,46 @@
  * @typedef Obsel
  * @see Samotraces.Obsel
  */
+
+/**
+ * ObselParam is an object that contains parameters
+ * necessary to create a new obsel.
+ * This type of object is used in several methods
+ * such as the Obsel constructor, or the
+ * Trace.create_obsel method.
+ * The optional porperties varies depending on the
+ * method called.
+ * @typedef ObselParam
+ * @property {String} [id] Id of the obsel
+ * @property {Trace} [trace] Trace of the obsel
+ * @property {String} [type] Type of the obsel
+ * @property {Number} [begin] Timestamp of when the obsel starts
+ * @property {Number} [end] Timestamp of when the obsel ends
+ * @property {Object} [attributes] Attributes of the obsel.
+ * @property {Array<Object>} [attributes] Attributes of the obsel.
+ * @property {Array<Relation>} [relations] Relations from this obsel.
+ * @property {Array<Relation>} [inverse_relations] Relations to this obsel.
+ * @property {Array<Obsel>} [source_obsels] Source obsels of the obsel.
+ * @property {String} [param.label] Label of the obsel.
+ * @todo FIXME DEFINE WHAT IS A RELATION
+ */
+
 /**
  * @summary JavaScript Obsel class
  * @class JavaScript Obsel class
- * @param {Object} param Parameters 
+ * @param {ObselParam} param Parameters of the obsel
  * @param {String} param.id Identifier of the obsel.
- * @param {Number} param.begin Timestamp of the obsel
- * @param {Number} param.end Timestamp of the obsel
+ * @param {Trace} param.Trace Trace of the obsel.
  * @param {String} param.type Type of the obsel.
+ * @param {Number} [param.begin=Date.now()] Timestamp of when the obsel starts
+ * @param {Number} [param.end=param.begin] Timestamp of when the obsel ends
  * @param {Object} [param.attributes] Attributes of the obsel.
  * @param {Array<Object>} [param.attributes] Attributes of the obsel.
- * @param {Array<FIXME>} [param.relations] Relations from this obsel.
- * @param {Array<FIXME>} [param.inverse_relations] Relations to this obsel.
+ * @param {Array<Relation>} [param.relations] Relations from this obsel.
+ * @param {Array<Relation>} [param.inverse_relations] Relations to this obsel.
  * @param {Array<Obsel>} [param.source_obsels] Source obsels of the obsel.
  * @param {String} [param.label] Label of the obsel.
+ * @todo FIXME RELATIONS ARE NOT YET SUPPORTED
  */
 // *
 Samotraces.Obsel = function Obsel(param) {
@@ -180,13 +206,19 @@ Samotraces.Obsel.prototype = {
 	 * Returns the time when the Obsel starts.
 	 * @returns {Number} Time when the Obsel starts.
 	 */
-	get_begin: 		function() { return this.begin;	},
+	get_begin: 		function() { 
+		//return this.get_trace().get_origin_offset() + this.begin;
+		return this.begin;
+	},
 	/**
 	 * @summary
 	 * Returns the time when the Obsel ends.
 	 * @returns {Number} Time when the Obsel ends.
 	 */
-	get_end: 		function() { return this.end;	},
+	get_end: 		function() {
+		//return this.get_trace().get_origin_offset() + this.end;
+		return this.end;
+	},
 	/**
 	 * @summary
 	 * Sets the type of the Obsel.
@@ -858,6 +890,7 @@ Samotraces.KTBS.Trace = function Trace(uri,id) {
 	this.obsel_list_uri = "";
 	this.base_uri = "";
 	this.origin = "";
+	//this.origin_offset = (new Date(0)).getMilliseconds();
 	this.obsel_list = []; this.traceSet = [];
 
 	this.force_state_refresh();
@@ -871,6 +904,17 @@ Samotraces.KTBS.Trace.prototype = {
 	get_base: function() { return this.base_uri; },
 	get_model: function() { return this.model_uri; },
 	get_origin: function() { return this.origin; },
+	//get_origin_offset: function() { return this.origin_offset; },
+	/*ktbs_origin_to_ms: function(ktbs_date_str) {
+		var Y = ktbs_date_str.substr(0,4);
+		var M = ktbs_date_str.substr(5,2) - 1;
+		var D = ktbs_date_str.substr(8,2);
+		var h = ktbs_date_str.substr(11,2);
+		var m = ktbs_date_str.substr(14,2);
+		var s = ktbs_date_str.substr(17,2);
+		var ms = ktbs_date_str.substr(20,3);
+		return Date.UTC(Y,M,D,h,m,s,ms);
+	},*/
 	list_source_traces: function() {},
 	list_transformed_traces: function() {},
 	// @todo TODO add an optional CALLBACK
@@ -985,6 +1029,7 @@ Samotraces.KTBS.Trace.prototype = {
 		this._check_change_('obsel_list_uri', data.hasObselList, 'trace:update');
 		this._check_change_('base_uri', data.inBase, '');
 		this._check_change_('origin', data.origin, '');
+		//this._check_change_('origin_offset',this.ktbs_origin_to_ms(data.origin),'');
 	},
 	_update_method_: function(trace_type,method_name) {
 		this[method_name] = this[trace_type+"_methods"][method_name];
@@ -1049,7 +1094,11 @@ Samotraces.KTBS.Trace.prototype = {
 	},
 	StoredTrace_methods: {
 		set_model: function(model) {},
-		set_origin: function(origin) {},
+		set_origin: function(origin) {
+			this.origin = origin;
+		//	this.origin_offset = (new Date(origin)).getMilliseconds();
+			// TODO sync with KTBS
+		},
 		get_default_subject: function() { return this.default_subject; },
 		set_default_subject: function(subject) {},
 		create_obsel: function(params) {
@@ -1181,25 +1230,83 @@ Samotraces.LocalTrace = function(source_traces) {
 		t.transformed_traces.push(this);
 	});
 	this.transformed_traces = [];
+	this.origin = "";
+	//this.origin_offset = (new Date(0)).getMilliseconds();
 
 };
 
 Samotraces.LocalTrace.prototype = {
-
+	/**
+	 * @description
+	 * Gets the label of the trace
+	 * @returns {String} Label of the trace
+	 */
 	get_label: function() { return this.label; },
+	/**
+	 * @description
+	 * Sets the label of the trace
+	 * @param {String} lbl Label of the trace
+	 */
 	set_label: function(lbl) {
 		this.label = lbl;
 		this.trigger('trace:edit_meta');
 	},
+	/**
+	 * @description
+	 * Resets the label to the empty string
+	 */
 	reset_label: function() {
 		this.label = "";
 		this.trigger('trace:edit_meta');
 	},
 
+	/**
+	 * @description
+	 * Returns the model of the trace
+	 * @returns Model of the trace
+	 * @todo UPDATE WHAT IS A MODEL
+	 */
 	get_model: function() { return this.model; },
+	/**
+	 * @description
+	 * Returns the origin of the trace
+	 * @returns Origin of the trace
+	 * @todo UPDATE WHAT IS AN ORIGIN 
+	 */
 	get_origin: function() { return this.origin; },
+	//get_origin_offset: function() { return this.origin_offset; },
+	/**
+	 * @description
+	 * Returns the source traces of this trace
+	 * @returns {Array.<Trace>} Source traces of this trace.
+	 */
 	list_source_traces: function() { return this.source_traces; },
+	/**
+	 * @description
+	 * Returns the traces transformed from this trace
+	 * @returns {Array.<Trace>} Trace transformed from this trace
+	 */
 	list_transformed_traces: function() { return this.transformed_traces; },
+	/**
+	 * @description
+	 * Returns the list of obsels in an optional time interval.
+	 * If no minimum time and no maximum time constraint are
+	 * defined, returns the whole list of obsels.
+	 * If one of the two constraints are defined, then returns
+	 * obsels matching the time constraints.
+	 *
+	 * Note: if an obsel overlaps with the start or the end
+	 * constraint, then it will be included (for instance an 
+	 * obsel that starts before the start constraint and ends
+	 * after that constraint will be included).
+	 * @param {Number} [begin] Minimum time constraint
+	 * @param {Number} [end] Maximum time constraint
+	 * @param {Boolean} [reverse=false] Returns the obsel list in
+	 *     reverse chronological order if true and in normal
+	 *     chronological order if false.
+	 * @returns {Array.<Obsel>} List of relevant obsels
+	 * @todo REVERSE IS NOT YET TAKEN INTO ACCOUNT 
+	 */
 	list_obsels: function(begin,end,reverse) {
 		// TODO reverse is ignored.
 		return this.obsel_list.filter(function(o) {
@@ -1223,20 +1330,59 @@ Samotraces.LocalTrace.prototype = {
 		});
 		return obs;
 	},
+	/**
+	 * @description
+	 * Sets the model of the trace
+	 * @param model Model of the trace
+	 * @todo UPDATE WHAT IS A MODEL
+	 */
 	set_model: function(model) {
 		this.model = model;
 		this.trigger('trace:edit_meta');
 	},
+	/**
+	 * @description
+	 * Sets the origin of the trace
+	 * @param origin Origin of the trace
+	 * @todo UPDATE WHAT IS AN ORIGIN
+	 */
 	set_origin: function(origin) {
 		this.origin = origin;
+	//	this.origin_offset = (new Date(origin)).getMilliseconds();
 		this.trigger('trace:edit_meta');
 	},
+	/**
+	 * @description
+	 * Returns the default subject of the trace
+	 * @returns {String} The trace default subject
+	 */
 	get_default_subject: function() { return this.subject;},
+	/**
+	 * @description
+	 * Set the default subject of the trace
+	 * @param {String} subject The trace default subject
+	 */
 	set_default_subject: function(subject) {
 		this.subject = subject;
 		this.trigger('trace:edit_meta');
 	},
 
+	/**
+	 * @description
+	 * Create a new obsel in the trace with the
+	 * given properties
+	 * @param {ObselParam} obsel_params Parameters
+	 *     corresponding to the obsel to create.
+	 * @param {String} obsel_params.type Type of the obsel.
+	 * @param {Number} [obsel_params.begin] Timestamp of when the obsel starts
+	 * @param {Number} [obsel_params.end] Timestamp of when the obsel ends
+	 * @param {Object} [obsel_params.attributes] Attributes of the obsel.
+	 * @param {Array<Object>} [obsel_params.attributes] Attributes of the obsel.
+	 * @param {Array<Relation>} [obsel_params.relations] Relations from this obsel.
+	 * @param {Array<Relation>} [obsel_params.inverse_relations] Relations to this obsel.
+	 * @param {Array<Obsel>} [obsel_params.source_obsels] Source obsels of the obsel.
+	 * @param {String} [obsel_params.label] Label of the obsel.
+	 */
 	create_obsel: function(obsel_params) {
 		obsel_params.id = this.count;
 		this.count++;
@@ -1245,6 +1391,11 @@ Samotraces.LocalTrace.prototype = {
 		this.obsel_list.push(obs);
 		this.trigger('trace:create_obsel',obs);
 	},
+	/**
+	 * @description
+	 * Removes the given obsel from the trace
+	 * @param {Obsel} obs Obsel to remove
+	 */
 	remove_obsel: function(obs) {
 		this.obsel_list = this.obsel_list.filter(function(o) {
 			return (o===obs)?false:true;
@@ -1637,7 +1788,7 @@ Samotraces.Timer.prototype = {
 	 * @fires Samotraces.Timer#timer:update
 	 * @param {Number} time New time
 	 */
-	set: function(time) {
+	set_time: function(time) {
 		new_time = Number(time);
 		if(this.time != new_time) {
 			this.time = new_time; 
@@ -1649,6 +1800,10 @@ Samotraces.Timer.prototype = {
 			 */
 			this.trigger('timer:update',this.time);
 		}
+	},
+	set: function(t) { return this.set_time(t); },
+	get_time: function(time) {
+		return this.time;
 	},
 	/**
 	 * Sets or get the Timer's current time.
@@ -2576,6 +2731,277 @@ Samotraces.UI.Widgets.TimeSlider.prototype = {
 	},
 
 };
+
+
+
+// last: UI/Widgets/TraceDisplayCurve.js
+/**
+ * @summary Widget for visualising a trace where obsels are displayed as images.
+ * @class Widget for visualising a trace where obsels are displayed as images
+ * @author Benoît Mathern
+ * @requires d3.js framework (see <a href="http://d3js.org">d3js.org</a>)
+ * @constructor
+ * @mixes Samotraces.UI.Widgets.Widget
+ * @description
+ * The {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
+ * is a generic
+ * Widget to visualise traces with images. This widget uses 
+ * d3.js to display traces as images in a SVG image.
+ * The default settings are set up to visualise 16x16 pixels
+ * icons. If no url is defined (see options), a questionmark 
+ * icon will be displayed by default for each obsel.
+ *
+ * Note that clicking on an obsel will trigger a 
+ * {@link Samotraces.UI.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
+ * event.
+ *
+ * Tutorials {@tutorial tuto1.1_trace_visualisation},
+ * {@tutorial tuto1.2_adding_widgets}, and 
+ * {@tutorial tuto1.3_visualisation_personalisation} illustrates
+ * in more details how to use this class.
+ * @param {String}	divId
+ *     Id of the DIV element where the widget will be
+ *     instantiated
+ * @param {Trace}	trace
+ *     Trace object to display
+ * @param {TimeWindow} time_window
+ *     TimeWindow object that defines the time frame
+ *     being currently displayed.
+ *
+ * @param {VisuConfig} [options]
+ *     Object determining how to display the icons
+ *     (Optional). All the options field can be either 
+ *     a value or a function that will be called by 
+ *     d3.js. The function will receive as the first
+ *     argument the Obsel to display and should return 
+ *     the calculated value.
+ *     If a function is defined as an argument, it will
+ *     be binded to the TraceDisplayIcons instance.
+ *     This means that you can call any method of the 
+ *     TraceDisplayIcons instance to help calculate 
+ *     the x position or y position of an icon. This 
+ *     makes it easy to define various types of behaviours.
+ *     Relevant methods to use are:
+ *     link Samotraces.UI.Widgets.TraceDisplayIcons.calculate_x}
+ *     See tutorial 
+ *     {@tutorial tuto1.3_visualisation_personalisation}
+ *     for more details and examples.
+ *
+ * @example
+ * var options = {
+ *     y: 20,
+ *     width: 32,
+ *     height: 32,
+ *     url: function(obsel) {
+ *         switch(obsel.type) {
+ *             case 'click':
+ *                 return 'images/click.png';
+ *             case 'focus':
+ *                 return 'images/focus.png';
+ *             default:
+ *                 return 'images/default.png';
+ *         }
+ *     }
+ * };
+ */
+Samotraces.UI.Widgets.TraceDisplayCurve = function(divId,trace,time_window,options) {
+
+	options = options || {};
+
+	// WidgetBasicTimeForm is a Widget
+	Samotraces.UI.Widgets.Widget.call(this,divId);
+
+	this.add_class('Widget-TraceDisplayIcons');
+	$(window).resize(this.refresh_x.bind(this));
+
+	this.trace = trace;
+	this.trace.on('trace:update',this.draw.bind(this));
+	this.trace.on('trace:create_obsel',this.draw.bind(this));
+	this.trace.on('trace:remove_obsel',this.draw.bind(this));
+	this.trace.on('trace:edit_obsel',this.draw.bind(this));
+
+	this.window = time_window;
+	this.window.on('tw:update',this.refresh_x.bind(this));
+	this.window.on('tw:translate',this.translate_x.bind(this));
+
+//	this.obsel_selector = obsel_selector;
+//	this.window.addEventListener('',this..bind(this));
+
+
+	this.options = {};
+	/**
+	 * VisuConfig is a shortname for the 
+	 * {@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig}
+	 * object.
+	 * @typedef VisuConfig
+	 * @see Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 */
+	/**
+	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @property {(number|function)}	[x]		
+	 *     X coordinates of the top-left corner of the 
+	 *     image (default: <code>function(o) {
+	 *         return this.calculate_x(o.timestamp) - 8;
+	 *     })</code>)
+	 * @property {(number|function)}	[y=17]
+	 *     Y coordinates of the top-left corner of the 
+	 *     image
+	 * @property {(number|function)}	[width=16]
+	 *     Width of the image
+	 * @property {(number|function)}	[height=16]
+	 *     Height of the image
+	 * @property {(string|function)}	[url=a questionmark dataurl string]
+	 *     Url of the image to display
+	 * @description
+	 * Object determining how to display the icons
+	 * (Optional). All the options field can be either 
+	 * a value or a function that will be called by 
+	 * d3.js. The function will receive as the first
+	 * argument the Obsel to display and should return 
+	 * the calculated value.
+	 * If a function is defined as an argument, it will
+	 * be binded to the TraceDisplayIcons instance.
+	 * This means that you can call any method of the 
+	 * TraceDisplayIcons instance to help calculate 
+	 * the x position or y position of an icon. This 
+	 * makes it easy to define various types of behaviours.
+	 * Relevant methods to use are:
+	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+	 * See tutorial 
+	 * {@tutorial tuto1.3_visualisation_personalisation}
+	 * for more details and examples.
+	 */
+	// create function that returns value or function
+	var this_widget = this;
+	var bind_function = function(val_or_fun) {
+			if(val_or_fun instanceof Function) {
+				return val_or_fun.bind(this_widget);
+			} else {
+				return val_or_fun;
+			}
+		};
+	this.options.x = bind_function(options.x || function(o) {
+			return this.calculate_x(o.get_begin());
+		});
+	this.options.y = bind_function(options.y || function(o) {
+			return 100 - o.get_attribute('y');
+		});
+	this.options.width = bind_function(options.width || 16);
+	this.options.height = bind_function(options.height || 16);
+	this.options.url = bind_function(options.url || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAG7AAABuwBHnU4NQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAKsSURBVDiNrZNLaFNpFMd/33fvTa5tYpuq0yatFWugRhEXw9AuhJEZBCkiqJWCIErrxp241C6L6650M/WBowunoyCDCjKrGYZ0IbiwxkdUbGyaPmgSm8d9f25MbXUlzH95zv/8OOdwjlBKsVajU1kEtJiavNBsaKcBqq5/3fKDSwrKY33JdX7RAIxOZQGM3bHIymCyPZhZqT8p2d4sQGtY7+yObvhxMjsvp4uVKOA2QEIpxehUFl2IvuFUZ3rZcu/+9X7RWqg7Jxw/QAFhTdLRFJoY6N4SazONo1czs/2eUlNjfUn0Risne+Pp9yv18TvZwrl9iVb2J2JEQhoKKNke6UJ55LfMB4aSHeMne+Ppay/yAkBcTL9ma7Np7Yu3/n1lOjdQ8wLO793GzlgzFdcjYujoUpAt17j8LIfjB5zdvfXBv3OlX3NVy5SAOJVKhP94M29UXB8FFGoWE89nufTkHQ9nFlEKejZuoLe1iYrr8+fbee9UKhEGhB6SYrBoudPLtnsAQCnF768Kq1v2AxAC6l7AsuUCsGS5h4uWOx2SYlBqQoyUHW/O9gO+1i9dbfyciKGA/wol3pTrANh+QNnx5jQhRuQ3VZ+1Z1OUg92biZkG/+SL3Hu7gPfVzQBIX6mJlpAeD2vrWds3mth+wOtSlUczS1RdfzUX1iQtIT3uKzWhO4GajJnGnc2mcf+j4x1umJ4uVShUbRSwUHPWwdvCxuOYaRxwAjUpAXUjk7eP9bTrEUNbNf30Q5ThXV0c6WknGvoSjxgax3e0uzcyeRtQcqwvSa5qmaYuB4aSHeMNiEJgahJ9zWQRQ2Mo2TFu6nIgV7XMdZd48+Vc/3CqM30m1XX3wcxi8d3H2sitl3mUACkEyZam24e2bTHbTOPc1cxsf6Pu/3mmtfred/4ESQNKXG8VACoAAAAASUVORK5CYII=');
+
+	this.init_DOM();
+	this.data = this.trace.list_obsels();
+	this.draw();
+};
+
+Samotraces.UI.Widgets.TraceDisplayCurve.prototype = {
+	init_DOM: function() {
+
+
+		var div_elmt = d3.select('#'+this.id);
+		this.svg = div_elmt.append('svg');
+
+		// create the (red) line representing current time
+		if(typeof(this.window.timer) !== "undefined") {
+			this.svg.append('line')
+				.attr('x1','50%')
+				.attr('y1','0%')
+				.attr('x2','50%')
+				.attr('y2','100%')
+				.attr('stroke-width','1px')
+				.attr('stroke','red')
+				.attr('opacity','0.3');
+		}
+
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
+
+		this.svg_gp = this.svg.append('g')
+						.attr('transform', 'translate(0,0)');
+		this.svg_gp.append('path')
+				.attr('fill','none')
+				.attr('stroke','black')
+				.attr('stroke-width','1px')
+				.attr('d',"");
+
+		// event listeners
+		var widget = this;
+		this.add_behaviour('changeTimeOnDrag',this.element,{
+				onUpCallback: function(delta_x) {
+					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
+					widget.svg_gp.attr('transform','translate('+(-widget.translate_offset)+',0)');
+					widget.window.translate(time_delta);
+				},
+				onMoveCallback: function(offset) {
+					widget.svg_gp.attr('transform','translate('+(offset-widget.translate_offset)+',0)');
+				},
+			});
+		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
+	},
+
+
+	// TODO: needs to be named following a convention 
+	// to be decided on
+	/**
+	 * Calculates the X position in pixels corresponding to 
+	 * the time given in parameter.
+	 * @param {Number} time Time for which to seek the corresponding x parameter
+	 */
+	calculate_x: function(time) {
+		return x = (time - this.window.start)*this.scale_x + this.translate_offset;
+	},
+	translate_x: function(e) {
+		var time_delta = e.data;
+		this.translate_offset += time_delta*this.scale_x;
+		this.svg_gp
+			.attr('transform', 'translate('+(-this.translate_offset)+',0)');
+	},
+
+	refresh_x: function() {
+		this.scale_x = this.element.clientWidth/this.window.get_width();
+		this.translate_offset = 0;
+		this.svg_gp
+			.attr('transform', 'translate(0,0)');
+		this.d3Obsels()
+			.attr('d', d3.svg.line()
+				.x(this.options.x)
+				.y(this.options.y));
+	},
+
+	draw: function(e) {
+		if(e) {
+			switch(e.type) {
+				case "trace:update":
+					this.data = this.trace.list_obsels();
+					break;
+				default:
+					this.data = this.trace.obsel_list; // do not want to trigger the refreshing of list_obsels()...
+					break;
+				}
+		}
+
+		this.d3Obsels()
+			.attr('d', d3.svg.line()
+				.x(this.options.x)
+				.y(this.options.y));
+	},
+
+
+	d3Obsels: function() {
+		return this.svg_gp
+					.selectAll('path')
+					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
+					//.data(this.data); //,function(d) { return d.id;});
+					.data([this.data]); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
+	},
+
+
+};
+
+
+
+
 
 
 

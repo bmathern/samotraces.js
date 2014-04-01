@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+		<html>
     <head>
         <meta charset="utf-8">
         <script type="text/javascript" src="javascript/d3.js"></script>
@@ -13,16 +13,16 @@
         <script type="text/javascript">
         function init() {
             // Create logical objects
-            var trace        = new Samotraces.Lib.DemoTrace();
-            var tw            = new Samotraces.Lib.TimeWindow({start: 0,end: 20});
+            var trace        = new Samotraces.LocalTrace();
+            var tw            = new Samotraces.TimeWindow({start: 0,end: 20});
 
             // Add obsels to the trace
-            trace.newObsel('click',1);
-            trace.newObsel('click',5);
-            trace.newObsel('click',12);
+            trace.create_obsel({type: 'click', begin: 1});
+            trace.create_obsel({type: 'click', begin: 5});
+            trace.create_obsel({type: 'click', begin: 12});
 
             // Create widgets
-            new Samotraces.Widgets.TraceDisplayIcons('my-widget',trace,tw);
+            new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
         }
 
 // calling the init function when the DOM has been loaded

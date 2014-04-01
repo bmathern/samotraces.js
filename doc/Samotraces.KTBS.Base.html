@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js Class: Base</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.html">Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.html">UI</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.html">Widgets</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.KTBS.html">KTBS</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Resource.html">Resource</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html">LocalTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayCurve.html">TraceDisplayCurve</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayZoomContext.html">TraceDisplayZoomContext</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+		<div class="span8">
+			
+				<div id="main">
+					
+
+
+	<h1 class="page-title">Class: Base</h1>
+<section>
+
+<header>
+    <h2>
+        <span class="ancestors"><a href="Samotraces.html">Samotraces</a><a href="Samotraces.KTBS.html">.KTBS</a>.</span>
+    
+    Base
+    </h2>
+    
+        <div class="class-description"><p>Javascript KTBS.Base Object that is bound to a KTBS.</p></div>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+<dt>
+    <h4 class="name" id="Base"><span class="type-signature"></span>new Base<span class="signature">(uri, <span class="optional">id</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Samotraces.KTBS.Base is a Javascript KTBS base
+object that is bound to a KTBS. This Object can be seen
+as an API to the KTBS. Methods are available to get the 
+list of traces available in the KTBS base. Access a 
+specific trace, etc.</p>
+<p>This class is a first (quick and dirty) attempt to access
+Bases from the KTBS.</p>
+<p>Note: this KTBS.Base object is not an actual API to the KTBS.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>uri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>URI of the Base to load.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>ID of the Base to load.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Benoît Mathern</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-247">line 247</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>update to a full JSON approach when the KTBS fully
+supports JSON.</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        <ul>
+            <li><a href="Samotraces.EventHandler.html">Samotraces.EventHandler</a></li>
+        </ul>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:jQuery</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature"><span class="signature">(event_type, callback)</span><span class="type-signature"></span>(event_type, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adds a callback for the specified event</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>event_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of the event to listen to.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback to call when the an event of type 
+    event_type is triggered. Note: the callback
+    can receive one argument that contains
+    details about the triggered event.
+    This event argument contains two fields:
+    event.type: the type of event that is triggered
+    event.data: optional data that is transmitted with the event</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.EventHandler.html#on">Samotraces.EventHandler#on</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="EventHandler.js.html">core/EventHandler.js</a>, <a href="EventHandler.js.html#sunlight-1-line-55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="trigger"><span class="type-signature"></span>trigger<span class="signature"><span class="signature">(event_type, object)</span><span class="type-signature"></span>(event_type, object)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Triggers all the registred callbacks.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>event_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of the triggered event.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Object sent with the message to the listeners (see 
+    <a href="Samotraces.EventHandler.html#on">Samotraces.EventHandler#on</a>).</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.EventHandler.html#trigger">Samotraces.EventHandler#trigger</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="EventHandler.js.html">core/EventHandler.js</a>, <a href="EventHandler.js.html#sunlight-1-line-29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Tue Apr 01 2014 17:32:45 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>
