@@ -344,6 +344,8 @@ Let's start with the code obtained at the end of the previous part of the tutori
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -359,15 +361,18 @@ Let's start with the code obtained at the end of the previous part of the tutori
 			var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 			var obsel_selector	= new Samotraces.Selector('Obsel');
 
-			var options = {
-				events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
-			}
-
 			// Create widgets
-			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+			new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
 			new Samotraces.UI.Widgets.WindowScale('scale',tw);
 			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
 			new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+
+			// Select Obsel when clicked
+			callback = function(event) {
+				var obsel = $.data(event.target,'Samotraces-data');
+				obsel_selector.select(obsel);
+			};
+			$('body').on("click",".Samotraces-obsel",callback);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -377,12 +382,13 @@ window.addEventListener('DOMContentLoaded', init );
 &lt;/html&gt;
 </pre>
 
+
 <h3>Reminders</h3>
 <p>
 <ul>
-	<li>Files "Samotraces.js" and "d3.js" must be placed in a folder called 
-	"javascript" and "samotraces.css" in a folder called "css".
-	</li>
+	<li>This files "Samotraces.js", "jquery.js", "jquery.mousewheel.js", and "d3.js"
+	 must be placed in a folder called "javascript" and the file 
+	"samotraces.css" in a folder called "css".
 	<li>This code contains <code>&lt;div&gt;</code> HTML tag elements, each 
 	having an unique <code>id</code> attribute. Each widget will be 
 	instanciated in the corresponding HTML DIV element.
@@ -414,7 +420,7 @@ window.addEventListener('DOMContentLoaded', init );
 
 <p>
 First, you will have to download the (four) following images that
-will be used in our visualisation (Right click -> save image as) and place
+will be used in our visualisation (Right click -&gt; save image as) and place
 them to a new "images" folder of your project:
 </p>
 
@@ -449,10 +455,8 @@ we will go back to the documentation of the
 <p>
 When you initialise the <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
 widget the last parameter is an optional parameter.
-This parameter will determine the default behaviour when some
-events are triggered by the widget (like clicking on an obsel),
-and the visualisation parameters.
-More precisely, the <code>options.visu</code> parameter is a
+This parameter corresponds to the visualisation parameters.
+More precisely, this parameter is a
 VisuConfig
 object, which defines how each obsel will be displayed:
 the image name (url), its height, width, and its coordinates x and y.
@@ -467,40 +471,7 @@ Let's have a look at each parameters more precisely:
 </ul>
 
 <p>
-For those who don't know much about JavaScript, a JavaScript object can
-be described in several different ways.
-For instance, both of the following codes are equivalent.
-</p>
-
-<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {
-	my_field1: "value of field 1",
-	my_field2: "value of field 2"
-};
-</pre>
-
-<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {};
-my_object.my_field1 = "value of field 1";
-my_object.my_field2 = "value of field 2";
-</pre>
-
-<p>
-For instance, the <code>options</code> Object that we created in the previous
-part of the tutorial could also be initialised this way:
-</p>
-
-<pre class="prettyprint sunlight-highlight-javascript linenums">var options = {};
-options.events = {
-	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
-};
-</pre>
-
-<p>
-Note that the value of a field can be a String, a Number or any type of JavaScript object.
-It can even be a function, as in the <code>options.events</code> example.
-</p>
-
-<p>
-The first think we want to do is to edit the image that will be displayed
+The first think we want to do is to define the image that will be displayed
 for each obsel. Instead of displaying a question-mark symbol, it would
 be nicer to display a music note. This is done by editing the url field
 of the optional object.
@@ -512,22 +483,19 @@ of a music note should be something like "images/noire.png".
 Let's try this code:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: "images/noire.png"
 };
 </pre>
 
 <p>
-Both <code>options.visu</code> and <code>options.events</code>, 
-therefore your code should look like this:
+As we add this 4th optional parameter to instanciate the
+<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a> widget,
+the code should now look like this:
 </p>
 
 <pre class="prettyprint sunlight-highlight-javascript linenums">// Visualisation options
-var options = {};
-options.events = {
-	"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
-};
-options.visu = {
+options = {
 	url: "images/noire.png"
 };
 
@@ -536,7 +504,7 @@ new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
 </pre>
 
 <p>
-Now, you should see something like this:
+When trying it, you should see something like this:
 </p>
 <img src="tutorials/tuto1.3_visualisation_personalisation_1.png"></img>
 
@@ -554,7 +522,7 @@ So, now, you want to edit the visualisation to change de default width
 and default height. This is pretty easy (don't forget the commas to separate the attributes!):
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60
@@ -565,7 +533,7 @@ and default height. This is pretty easy (don't forget the commas to separate the
 Uh Oh... The image doesn't fit. Let's try to change the y coordinate at which it is diplayed (default value is 17px from the top of the widget): 
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -743,7 +711,7 @@ that is used by <a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisp
 widget to adapt the visualisation of each obsel:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -770,7 +738,7 @@ Based on that, we need to write a function that will calculate the
 Here is what it might look like (I have calculated the values for you):
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: "images/noire.png",
 	width: 34,
 	height: 60,
@@ -821,7 +789,7 @@ obsels are crotchet. Some are minims. Let's write a function that
 does that:
 </p>
 
-<pre class="prettyprint sunlight-highlight-javascript linenums">options.visu = {
+<pre class="prettyprint sunlight-highlight-javascript linenums">options = {
 	url: function(obsel) {
 		switch(obsel.attributes.duration) {
 			case "noire":	// crotchet
@@ -959,6 +927,8 @@ Enjoy the result!</p>
 	&lt;head&gt;
 		&lt;meta charset="utf-8"&gt;
 		&lt;script type="text/javascript" src="javascript/d3.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.js"&gt;&lt;/script&gt;
+		&lt;script type="text/javascript" src="javascript/jquery.mousewheel.js"&gt;&lt;/script&gt;
 		&lt;script type="text/javascript" src="javascript/Samotraces.js"&gt;&lt;/script&gt;
 		&lt;link rel="stylesheet" type="text/css" href="css/samotraces.css"&gt; 
 	&lt;/head&gt;
@@ -1001,11 +971,7 @@ Enjoy the result!</p>
 			var obsel_selector	= new Samotraces.Selector('Obsel');
 
 			// Visualisation options
-			var options = {};
-			options.events = {
-				"ui:click:obsel": obsel_selector.select.bind(obsel_selector)
-			};
-			options.visu = {
+			options = {
 				url: function(o) {
 					return 'images/'+o.attributes.duration+'.png';
 				},
@@ -1022,6 +988,13 @@ Enjoy the result!</p>
 			new Samotraces.UI.Widgets.WindowScale('scale',tw);
 			new Samotraces.UI.Widgets.ImportTrace('importer',trace);
 			new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+
+			// Select Obsel when clicked
+			callback = function(event) {
+				var obsel = $.data(event.target,'Samotraces-data');
+				obsel_selector.select(obsel);
+			};
+			$('body').on("click",".Samotraces-obsel",callback);
 		}
 
 // calling the init function when the DOM has been loaded
@@ -1059,7 +1032,7 @@ Now, feel free to enjoy Samotraces.js and to use it in your own applications!
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wed Apr 02 2014 11:19:25 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Wed Apr 02 2014 11:47:22 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>
