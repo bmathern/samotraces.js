@@ -20,15 +20,18 @@
             var tw            = new Samotraces.TimeWindow({start: 0,end: 20});
             var obsel_selector    = new Samotraces.Selector('Obsel');
 
-            var options = {
-                events: {"ui:click:obsel": obsel_selector.select.bind(obsel_selector)}
-            }
-
             // Create widgets
-            new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+            new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw);
             new Samotraces.UI.Widgets.WindowScale('scale',tw);
             new Samotraces.UI.Widgets.ImportTrace('importer',trace);
             new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
+
+            // Select Obsel when clicked
+            callback = function(event) {
+                var obsel = $.data(event.target,'Samotraces-data');
+                obsel_selector.select(obsel);
+            };
+            $('body').on("click",".Samotraces-obsel",callback);
         }
 
 // calling the init function when the DOM has been loaded

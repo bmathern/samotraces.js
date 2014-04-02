@@ -173,7 +173,6 @@ Samotraces.LocalTrace.prototype = {
 	 * @param {Number} [obsel_params.begin] Timestamp of when the obsel starts
 	 * @param {Number} [obsel_params.end] Timestamp of when the obsel ends
 	 * @param {Object} [obsel_params.attributes] Attributes of the obsel.
-	 * @param {Array<Object>} [obsel_params.attributes] Attributes of the obsel.
 	 * @param {Array<Relation>} [obsel_params.relations] Relations from this obsel.
 	 * @param {Array<Relation>} [obsel_params.inverse_relations] Relations to this obsel.
 	 * @param {Array<Obsel>} [obsel_params.source_obsels] Source obsels of the obsel.

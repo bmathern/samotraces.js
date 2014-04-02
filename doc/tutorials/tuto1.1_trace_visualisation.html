@@ -15,39 +15,44 @@ these concepts into practice.
 First, there are two types of objects that are necessary to
 visualise a trace in Samotraces.js. There are Widgets, that 
 will be displayed on the user's screen, and logical objects
-that the Widgets will need to access to.
+that constitute the core of Samotraces.js and that the 
+Widgets will need to access to.
 </p>
 
 <h3>Widgets</h3>
 
 <p>
 Widgets are simple programs with a graphical user interface.
-In this tutorial, for instance, we will use a widget for 
-visualising a trace ({@link Samotraces.UI.Widgets.TraceDisplayIcons} widget).
+All the widgets of Samotraces are containted in the
+{@link Samotraces.UI.Widgets} namespace.
 </p>
 
 <p>
-The widget that allows to visualise a trace needs of course 
+In this tutorial, we will use a widget for visualising a 
+trace ({@link Samotraces.UI.Widgets.TraceDisplayIcons} widget).
+This widget, that allows to visualise a trace, needs of course 
 to know what trace to visualise, and how to visualise it.
-For instance, it needs to know what is the time frame that
+For instance, it needs to know what is the time window that
 you want to display, what is the current time, etc. For this
 reason, the widget needs to be initialised with extra 
 parameters: the trace to visualise, the relevant time frame,
 the current time, etc.
 </p>
 
-<h3>Logical objects</h3>
+<h3>Logical objects - core Samotraces.js objects</h3>
 
 <p>
 The traces to visualise, the relevant time frame and the 
 current time are not widgets. They are not directly displayed
 on screen, but rather describes a logical behaviour. That is
 why we call them logical objects.
+They constitute the core of Samotraces.js that allow to
+develop powerful widgets.
 </p>
 
 <p>
 Logical objects need to be initialised and will then be used
-by different plugins. While it might not seem clear at this
+by different widgets. While it might not seem clear at this
 point in the tutorial why there is a need for logical objects,
 this will be clarified in further tutorials, when we will 
 handle the development of more complex applications.
@@ -129,12 +134,70 @@ Now, lets use Samotraces.js to produce a trace visualisation.
 We will focus now on the javascript code.
 </p>
 
+<h3>Reminder - Javascript objects</h3>
+
+<p>
+Samotraces.js is a Javascript framework, therefore, you need
+to be familiar to Javascript to be able to use this framework
+to its full extent. As the aim of this tutorial is to give a
+first glimpse of Samotraces.js even to people who are not
+familiar to Javascript, here is a little reminder on 
+Javascript objects. Feel free to skip to the next section if
+you don't need it.
+</p>
+
+<p>
+A Javascript objects can be seen as an associative array.
+An object contains fields that have values. Each value can
+also be an object, or an Array, a String, a Number, etc.
+</p>
+
+<p>
+Several syntaxes exist to create objects. You can either
+initialise an object with all its fields, or initialise
+an empty array and dynamically add fields to it.
+Of course a combination of both approach can be followed.
+</p>
+
+<p>
+Here is how to initialise an array with predefined fields.
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {
+	my_field1: "value of field 1",
+	my_field2: "value of field 2"
+};
+</pre>
+
+<p>
+Here is how to initialise an empty array and dynamically
+add fieds:
+</p>
+
+<pre class="prettyprint sunlight-highlight-javascript linenums">var my_object = {};
+my_object.my_field1 = "value of field 1";
+my_object.my_field2 = "value of field 2";
+</pre>
+
+<p>
+Note that the two syntaxes are equivalent.
+In this tutorial, we will tend to use the first one.
+</p>
+
+<p>
+Now that we know how to manipulate a Javascript object,
+lets go back to the tutorial.
+</p>
+
+<h3>Instanciating a widget</h3>
+
 <p>
 First, we want to create a trace visualisation. For this, we
-will use the {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget. If you have a look at the 
+will use the {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} 
+widget. If you have a look at the 
 {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} 
 documentation, you will see that this widget needs to be 
-initialised with 5 parameters:
+initialised with 4 parameters:
 <ol>
 	<li>An HTML id</li>
 	<li>A trace {@link Samotraces.LocalTrace|Trace}</li>
@@ -164,7 +227,7 @@ can replace it direcly:
 
 <p>
 Now, we will initialise the other 2 parameters: 
-<code>trace</code>,
+<code>trace</code> and
 <code>time_window</code> with the following code:
 </p>
 
@@ -177,17 +240,24 @@ var tw			= new Samotraces.TimeWindow({start: 0,end: 20});
 Let's explain what this means.
 First, we initialise a trace, using the object 
 {@link Samotraces.LocalTrace|LocalTrace}.
-By doing this, we create a new (empty) trace.<br>
+By doing this, we create a new (empty) trace.
+This will be the trace that we will be visualising.<br>
 Then, we create a {@link Samotraces.TimeWindow|TimeWindow}.
 The {@link Samotraces.TimeWindow|TimeWindow} object is 
 created with an initial time frame.
-There are two ways to initialise the time frame:
+The {@link Samotraces.TimeWindow|TimeWindow} object is
+initialised with a Javascript object.
+There are two ways to initialise the time window:
 either by giving the times where the time window starts and ends,
 or by giving the time of the center of the time frame and
 defining its width.
 In this tutorial,
 we focus on the most simple way: defining the start and the
 end of the time window.
+This requires to initialise the TimeWindow
+with a Javascript object with a <code>start</code> field and 
+an <code>end</code> field as stated in the 
+documentation of the {@link Samotraces.TimeWindow|TimeWindow} object.
 </p>
 
 <p>
@@ -257,14 +327,17 @@ an empty trace!
 <p>
 Let's add some objects in this trace. As can be seen in the
 documentation of the {@link Samotraces.LocalTrace|LocalTrace}
-object, adding a trace to an Obsel is quite easy. You simply
+object, adding an obsel to a trace is quite easy. You simply
 have to call the method <code>create_obsel()</code> on the trace
-object. This method takes 3 arguments:
-<ol>
-	<li>A String representing the type of the obsel</li>
-	<li>A Number representing the time of the obsel</li>
-	<li>Extra optional attributes related to this obsel</li>
-</ol>
+object. This method takes a javascript object with optional fields
+as argument (only a subset is presented in this tutorial):
+<ul>
+	<li><strong>type:</strong> A String representing the type of the obsel</li>
+	<li><strong>begin (optional):</strong> A Number representing the time when the obsel starts</li>
+	<li><strong>end (optional):</strong> A Number representing the time when the obsel ends</li>
+	<li><strong>attributes (optional):</strong> A Javascript object containing extra 
+	optional attributes related to this obsel</li>
+</ul>
 </p>
 
 <p>

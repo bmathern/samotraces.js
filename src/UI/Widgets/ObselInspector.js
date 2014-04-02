@@ -67,11 +67,13 @@ Samotraces.UI.Widgets.ObselInspector.prototype = {
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('begin: '+ (new Date(obs.get_begin())).toString()));
+		li_element.appendChild(document.createTextNode('begin: '+ obs.get_begin()));
+	//	li_element.appendChild(document.createTextNode('begin: '+ (new Date(obs.get_begin())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('end: '+ (new Date(obs.get_end())).toString()));
+		li_element.appendChild(document.createTextNode('end: '+ obs.get_end()));
+	//	li_element.appendChild(document.createTextNode('end: '+ (new Date(obs.get_end())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		for(var key in obs.attributes) {

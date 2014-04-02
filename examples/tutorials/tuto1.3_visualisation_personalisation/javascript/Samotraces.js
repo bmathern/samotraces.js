@@ -66,7 +66,6 @@
  * @property {Number} [begin] Timestamp of when the obsel starts
  * @property {Number} [end] Timestamp of when the obsel ends
  * @property {Object} [attributes] Attributes of the obsel.
- * @property {Array<Object>} [attributes] Attributes of the obsel.
  * @property {Array<Relation>} [relations] Relations from this obsel.
  * @property {Array<Relation>} [inverse_relations] Relations to this obsel.
  * @property {Array<Obsel>} [source_obsels] Source obsels of the obsel.
@@ -84,7 +83,6 @@
  * @param {Number} [param.begin=Date.now()] Timestamp of when the obsel starts
  * @param {Number} [param.end=param.begin] Timestamp of when the obsel ends
  * @param {Object} [param.attributes] Attributes of the obsel.
- * @param {Array<Object>} [param.attributes] Attributes of the obsel.
  * @param {Array<Relation>} [param.relations] Relations from this obsel.
  * @param {Array<Relation>} [param.inverse_relations] Relations to this obsel.
  * @param {Array<Obsel>} [param.source_obsels] Source obsels of the obsel.
@@ -1377,7 +1375,6 @@ Samotraces.LocalTrace.prototype = {
 	 * @param {Number} [obsel_params.begin] Timestamp of when the obsel starts
 	 * @param {Number} [obsel_params.end] Timestamp of when the obsel ends
 	 * @param {Object} [obsel_params.attributes] Attributes of the obsel.
-	 * @param {Array<Object>} [obsel_params.attributes] Attributes of the obsel.
 	 * @param {Array<Relation>} [obsel_params.relations] Relations from this obsel.
 	 * @param {Array<Relation>} [obsel_params.inverse_relations] Relations to this obsel.
 	 * @param {Array<Obsel>} [obsel_params.source_obsels] Source obsels of the obsel.
@@ -2281,11 +2278,13 @@ Samotraces.UI.Widgets.ObselInspector.prototype = {
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('begin: '+ (new Date(obs.get_begin())).toString()));
+		li_element.appendChild(document.createTextNode('begin: '+ obs.get_begin()));
+	//	li_element.appendChild(document.createTextNode('begin: '+ (new Date(obs.get_begin())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		li_element = document.createElement('li');
-		li_element.appendChild(document.createTextNode('end: '+ (new Date(obs.get_end())).toString()));
+		li_element.appendChild(document.createTextNode('end: '+ obs.get_end()));
+	//	li_element.appendChild(document.createTextNode('end: '+ (new Date(obs.get_end())).toString()));
 		this.datalist_element.appendChild(li_element);
 
 		for(var key in obs.attributes) {

@@ -21,7 +21,6 @@
  * @property {Number} [begin] Timestamp of when the obsel starts
  * @property {Number} [end] Timestamp of when the obsel ends
  * @property {Object} [attributes] Attributes of the obsel.
- * @property {Array<Object>} [attributes] Attributes of the obsel.
  * @property {Array<Relation>} [relations] Relations from this obsel.
  * @property {Array<Relation>} [inverse_relations] Relations to this obsel.
  * @property {Array<Obsel>} [source_obsels] Source obsels of the obsel.
@@ -39,7 +38,6 @@
  * @param {Number} [param.begin=Date.now()] Timestamp of when the obsel starts
  * @param {Number} [param.end=param.begin] Timestamp of when the obsel ends
  * @param {Object} [param.attributes] Attributes of the obsel.
- * @param {Array<Object>} [param.attributes] Attributes of the obsel.
  * @param {Array<Relation>} [param.relations] Relations from this obsel.
  * @param {Array<Relation>} [param.inverse_relations] Relations to this obsel.
  * @param {Array<Obsel>} [param.source_obsels] Source obsels of the obsel.
