@@ -60,6 +60,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.KTBS.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.KTBS.Resource.html">Resource</a>
 						</li>
 						
@@ -294,22 +298,20 @@
     <h4 class="name" id="Trace"><span class="type-signature"></span>new Trace<span class="signature">(uri, <span class="optional">id</span>)</span><span class="type-signature"></span></h4>
     
     
+    <p class="summary">Trace object that is synchronised to a KTBS.</p>
+    
 </dt>
 <dd>
     
     
     <div class="description">
         <p>Samotraces.KTBS.Trace is a Javascript Trace object
-that is bound to a KTBS trace. This Object can be seen as
-an API to the KTBS trace. Methods are available to get 
+that is bound to a KTBS trace. This Object implements the KTBS API.
+Methods are available to get 
 the Obsels from the KTBS trace, create new Obsels, etc.</p>
-<p>This class is a first (quick and dirty) attempt to access
-Traces from the KTBS.</p>
-<p>Note: this Trace object is not an actual API to the KTBS.
-For instance, this class do not support transformations.
-Other example: new Obsels can be created on any trace.
-This Trace object do not take into accound error messages
-from the KTBS, etc.</p>
+<p>Note: this Trace object does not implement all the methods
+available in the KTBS API yet.
+For instance, this class do not support transformations.</p>
     </div>
     
 
@@ -441,7 +443,7 @@ from the KTBS, etc.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-328">line 328</a>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-24">line 24</a>
     </li></ul></dd>
     
 
@@ -453,8 +455,7 @@ from the KTBS, etc.</p>
     <dt class="tag-todo">To Do:</dt>
     <dd class="tag-todo">
         <ul>
-            <li>update to a full JSON approach when the KTBS fully
-supports JSON.</li>
+            <li>Fully implement KTBS API</li>
         </ul>
     </dd>
     
@@ -478,13 +479,15 @@ supports JSON.</li>
     </div>
 
     
-
-    
-        <h3 class="subsection-title">Mixes In</h3>
+        <h3 class="subsection-title">Extends</h3>
 
         <ul>
             <li><a href="Samotraces.EventHandler.html">Samotraces.EventHandler</a></li>
+        
+            <li><a href="Samotraces.KTBS.Resource.html">Samotraces.KTBS.Resource</a></li>
         </ul>
+    
+
     
 
     
@@ -507,6 +510,371 @@ supports JSON.</li>
         <dl>
             
 <dt>
+    <h4 class="name" id="force_state_refresh"><span class="type-signature"></span>force_state_refresh<span class="signature"><span class="signature">()</span><span class="type-signature"></span>()</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Forces the Resource to synchronise with the KTBS.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Forces the Resource to synchronise with the KTBS.
+This method triggers a Ajax query that will
+trigger the <em>on_state_refresh</em> method of the Resource 
+on success.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#force_state_refresh">Samotraces.KTBS.Resource#force_state_refresh</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_base"><span class="type-signature"></span>get_base<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the base where the trace is stored.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>URI of the base where the trace is stored.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">String</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_id"><span class="type-signature"></span>get_id<span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {String}</span>()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+    
+    <p class="summary">Returns the ID of the Resource.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#get_id">Samotraces.KTBS.Resource#get_id</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resource ID.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">String</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_model"><span class="type-signature"></span>get_model<span class="signature">()</span><span class="type-signature"> &rarr; {Model}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the model of the trace.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-57">line 57</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>DEFINE WHAT IS A MODEL</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Model of the trace.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Model</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="get_obsel"><span class="type-signature"></span>get_obsel<span class="signature">(id)</span><span class="type-signature"> &rarr; {<a href="global.html#Obsel">Obsel</a>}</span></h4>
     
     
@@ -515,7 +883,11 @@ supports JSON.</li>
     
     
     <div class="description">
-        <p>Retrieve an obsel in the trace from its ID.</p>
+        <p>Retrieve an obsel in the trace from its ID.
+If the obsel does not exist locally, returns
+undefined and send a query to the KTBS
+(which will result in adding this obsel locally
+if it exists on the KTBS).</p>
     </div>
     
 
@@ -597,7 +969,7 @@ supports JSON.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-406">line 406</a>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-167">line 167</a>
     </li></ul></dd>
     
 
@@ -609,8 +981,6 @@ supports JSON.</li>
     <dt class="tag-todo">To Do:</dt>
     <dd class="tag-todo">
         <ul>
-            <li>TODO if undefined -> send a query to the KTBS</li>
-        
             <li>TODO add an optional CALLBACK</li>
         </ul>
     </dd>
@@ -655,6 +1025,1392 @@ supports JSON.</li>
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="get_origin"><span class="type-signature"></span>get_origin<span class="signature">()</span><span class="type-signature"> &rarr; {Origin}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the origin of the trace.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-64">line 64</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>DEFINE WHAT IS AN ORIGIN</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Origin of the trace.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Origin</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_resource_type"><span class="type-signature"></span>get_resource_type<span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {String}</span>()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+    
+    <p class="summary">Returns the resource type of the Resource.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#get_resource_type">Samotraces.KTBS.Resource#get_resource_type</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resource type ('KTBS','Base',
+    'Trace','StoredTrace','ComputedTrace' or 'Obsel').</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">String</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_uri"><span class="type-signature"></span>get_uri<span class="signature"><span class="signature">()</span><span class="type-signature"> &rarr; {String}</span>()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+    
+    <p class="summary">Returns the URI of the Resource.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#get_uri">Samotraces.KTBS.Resource#get_uri</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resource URI.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">String</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list_obsels"><span class="type-signature"></span>list_obsels<span class="signature">(<span class="optional">begin</span>, <span class="optional">end</span>, <span class="optional">reverse</span>)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#Obsel">Obsel</a>>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the list of obsels in an optional time interval.
+If no minimum time and no maximum time constraint are
+defined, returns the whole list of obsels.
+If one of the two constraints are defined, then returns
+obsels matching the time constraints.</p>
+<p>Note: if an obsel overlaps with the start or the end
+constraint, then it will be included (for instance an 
+obsel that starts before the start constraint and ends
+after that constraint will be included).</p>
+<p>Note: the list returned by this method is the
+list of Obsels that are loaded locally.
+When this method is called, a query to the KTBS
+is made to know if there are other Obsels matching
+the query. If so, these other obsels will be loaded
+in the local copy of the trace and a
+<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+event or a 
+<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
+event will be triggered to notify that other
+Obsels have been loaded.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+		<th>Default</th>
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>begin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Minimum time constraint</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Maximum time constraint</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>reverse</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Returns the obsel list in
+    reverse chronological order if true and in normal
+    chronological order if false.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-117">line 117</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>REVERSE IS NOT YET TAKEN INTO ACCOUNT</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>List of relevant obsels</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array.&lt;<a href="global.html#Obsel">Obsel</a>></span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list_source_traces"><span class="type-signature"></span>list_source_traces<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-79">line 79</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>METHOD NOT IMPLEMENTED</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list_transformed_traces"><span class="type-signature"></span>list_transformed_traces<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>METHOD NOT IMPLEMENTED</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature"><span class="signature">(event_type, callback)</span><span class="type-signature"></span>(event_type, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adds a callback for the specified event</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>event_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of the event to listen to.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Callback to call when the an event of type 
+    event_type is triggered. Note: the callback
+    can receive one argument that contains
+    details about the triggered event.
+    This event argument contains two fields:
+    event.type: the type of event that is triggered
+    event.data: optional data that is transmitted with the event</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.EventHandler.html#on">Samotraces.EventHandler#on</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="EventHandler.js.html">core/EventHandler.js</a>, <a href="EventHandler.js.html#sunlight-1-line-55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="start_auto_refresh"><span class="type-signature"></span>start_auto_refresh<span class="signature"><span class="signature">(period)</span><span class="type-signature"></span>(period)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Forces the Resource to synchronise 
+with at a given refreshing rate.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Forces the Resource to synchronise with the KTBS
+every period seconds.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>period</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time in seconds between two synchronisations.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#start_auto_refresh">Samotraces.KTBS.Resource#start_auto_refresh</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="start_auto_refresh_obsel_list"><span class="type-signature"></span>start_auto_refresh_obsel_list<span class="signature">(period)</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Forces the local obsel list to be synchronised
+with the KTBS at a given refreshing rate.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>period</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time in seconds between two synchronisations.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="stop_auto_refresh"><span class="type-signature"></span>stop_auto_refresh<span class="signature"><span class="signature">()</span><span class="type-signature"></span>()</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Stops the autorefresh synchronisation
+of the Resource.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Stops the autorefresh synchronisation of
+the Resource.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#stop_auto_refresh">Samotraces.KTBS.Resource#stop_auto_refresh</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="stop_auto_refresh_obsel_list"><span class="type-signature"></span>stop_auto_refresh_obsel_list<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Stops the autorefresh synchronisation
+of the obsel list.</p>
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Trace.js.html">core/KTBS.Trace.js</a>, <a href="KTBS.Trace.js.html#sunlight-1-line-149">line 149</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="trigger"><span class="type-signature"></span>trigger<span class="signature"><span class="signature">(event_type, object)</span><span class="type-signature"></span>(event_type, object)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Triggers all the registred callbacks.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>event_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The type of the triggered event.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Object sent with the message to the listeners (see 
+    <a href="Samotraces.EventHandler.html#on">Samotraces.EventHandler#on</a>).</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.EventHandler.html#trigger">Samotraces.EventHandler#trigger</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="EventHandler.js.html">core/EventHandler.js</a>, <a href="EventHandler.js.html#sunlight-1-line-29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
         </dl>
     
 
@@ -676,7 +2432,7 @@ supports JSON.</li>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wed Apr 02 2014 12:37:58 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Fri Apr 04 2014 10:06:06 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

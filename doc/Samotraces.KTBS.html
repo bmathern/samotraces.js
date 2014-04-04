@@ -60,6 +60,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.KTBS.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.KTBS.Resource.html">Resource</a>
 						</li>
 						
@@ -302,12 +306,9 @@
     
     <div class="description">
         <p>Samotraces.KTBS is a Javascript KTBS object that
-is bound to a KTBS. This Object can be seen as an API to
-the KTBS. Methods are available to get the list of bases
+is bound to a KTBS. This Object implemetns the KTBS API.
+Methods are available to get the list of bases
 available in the KTBS. Access a specific base, etc.</p>
-<p>This class is a first (quick and dirty) attempt to access
-a KTBS from Javascript.</p>
-<p>Note: this KTBS object is not an actual API to the KTBS.</p>
     </div>
     
 
@@ -396,7 +397,7 @@ a KTBS from Javascript.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-25">line 25</a>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-17">line 17</a>
     </li></ul></dd>
     
 
@@ -404,14 +405,6 @@ a KTBS from Javascript.</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>update to a full JSON approach when the KTBS fully
-supports JSON.</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -459,11 +452,14 @@ supports JSON.</li>
             <dt><a href="Samotraces.KTBS.Base.html">Base</a></dt>
             <dd></dd>
         
+            <dt><a href="Samotraces.KTBS.Obsel.html">Obsel</a></dt>
+            <dd></dd>
+        
             <dt><a href="Samotraces.KTBS.Resource.html">Resource</a></dt>
-            <dd>Resource Objects have an uri, an id and an optional label</dd>
+            <dd>Resource Objects that is synchronised to a kTBS</dd>
         
             <dt><a href="Samotraces.KTBS.Trace.html">Trace</a></dt>
-            <dd></dd>
+            <dd>Trace object that is synchronised to a KTBS.</dd>
         </dl>
     
 
@@ -477,85 +473,16 @@ supports JSON.</li>
         <dl>
             
 <dt>
-    <h4 class="name" id="Obsel"><span class="type-signature">&lt;static> </span>Obsel<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-627">line 627</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>TODO update set_methods
--> sync with KTBS instead of local change</li>
-        </ul>
-    </dd>
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="create_base"><span class="type-signature"></span>create_base<span class="signature">(id, label)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        <p>Create a new base.</p>
+    </div>
     
 
     
@@ -659,7 +586,7 @@ supports JSON.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-58">line 58</a>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-55">line 55</a>
     </li></ul></dd>
     
 
@@ -738,7 +665,7 @@ on success.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-126">line 126</a>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-43">line 43</a>
     </li></ul></dd>
     
 
@@ -854,7 +781,7 @@ on success.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-51">line 51</a>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-47">line 47</a>
     </li></ul></dd>
     
 
@@ -886,6 +813,78 @@ on success.</p>
 
 
         
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get_builtin_method"><span class="type-signature"></span>get_builtin_method<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>METHOD NOT IMPLEMENTED</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
     
     
 </dd>
@@ -937,7 +936,7 @@ on success.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-110">line 110</a>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-27">line 27</a>
     </li></ul></dd>
     
 
@@ -1032,7 +1031,7 @@ on success.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-102">line 102</a>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-19">line 19</a>
     </li></ul></dd>
     
 
@@ -1128,7 +1127,7 @@ on success.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-116">line 116</a>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-33">line 33</a>
     </li></ul></dd>
     
 
@@ -1172,6 +1171,170 @@ on success.</p>
 
 
         
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list_bases"><span class="type-signature"></span>list_bases<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns the array of the URI of the bases contained in the KTBS</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Array of URI of bases.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array.&lt;String></span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list_builtin_methods"><span class="type-signature"></span>list_builtin_methods<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-30">line 30</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>METHOD NOT IMPLEMENTED</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
     
     
 </dd>
@@ -1430,7 +1593,85 @@ every period seconds.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="KTBS.js.html">core/KTBS.js</a>, <a href="KTBS.js.html#sunlight-1-line-156">line 156</a>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="stop_auto_refresh"><span class="type-signature"></span>stop_auto_refresh<span class="signature"><span class="signature">()</span><span class="type-signature"></span>()</span><span class="type-signature"></span></h4>
+    
+    
+    <p class="summary">Stops the autorefresh synchronisation
+of the Resource.</p>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Stops the autorefresh synchronisation of
+the Resource.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Samotraces.KTBS.Resource.html#stop_auto_refresh">Samotraces.KTBS.Resource#stop_auto_refresh</a>
+    </li></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="KTBS.Resource.js.html">core/KTBS.Resource.js</a>, <a href="KTBS.Resource.js.html#sunlight-1-line-85">line 85</a>
     </li></ul></dd>
     
 
@@ -1623,7 +1864,7 @@ every period seconds.</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wed Apr 02 2014 12:37:58 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Fri Apr 04 2014 10:06:05 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

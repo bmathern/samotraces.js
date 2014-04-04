@@ -63,7 +63,7 @@ $last .= "\n// last: $filename\n";
 echo($first.$last);
 } 
 
-export_all_js('core',['core/Obsel.js']);
+export_all_js('core',['core/Obsel.js','core/KTBS.js']);
 export_all_js('UI');
 //export_all_js('UIComponents/');
 

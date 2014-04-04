@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Samotraces.js Source: core/KTBS.Resource.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link rel="icon" type="image/png" href="../misc/samotraces-fav.png" />
+	
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Samotraces.js</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.html">Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.html">UI</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.html">Widgets</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.KTBS.html">KTBS</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Base.html">Base</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Resource.html">Resource</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.KTBS.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html">LocalTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html">Selector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html">Timer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.TimeWindow.html">TimeWindow</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html">Trace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ImportTrace.html">ImportTrace</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListBases.html">ListBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ktbs.ListTracesInBases.html">ListTracesInBases</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ObselInspector.html">ObselInspector</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.ReadableTimeForm.html">ReadableTimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimeForm.html">TimeForm</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimePlayer.html">TimePlayer</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TimeSlider.html">TimeSlider</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayCurve.html">TraceDisplayCurve</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayIcons.html">TraceDisplayIcons</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayObselOccurrences.html">TraceDisplayObselOccurrences</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.TraceDisplayZoomContext.html">TraceDisplayZoomContext</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.WindowScale.html">WindowScale</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.WindowSlider.html">WindowSlider</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="mixins.list.html" class="dropdown-toggle" data-toggle="dropdown">Mixins<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.EventHandler.html">EventHandler</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.UI.Widgets.Widget.html">Widget</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.LocalTrace.html#event:trace:update">trace:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:add">selection:add</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:empty">selection:empty</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Selector.html#event:selection:remove">selection:remove</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html#event:timer:play:update">timer:play:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Timer.html#event:timer:update">timer:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:create:obsel">trace:create:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:edit:obsel">trace:edit:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:remove:obsel">trace:remove:obsel</a>
+						</li>
+						
+						<li>
+							<a href="Samotraces.Trace.html#event:trace:update">trace:update</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="tutorial-using_classes.html">Using classes in Samotraces.js</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto1_using_samotraces.html">Tutorial 1: using Samotraces</a>
+						</li>
+						
+						<li>
+							<a href="tutorial-tuto_generating_doc.html">Generating Samotraces.js documentation</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: core/KTBS.Resource.js</h1>
+    
+    <section>
+        <article>
+            <pre class="sunlight-highlight-javascript linenums">/**
+ * @summary Resource Objects that is synchronised to a kTBS
+ * @description Resource Objects are KTBS objects. All resources
+ * have an uri, an id and an optional label
+ * @class Resource Objects have an uri, an id and an optional label
+ * @param {String} id Id of the Resource
+ * @param {String} url URI of the Resource
+ * @param {String} type Type of the Resource ('KTBS','Base',
+ *     'Trace','StoredTrace','ComputedTrace' or 'Obsel')
+ * @param {label} [label] Label of the Resource
+ */
+Samotraces.KTBS.Resource = (function() {
+	/**
+	 * @summary Returns the resource type of the Resource.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource type ('KTBS','Base',
+	 *     'Trace','StoredTrace','ComputedTrace' or 'Obsel').
+	 */
+	function get_resource_type() { return this.type; }
+
+	// RESOURCE API
+	/**
+	 * @summary Returns the ID of the Resource.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource ID.
+	 */
+	function get_id() { return this.id; }
+	/**
+	 * @summary Returns the URI of the Resource. 
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @returns {String} Resource URI.
+	 */
+	function get_uri() { return this.uri; }
+	/**
+	 * @summary Forces the Resource to synchronise with the KTBS.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @description
+	 * Forces the Resource to synchronise with the KTBS.
+	 * This method triggers a Ajax query that will
+	 * trigger the _on_state_refresh_ method of the Resource 
+	 * on success.
+	 */
+	function force_state_refresh() {
+		
+		$.ajax({
+			url: this.uri,
+			type: 'GET',
+			dataType: 'json',
+			error: (function(jqXHR, textStatus, errorThrown) {
+console.log("error",this);
+				Samotraces.log("Cannot refresh "+this.get_resource_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
+			}).bind(this),
+			success: this._on_state_refresh_.bind(this),
+		/*	error: function(jqXHR,textStatus,error) {
+				console.log("Error in force_state_refresh():");
+				console.log([jqXHR,textStatus,error]);
+				if(textStatus == "parsererror") {
+					console.log("--> parsererror -->");
+					console.log(jqXHR.responseText);
+				}
+			}*/
+		});
+	}
+	/**
+	 * @summary Forces the Resource to synchronise 
+	 * with at a given refreshing rate.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @description
+	 * Forces the Resource to synchronise with the KTBS
+	 * every period seconds.
+	 * @param {Number} period Time in seconds between two synchronisations.
+	 */
+	function start_auto_refresh(period) {
+		this.auto_refresh_id?this.stop_auto_refresh():null;
+		this.auto_refresh_id = window.setInterval(this.force_state_refresh.bind(this), period*1000);
+	}
+	/**
+	 * @summary Stops the autorefresh synchronisation
+	 * of the Resource.
+	 * @memberof Samotraces.KTBS.Resource.prototype
+	 * @description
+	 * Stops the autorefresh synchronisation of
+	 * the Resource.
+	 */
+	function stop_auto_refresh() {
+		if(this.auto_refresh_id) {
+			window.clearInterval(this.auto_refresh_id);
+			delete(this.auto_refresh_id);
+		}
+	}
+//		function _on_state_refresh_(data) { this.data = data; console.log("here"); }
+	/**
+	 * @todo METHOD NOT IMPLEMENTED
+	 */
+	function get_read_only() {}
+	/**
+	 * @summary Delete the resource from the KTBS
+	 * @todo IMPROVE THIS METHOD SO THAT PROPER EVENT IS RAISED
+	 *     WHEN A RESOURCE IS DELETED.
+	 */
+	function remove() {
+		function refresh_parent() {
+			//TROUVER UN MOYEN MALIN DE RAFRAICHIR LA LISTE DES BASES DU KTBS...
+		}
+		$.ajax({
+			url: this.uri,
+			type: 'DELETE',
+			success: refresh_parent.bind(this),
+			error: function(jqXHR,textStatus,error) {
+                 throw "Cannot delete "+this.get_resource_type()+" " + this.uri + ": " + textStatus + ' ' + JSON.stringify(errorThrown);
+			}
+		});
+	}
+	/**
+	 * @summary Returns the label of the Resource
+	 */
+	function get_label() { return this.label; }
+	/**
+	 * @todo METHOD NOT IMPLEMENTED
+	 */
+	function set_label() {}
+	/**
+	 * @todo METHOD NOT IMPLEMENTED
+	 */
+	function reset_label() {}
+
+	// ADDED FUNCTIONS
+	/**
+	 * Method used to check if the distant value is different
+	 * from the current local value (and update the local value
+	 * if there is a difference.
+	 * @private
+	 * @param local_field {String} Name of the field of the this 
+	 *     object containing the information to check.
+	 * @param distant {Value} Value of the distant information.
+	 * @param message_if_changed {String} Message to trigger if
+	 *     the information has been updated.
+	 */
+	function _check_change_(local_field,distant,message_if_changed) {
+		// TODO check if this is the wanted behaviour:
+		// If distant is undefined -> what to do?
+		if(distant !== undefined &amp;&amp; this[local_field] !== distant) {
+			this[local_field] = distant;
+			this.trigger(message_if_changed);
+		}
+	}
+
+	return function(id,uri,type,label) {
+		// a Resource is an EventHandler
+		Samotraces.EventHandler.call(this);
+		// DOCUMENTED ABOVE
+		// ATTRIBUTES
+		this.id = id;
+		this.uri = uri;
+		this.label = label;
+		this.type = type;
+		// API METHODS
+		this.get_id = get_id;
+		this.get_uri = get_uri;
+		this.force_state_refresh = force_state_refresh;
+		this.get_read_only = get_read_only;
+		this.remove = remove;
+		this.get_label = get_label;
+		this.set_label = set_label;
+		this.reset_label = reset_label;
+		// helper
+		this.get_resource_type = get_resource_type;
+		this._check_change_ = _check_change_;
+		this.start_auto_refresh = start_auto_refresh;
+		this.stop_auto_refresh = stop_auto_refresh;
+		return this;
+	};
+})();
+
+</pre>
+        </article>
+    </section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
+		on Fri Apr 04 2014 10:06:04 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<script src="scripts/sunlight.js"></script>
+	<script src="scripts/sunlight.javascript.js"></script>
+	<script src="scripts/sunlight.xml.js"></script>
+	<script src="scripts/sunlight.css.js"></script>
+	<script src="scripts/sunlight-plugin.doclinks.js"></script>
+	<script src="scripts/sunlight-plugin.linenumbers.js"></script>
+	<script src="scripts/sunlight-plugin.menu.js"></script>
+	<script src="scripts/jquery.min.js"></script>
+	<script src="scripts/jquery.scrollTo.js"></script>
+	<script src="scripts/jquery.localScroll.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+
+	<script>  Sunlight.highlightAll({lineNumbers:true,  showMenu: false, enableDoclinks :true}); </script>
+
+	<script>
+		$( function () {
+			$( "#toc" ).toc( {
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : 60
+			} );
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+
+		} );
+	</script>
+
+	
+
+</body>
+</html>

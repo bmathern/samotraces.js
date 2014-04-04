@@ -60,6 +60,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.KTBS.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.KTBS.Resource.html">Resource</a>
 						</li>
 						
@@ -282,66 +286,7 @@
  * @constructor
  * @mixes Samotraces.UI.Widgets.Widget
  * @description
- * The {@link Samotraces.UI.Widgets.TraceDisplayIcons|TraceDisplayIcons} widget
- * is a generic
- * Widget to visualise traces with images. This widget uses 
- * d3.js to display traces as images in a SVG image.
- * The default settings are set up to visualise 16x16 pixels
- * icons. If no url is defined (see options), a questionmark 
- * icon will be displayed by default for each obsel.
- *
- * Note that clicking on an obsel will trigger a 
- * {@link Samotraces.UI.Widgets.TraceDisplayIcons#ui:click:obsel|ui:click:obsel}
- * event.
- *
- * Tutorials {@tutorial tuto1.1_trace_visualisation},
- * {@tutorial tuto1.2_adding_widgets}, and 
- * {@tutorial tuto1.3_visualisation_personalisation} illustrates
- * in more details how to use this class.
- * @param {String}	divId
- *     Id of the DIV element where the widget will be
- *     instantiated
- * @param {Trace}	trace
- *     Trace object to display
- * @param {TimeWindow} time_window
- *     TimeWindow object that defines the time frame
- *     being currently displayed.
- *
- * @param {VisuConfig} [options]
- *     Object determining how to display the icons
- *     (Optional). All the options field can be either 
- *     a value or a function that will be called by 
- *     d3.js. The function will receive as the first
- *     argument the Obsel to display and should return 
- *     the calculated value.
- *     If a function is defined as an argument, it will
- *     be binded to the TraceDisplayIcons instance.
- *     This means that you can call any method of the 
- *     TraceDisplayIcons instance to help calculate 
- *     the x position or y position of an icon. This 
- *     makes it easy to define various types of behaviours.
- *     Relevant methods to use are:
- *     link Samotraces.UI.Widgets.TraceDisplayIcons.calculate_x}
- *     See tutorial 
- *     {@tutorial tuto1.3_visualisation_personalisation}
- *     for more details and examples.
- *
- * @example
- * var options = {
- *     y: 20,
- *     width: 32,
- *     height: 32,
- *     url: function(obsel) {
- *         switch(obsel.type) {
- *             case 'click':
- *                 return 'images/click.png';
- *             case 'focus':
- *                 return 'images/focus.png';
- *             default:
- *                 return 'images/default.png';
- *         }
- *     }
- * };
+ * DESCRIPTION TO COME...
  */
 Samotraces.UI.Widgets.TraceDisplayCurve = function(divId,trace,time_window,options) {
 
@@ -368,48 +313,6 @@ Samotraces.UI.Widgets.TraceDisplayCurve = function(divId,trace,time_window,optio
 
 
 	this.options = {};
-	/**
-	 * VisuConfig is a shortname for the 
-	 * {@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig}
-	 * object.
-	 * @typedef VisuConfig
-	 * @see Samotraces.Widgets.TraceDisplayIcons.VisuConfig
-	 */
-	/**
-	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
-	 * @property {(number|function)}	[x]		
-	 *     X coordinates of the top-left corner of the 
-	 *     image (default: &lt;code>function(o) {
-	 *         return this.calculate_x(o.timestamp) - 8;
-	 *     })&lt;/code>)
-	 * @property {(number|function)}	[y=17]
-	 *     Y coordinates of the top-left corner of the 
-	 *     image
-	 * @property {(number|function)}	[width=16]
-	 *     Width of the image
-	 * @property {(number|function)}	[height=16]
-	 *     Height of the image
-	 * @property {(string|function)}	[url=a questionmark dataurl string]
-	 *     Url of the image to display
-	 * @description
-	 * Object determining how to display the icons
-	 * (Optional). All the options field can be either 
-	 * a value or a function that will be called by 
-	 * d3.js. The function will receive as the first
-	 * argument the Obsel to display and should return 
-	 * the calculated value.
-	 * If a function is defined as an argument, it will
-	 * be binded to the TraceDisplayIcons instance.
-	 * This means that you can call any method of the 
-	 * TraceDisplayIcons instance to help calculate 
-	 * the x position or y position of an icon. This 
-	 * makes it easy to define various types of behaviours.
-	 * Relevant methods to use are:
-	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
-	 * See tutorial 
-	 * {@tutorial tuto1.3_visualisation_personalisation}
-	 * for more details and examples.
-	 */
 	// create function that returns value or function
 	var this_widget = this;
 	var bind_function = function(val_or_fun) {
@@ -482,11 +385,6 @@ Samotraces.UI.Widgets.TraceDisplayCurve.prototype = {
 
 	// TODO: needs to be named following a convention 
 	// to be decided on
-	/**
-	 * Calculates the X position in pixels corresponding to 
-	 * the time given in parameter.
-	 * @param {Number} time Time for which to seek the corresponding x parameter
-	 */
 	calculate_x: function(time) {
 		return x = (time - this.window.start)*this.scale_x + this.translate_offset;
 	},
@@ -559,7 +457,7 @@ Samotraces.UI.Widgets.TraceDisplayCurve.prototype = {
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wed Apr 02 2014 12:37:57 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Fri Apr 04 2014 10:06:04 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

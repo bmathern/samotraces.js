@@ -1,0 +1,131 @@
+/**********************
+ Widget
+ **********************/
+
+div.Widget {
+	border: 1px solid #484;
+	overflow: hidden;
+}
+
+
+/**********************
+ WidgetWindowScale
+ **********************/
+
+div.Widget-WindowScale {
+	width: 100%;
+}
+
+div.Widget-WindowScale svg {
+	height: 25px;
+	width: 100%;
+}
+
+div.Widget-WindowScale svg path {
+	display: none;
+}
+div.Widget-WindowScale svg text {
+	font-size: 10pt;
+}
+
+div.Widget-WindowScale p {
+	margin: 2px 1px;
+	border-left: solid 1px black;
+	position: relative;
+	top: 0px;
+}
+
+div.Widget-WindowScale p.left {
+	float: left;
+}
+div.Widget-WindowScale p.right {
+	float: right;
+}
+
+/**********************
+ WidgetTraceDisplayIcons
+ **********************/
+
+div.Widget-TraceDisplayIcons {
+	width: 100%;
+	height: 50px;
+}
+
+div.Widget-TraceDisplayIcons svg {
+	width: 100%;
+	height: 100%;
+}
+
+/**********************
+ WidgetObselInspector
+ **********************/
+
+div.Widget-ObselInspector {
+	margin: auto;
+	width: 500px;
+	border: 1px solid #484;
+	display: none;
+}
+
+div.Widget-ObselInspector span {
+	margin: 2px;
+	font-size: 1em;
+	float: right;
+	color: #ddd;
+	cursor: pointer;
+}
+
+div.Widget-ObselInspector img {
+	opacity: 0.4;
+	cursor: pointer;
+}
+
+div.Widget-ObselInspector:hover span img {
+	opacity: 1;
+}
+
+div.Widget-ObselInspector:hover span {
+	font-size: 1em;
+	float: right;
+	color: grey;
+}
+
+/**********************
+ WidgetBasicWindowSlider
+ **********************/
+
+div.Widget-WindowSlider {
+	width: 100%;
+	height: 10px;
+}
+
+div.Widget-WindowSlider div {
+	height: 10px;
+	border-radius: 6px;
+	background-color: #afa;
+	margin: -1px 0 -1px 0;
+	border: 1px solid #4a4;
+	position: relative;
+	top: 0px;
+	display: none;
+	cursor: pointer;
+}
+
+/**********************
+ WidgetBasicTimeSlider
+ **********************/
+
+div.Widget-TimeSlider {
+	width: 100%;
+	height: 20px;
+}
+
+div.Widget-TimeSlider div {
+	width: 0px;
+	height: 18px;
+	border: 1px solid red;
+	position: relative;
+	top: 0px;
+	display: none;
+	cursor: pointer;
+}

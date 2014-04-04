@@ -39,12 +39,8 @@
  * @abstract
  * @augments Samotraces.EventHandler
  * @description
- * Samotraces.DemoTrace is a Javascript Trace object.
- * Methods are available to get 
- * the Obsels from the trace, create new Obsels, etc.
- *
- * The trace is initialised empty. Obsels have to be created
- * by using the {@link Samotraces.DemoTrace#newObsel} method.
+ * This page documents the abstract Trace API.
+ * @todo DOCUMENT THIS FILE!!!!
  */
 
 /**

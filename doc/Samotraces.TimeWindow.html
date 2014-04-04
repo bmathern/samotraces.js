@@ -60,6 +60,10 @@
 						</li>
 						
 						<li>
+							<a href="Samotraces.KTBS.Obsel.html">Obsel</a>
+						</li>
+						
+						<li>
 							<a href="Samotraces.KTBS.Resource.html">Resource</a>
 						</li>
 						
@@ -305,9 +309,9 @@
 that stores the current time window.
 This Object stores a time window and informs widgets or other
 objects when the time window changes via the 
-tw:update
+<a href="Samotraces.TimeWindow.html#event:tw:update">tw:update</a>
 event.
-A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
+A <a href="Samotraces.TimeWindow.html">TimeWindow</a> can be defined in two ways:</p>
 <ol>
 <li>by defining a lower and upper bound</li>
 <li>by defining a timer and a width.</li>
@@ -575,6 +579,98 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         <dl>
             
 <dt>
+    <h4 class="name" id="get_width"><span class="type-signature"></span>get_width<span class="signature">()</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the width of the time window (duration between start and end)</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Width of the time window</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Number</span>
+
+
+	</dd>
+</dl>
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="on"><span class="type-signature"></span>on<span class="signature"><span class="signature">(event_type, callback)</span><span class="type-signature"></span>(event_type, callback)</span><span class="type-signature"></span></h4>
     
     
@@ -727,18 +823,71 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         
             
 <dt>
-    <h4 class="name" id="set_end"><span class="type-signature"></span>set_end<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="set_end"><span class="type-signature"></span>set_end<span class="signature">(time)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        <p>Sets the end time of the time window.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Ending time of the time window.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -764,7 +913,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-90">line 90</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-92">line 92</a>
     </li></ul></dd>
     
 
@@ -772,13 +921,6 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Handle correctly the bind to the timer (if this.timer)</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -804,18 +946,71 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         
             
 <dt>
-    <h4 class="name" id="set_start"><span class="type-signature"></span>set_start<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="set_start"><span class="type-signature"></span>set_start<span class="signature">(time)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        <p>Sets the start time of the time window.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Starting time of the time window.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -841,7 +1036,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-73">line 73</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-74">line 74</a>
     </li></ul></dd>
     
 
@@ -849,13 +1044,6 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Handle correctly the bind to the timer (if this.timer)</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -881,18 +1069,126 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         
             
 <dt>
-    <h4 class="name" id="set_width"><span class="type-signature"></span>set_width<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="set_width"><span class="type-signature"></span>set_width<span class="signature">(width, <span class="optional">center</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        <p>Sets the width of the time of the time window.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+		<th>Default</th>
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>New width of the time window.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>center</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    (start+end)/2
+                
+                </td>
+            
+
+            <td class="description last"><p>New center of the time window.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -918,7 +1214,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-104">line 104</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-112">line 112</a>
     </li></ul></dd>
     
 
@@ -926,13 +1222,6 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Handle correctly the bind to the timer (if this.timer)</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -958,18 +1247,71 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         
             
 <dt>
-    <h4 class="name" id="translate"><span class="type-signature"></span>translate<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="translate"><span class="type-signature"></span>translate<span class="signature">(delta)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        <p>Translates the time window with a time delta.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time deltat that will be added to the time window.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -995,7 +1337,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-116">line 116</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-126">line 126</a>
     </li></ul></dd>
     
 
@@ -1175,18 +1517,73 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
         
             
 <dt>
-    <h4 class="name" id="zoom"><span class="type-signature"></span>zoom<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="zoom"><span class="type-signature"></span>zoom<span class="signature">(coef)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        <p>Zooms the timewindow by multiplying the current width
+by the given coefficient. Zoom in if the coefficient
+is less than 1 and out if it is more than 1.</p>
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>coef</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Coefficient of the zoom to apply.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+
     
     
     
@@ -1212,7 +1609,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-126">line 126</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-141">line 141</a>
     </li></ul></dd>
     
 
@@ -1220,13 +1617,6 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
 
     
 
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Handle correctly the bind to the timer (if this.timer)</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -1358,7 +1748,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-77">line 77</a>
+        <a href="TimeWindow.js.html">core/TimeWindow.js</a>, <a href="TimeWindow.js.html#sunlight-1-line-78">line 78</a>
     </li></ul></dd>
     
 
@@ -1400,7 +1790,7 @@ A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:</p>
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a>
-		on Wed Apr 02 2014 12:37:59 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		on Fri Apr 04 2014 10:06:06 GMT+0200 (CEST) using the <a href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
 			</div>

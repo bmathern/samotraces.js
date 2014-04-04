@@ -83,6 +83,8 @@ How to read this documentation?
 This documentation provides you with the information you need to use Samotraces.js
 and develop your own Trace-Based Systems (TBS).
 
+It is recommended that you navigate through this doc with the Namespace menu 
+rather than the Class menu.
 The code is structured into namespaces that allow to easily identify objects.
 The documentation follows the same structure as the code:
 All the widgets are contained in the {@link Samotraces.UI.Widgets} namespace

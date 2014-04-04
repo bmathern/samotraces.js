@@ -56,11 +56,11 @@ Samotraces.Selector = function(type,selection_mode,events) {
 
 Samotraces.Selector.prototype = {
 	/**
-     * Method to call to select an Object.
-     * @param {Object} object
-     *     Object that is added to the selection
+	 * Method to call to select an Object.
+	 * @param {Object} object
+	 *     Object to add to the selection
 	 * @fires Samotraces.Selector#selection:add
-     */
+	 */
 	select: function(object) {
 		if(this.mode === 'multiple') {
 			this.selection.push(object);
@@ -77,9 +77,9 @@ Samotraces.Selector.prototype = {
 		this.trigger('selection:add',object);
 	},
 	/**
-     * Method to empty the current selection.
+	 * Method to empty the current selection.
 	 * @fires Samotraces.Selector#selection:empty
-     */
+	 */
 	empty: function() {
 		this.selection = [];
 		/**
@@ -94,7 +94,7 @@ Samotraces.Selector.prototype = {
 	 * Method that checks if the selection is empty
 	 * @returns {Boolean} Returns true if the selection and empty 
 	 *     and false if the selection is not empty.
-     */
+	 */
 	is_empty: function() {
 		return (this.selection.length === 0);
 	},
@@ -106,9 +106,11 @@ Samotraces.Selector.prototype = {
 		return this.selection;
 	},
 	/**
-     * Method to call to remove an Object from the selection.
+	 * Method to call to remove an Object from the selection.
+	 * @param {Object} object
+	 *     Object to remove from the selection
 	 * @fires Samotraces.Selector#selection:remove
-     */
+	 */
 	unselect: function(object) {
 		if(this.mode === 'multiple') {
 			var found = false;
@@ -134,10 +136,12 @@ Samotraces.Selector.prototype = {
 		return true;
 	},
 	/**
-     * Method to call to toggle the selection of an Object.
+	 * Method to call to toggle the selection of an Object.
 	 * If the Object was previously unselected, it becomes selected.
 	 * If the Object was previously selected, it becomes unselected.
-     */
+	 * @param {Object} object
+	 *     Object to toggle from the selection
+	 */
 	toggle: function(object) {
 		if(this.mode === 'multiple') {
 			if(!this.unselect(object)) {

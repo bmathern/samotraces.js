@@ -16,7 +16,7 @@
  * that stores the current time window.
  * This Object stores a time window and informs widgets or other
  * objects when the time window changes via the 
- * {@link Samotraces.TimeWindow#event:tw:update|tw:update}
+ * {@link Samotraces.TimeWindow#tw:update|tw:update}
  * event.
  * A {@link Samotraces.TimeWindow|TimeWindow} can be defined in two ways:
  *
@@ -67,8 +67,9 @@ Samotraces.TimeWindow.prototype = {
 //		this.set_width(this.width,time);
 	},
 	/** 
+	 * Sets the start time of the time window.
+	 * @param {Number} time Starting time of the time window.
 	 * @fires Samotraces.TimeWindow#tw:update
-	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_start: function(time) {
 		if(this.start != time) {
@@ -84,8 +85,9 @@ Samotraces.TimeWindow.prototype = {
 		}
 	},
 	/**
+	 * Sets the end time of the time window.
+	 * @param {Number} time Ending time of the time window.
 	 * @fires Samotraces.TimeWindow#tw:update
-	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_end: function(time) {
 		if(this.end != time) {
@@ -94,12 +96,18 @@ Samotraces.TimeWindow.prototype = {
 			this.trigger('tw:update');
 		}
 	},
+	/**
+	 * Gets the width of the time window (duration between start and end)
+	 * @returns {Number} Width of the time window
+	 */
 	get_width: function() {
 		return this.width;
 	},
 	/**
+	 * Sets the width of the time of the time window.
+	 * @param {Number} width New width of the time window.
+	 * @param {Number} [center=(start+end)/2] New center of the time window.
 	 * @fires Samotraces.TimeWindow#tw:update
-	 * @todo Handle correctly the bind to the timer (if this.timer) 
 	 */
 	set_width: function(width,center) {
 		if( center === undefined) {
@@ -111,6 +119,8 @@ Samotraces.TimeWindow.prototype = {
 		this.trigger('tw:update');
 	},
 	/**
+	 * Translates the time window with a time delta.
+	 * @param {Number} delta Time deltat that will be added to the time window.
 	 * @fires Samotraces.TimeWindow#tw:translate
 	 */
 	translate: function(delta) {
@@ -122,7 +132,12 @@ Samotraces.TimeWindow.prototype = {
 			this.trigger('tw:translate',delta);
 		}
 	},
-	/** @todo Handle correctly the bind to the timer (if this.timer) */
+	/**
+	 * Zooms the timewindow by multiplying the current width
+	 * by the given coefficient. Zoom in if the coefficient
+	 * is less than 1 and out if it is more than 1.
+	 * @param {Number} coef Coefficient of the zoom to apply.
+	 */
 	zoom: function(coef) {
 		this.set_width(this.width*coef);
 	},
