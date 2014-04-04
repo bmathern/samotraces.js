@@ -817,13 +817,15 @@ Samotraces.KTBS.Resource = (function() {
 	 * on success.
 	 */
 	function force_state_refresh() {
-		
+		console.log(this.uri);	
+		//$.getJSON(this.uri,this._on_state_refresh_.bind(this));	
 		$.ajax({
 			url: this.uri,
 			type: 'GET',
 			dataType: 'json',
 			error: (function(jqXHR, textStatus, errorThrown) {
 console.log("error",this);
+console.log(textStatus,errorThrown);
 				Samotraces.log("Cannot refresh "+this.get_resource_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
 			}).bind(this),
 			success: this._on_state_refresh_.bind(this),
@@ -1071,6 +1073,7 @@ Samotraces.KTBS.Trace.prototype = {
 			console.log("Error in KTBS:Trace:list_obsels() unknown uri");
 			return false;
 		}
+//		$.getJSON(this.obsel_list_uri,this._on_refresh_obsel_list_.bind(this));
 		$.ajax({
 			url: this.obsel_list_uri,//+'.json',
 			type: 'GET',
@@ -1573,7 +1576,7 @@ console.log(opt);
 					if(opt.mode === "keep") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
-				} else  {
+				} else {
 					if(opt.mode === "remove") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
@@ -1585,7 +1588,7 @@ console.log(opt);
 					if(opt.mode === "keep") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
-				} else  {
+				} else {
 					if(opt.mode === "remove") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
@@ -3173,13 +3176,13 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	this.options = {};
 	/**
 	 * VisuConfig is a shortname for the 
-	 * {@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig}
+	 * {@link Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig}
 	 * object.
 	 * @typedef VisuConfig
-	 * @see Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @see Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig
 	 */
 	/**
-	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @typedef Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig
 	 * @property {(number|function)}	[x]		
 	 *     X coordinates of the top-left corner of the 
 	 *     image (default: <code>function(o) {
@@ -3208,7 +3211,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	 * the x position or y position of an icon. This 
 	 * makes it easy to define various types of behaviours.
 	 * Relevant methods to use are:
-	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+	 * link Samotraces.UI.Widgets.TraceDisplayIcons.calculate_x}
 	 * See tutorial 
 	 * {@tutorial tuto1.3_visualisation_personalisation}
 	 * for more details and examples.

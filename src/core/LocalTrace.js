@@ -229,7 +229,7 @@ console.log(opt);
 					if(opt.mode === "keep") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
-				} else  {
+				} else {
 					if(opt.mode === "remove") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
@@ -241,7 +241,7 @@ console.log(opt);
 					if(opt.mode === "keep") {
 						transformed_trace.create_obsel(o.to_Object());
 					}
-				} else  {
+				} else {
 					if(opt.mode === "remove") {
 						transformed_trace.create_obsel(o.to_Object());
 					}

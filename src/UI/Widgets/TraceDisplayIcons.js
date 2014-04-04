@@ -96,13 +96,13 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	this.options = {};
 	/**
 	 * VisuConfig is a shortname for the 
-	 * {@link Samotraces.Widgets.TraceDisplayIcons.VisuConfig}
+	 * {@link Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig}
 	 * object.
 	 * @typedef VisuConfig
-	 * @see Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @see Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig
 	 */
 	/**
-	 * @typedef Samotraces.Widgets.TraceDisplayIcons.VisuConfig
+	 * @typedef Samotraces.UI.Widgets.TraceDisplayIcons.VisuConfig
 	 * @property {(number|function)}	[x]		
 	 *     X coordinates of the top-left corner of the 
 	 *     image (default: <code>function(o) {
@@ -131,7 +131,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons = function(divId,trace,time_window,optio
 	 * the x position or y position of an icon. This 
 	 * makes it easy to define various types of behaviours.
 	 * Relevant methods to use are:
-	 * link Samotraces.Widgets.TraceDisplayIcons.calculate_x}
+	 * link Samotraces.UI.Widgets.TraceDisplayIcons.calculate_x}
 	 * See tutorial 
 	 * {@tutorial tuto1.3_visualisation_personalisation}
 	 * for more details and examples.

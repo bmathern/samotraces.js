@@ -41,13 +41,15 @@ Samotraces.KTBS.Resource = (function() {
 	 * on success.
 	 */
 	function force_state_refresh() {
-		
+		console.log(this.uri);	
+		//$.getJSON(this.uri,this._on_state_refresh_.bind(this));	
 		$.ajax({
 			url: this.uri,
 			type: 'GET',
 			dataType: 'json',
 			error: (function(jqXHR, textStatus, errorThrown) {
 console.log("error",this);
+console.log(textStatus,errorThrown);
 				Samotraces.log("Cannot refresh "+this.get_resource_type()+" " + this.uri + ": ", textStatus + ' ' + JSON.stringify(errorThrown));
 			}).bind(this),
 			success: this._on_state_refresh_.bind(this),
