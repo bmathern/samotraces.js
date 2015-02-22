@@ -118,6 +118,8 @@ Samotraces.KTBS.Trace.prototype = {
 		if(this.obsel_list_uri === "") {
 			console.log("Error in KTBS:Trace:list_obsels() unknown uri");
 			return false;
+		} else if(this.obsel_list_uri == "@obsels") {
+			this.obsel_list_uri = this.uri + this.obsel_list_uri;
 		}
 //		$.getJSON(this.obsel_list_uri,this._on_refresh_obsel_list_.bind(this));
 		$.ajax({
