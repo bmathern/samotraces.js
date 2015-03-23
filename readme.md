@@ -5,7 +5,7 @@ About Samotraces
 ----------------
 
 Samotraces.js is a framework for the development of trace-based applications.
-It offers ways to easily developed synchronised, multi-view, multi-scale,
+It offers ways to easily develop synchronised, multi-view, multi-scale,
 multi-sources visualisations.
 
 "Samotraces" stands for "a framework for scanning, skiming,
@@ -115,7 +115,7 @@ For instance, available widgets can:
 ### About the core Objects 
 
 Core (Logical) Objects that are shared by widgets are included in the {@link Samotraces} namespace.
-These include :
+These include:
 
 - Trace objects, either stored in client's memory
 ({@link Samotraces.LocalTrace|LocalTrace}) or in a kTBS
