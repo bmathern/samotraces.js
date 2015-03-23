@@ -45,7 +45,7 @@
 
 header("Content-Disposition: attachment; filename=\"Samotraces.js\"");
 
-function export_all_js($dir,$priority_list) {
+function export_all_js($dir,$priority_list=[]) {
 $first = "";
 $last = "";
 do {
