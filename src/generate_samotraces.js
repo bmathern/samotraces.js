@@ -19,6 +19,7 @@
 	var debug_mode = false;
 	Samotraces.set_debug = function(val) { debug_mode = val; };
 
+	Samotraces.Behaviour = {};
 	/**
 	 * Library of UI components for Samotraces
 	 * @namespace Samotraces.UI
