@@ -5,7 +5,7 @@
         <script type="text/javascript" src="javascript/d3.js"></script>
         <script type="text/javascript" src="javascript/jquery.js"></script>
         <script type="text/javascript" src="javascript/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="javascript/Samotraces.js"></script>
+        <script type="text/javascript" src="/samotraces/src/generate_samotraces.php"></script>
         <link rel="stylesheet" type="text/css" href="css/samotraces.css"> 
     </head>
     <body>
@@ -60,11 +60,15 @@
             };
 
             // Create widgets
-            new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
+            traceWidget = new Samotraces.UI.Widgets.TraceDisplayIcons('my-widget',trace,tw,options);
             new Samotraces.UI.Widgets.WindowScale('scale',tw);
             new Samotraces.UI.Widgets.ImportTrace('importer',trace);
             new Samotraces.UI.Widgets.ObselInspector('obsel-inspector',obsel_selector);
 
+            Samotraces.Behaviour.ZoomOnScroll('#my-widget,#scale',tw);
+            Samotraces.Behaviour.TranslateTimeWindowOnDrag('#my-widget,#scale',tw,function(dx) { return dx*tw.get_width() / $('#my-widget')[0].clientWidth;},function(offset) {
+                                        traceWidget.svg_gp.attr('transform','translate('+(offset-traceWidget.translate_offset)+',0)');
+                                });
             // Select Obsel when clicked
             callback = function(event) {
                 var obsel = $.data(event.target,'Samotraces-data');

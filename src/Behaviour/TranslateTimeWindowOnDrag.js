@@ -1,7 +1,8 @@
 
-Samotraces.Behaviour.TranslateTimeWindowOnHorizontalDrag = function(selector,tw,pixelToTimeCallback,mouseMoveCallback) {
+Samotraces.Behaviour.TranslateTimeWindowOnDrag = function(selector,tw,pixelToTimeCallback,mouseMoveCallback) {
   var mousedown,mouseup,mousemove;
   var init_client_x;
+  var init_client_y;
   mousedown = function(e) {
   //  console.log('mousedown');
     init_client_x = e.clientX;
@@ -13,9 +14,10 @@ Samotraces.Behaviour.TranslateTimeWindowOnHorizontalDrag = function(selector,tw,
   mouseup = function(e) {
   //  console.log('mouseup');
     if(init_client_x !== undefined) {
-      var delta_x = (e.clientX - init_client_x);
-      var delta_t = delta_x * pixelToTimeCallback();
-      tw.translate(-delta_t);
+      var dx = (e.clientX - init_client_x);
+      var dy = (e.clientY - init_client_y);
+      var dt = pixelToTimeCallback(dx,dy);
+      tw.translate(-dt);
       e.target.removeEventListener('mousemove',mousemove);
       e.target.removeEventListener('mouseup',mouseup);
       e.target.removeEventListener('mouseleave',mouseup);
@@ -30,8 +32,9 @@ Samotraces.Behaviour.TranslateTimeWindowOnHorizontalDrag = function(selector,tw,
       };
     } else { // if callback is defined...
       return function(e) {
-        var delta_x = (e.clientX - init_client_x);
-        mouseMoveCallback(delta_x);
+        var dx = (e.clientX - init_client_x);
+        var dy = (e.clientY - init_client_y);
+        mouseMoveCallback(dx,dy);
         return false;
       };
     }
