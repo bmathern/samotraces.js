@@ -80,7 +80,6 @@ Samotraces.UI.Widgets.WindowScale.prototype = {
 				onMoveCallback: function(offset) {
 				},
 			});*/
-		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
 	},
 
 	draw: function() {

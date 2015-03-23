@@ -193,18 +193,17 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 
 		// event listeners
 		var widget = this;
-		this.add_behaviour('changeTimeOnDrag',this.element,{
+/*		this.add_behaviour('changeTimeOnDrag',this.element,{
 				onUpCallback: function(delta_x) {
 					var time_delta = -delta_x*widget.window.get_width()/widget.element.clientWidth;
-					widget.svg_gp.attr('transform','translate('+(-widget.translate_offset)+',0)');
+					//widget.svg_gp.attr('transform','translate('+(-widget.translate_offset)+',0)');
 					widget.window.translate(time_delta);
 				},
 				onMoveCallback: function(offset) {
 					widget.svg_gp.attr('transform','translate('+(offset-widget.translate_offset)+',0)');
 				},
 			});
-		this.add_behaviour('zommOnScroll',this.element,{timeWindow: this.window});
-	},
+*/	},
 
 
 	// TODO: needs to be named following a convention 
@@ -288,7 +287,7 @@ Samotraces.UI.Widgets.TraceDisplayIcons.prototype = {
 					.selectAll('circle,image,rect')
 					// TODO: ATTENTION! WARNING! obsels MUST have a field id -> used as a key.
 					//.data(this.data); //,function(d) { return d.id;});
-					.data(this.data, function(d) { return d.id;}); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
+					.data(this.data, function(d) { return d.get_id();}); // TODO: bogue in case no ID exists -> might happen with KTBS traces and new obsels
 	},
 
 
