@@ -19,6 +19,7 @@
 	var debug_mode = false;
 	Samotraces.set_debug = function(val) { debug_mode = val; };
 
+	Samotraces.Behaviour = {};
 	/**
 	 * Library of UI components for Samotraces
 	 * @namespace Samotraces.UI
@@ -65,6 +66,7 @@ echo($first.$last);
 
 export_all_js('core',['core/Obsel.js','core/KTBS.js']);
 export_all_js('UI');
+export_all_js('Behaviour');
 //export_all_js('UIComponents/');
 
 ?>
